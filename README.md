@@ -22,7 +22,7 @@ Track daily routines, log expenses, and visualize your progress through beautifu
 | UI & Motion | [Tailwind CSS](https://tailwindcss.com/), [Framer Motion](https://www.framer.com/motion/) |
 | Charts      | [Chart.js](https://www.chartjs.org/) |
 | State Mgmt  | [Redux Toolkit](https://redux-toolkit.js.org/) |
-| Backend     | [Firebase](https://firebase.google.com/) (Firestore, optional Auth) |
+| Backend     | [Firebase](https://firebase.google.com/) (Firestore) |
 | Deployment  | Vercel |
 
 ---
