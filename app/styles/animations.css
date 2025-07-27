@@ -1,0 +1,15 @@
+.menuToggleAnimation {
+    animation: menuToggle 0.2s forwards ease-in;
+}
+
+
+@keyframes menuToggle{
+    from{
+        transform: scale(0) ;
+        opacity: 0;
+    }
+    to{
+        transform: scale(1);
+        opacity: 100;
+    }
+}
