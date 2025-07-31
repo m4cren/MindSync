@@ -1,4 +1,4 @@
-# 🧠 MindSync — Personal Habit & Expense Tracker
+# 🧠 MindSync 
 
 A refined, private productivity system built exclusively for personal use. Inspired by Notion's modular philosophy, **MindSync** is designed to help you stay consistent with your daily habits and manage expenses effortlessly — with a sleek, focused interface and meaningful features tailored to your needs.
 
