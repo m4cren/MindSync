@@ -1,0 +1,36 @@
+.homeLayout{
+  display: grid;
+  grid-template-columns: 1fr 40vw 1fr;
+  grid-template-rows: 60vh 16vh 12vh 12vh;
+  grid-template-areas: 
+    "clock    todo    calendar"
+     "clock    todo    habit"
+    "   quote        quote       habit"
+    "   quote     quote     habit"
+  ;
+}
+
+.clock{
+  grid-area: clock;
+
+}
+
+.to-do-list{
+  grid-area: todo;
+  
+}
+
+.calendar{
+  grid-area: calendar;
+
+}
+
+.habit-streak{
+  grid-area: habit;
+  
+}
+
+.quote{
+  grid-area: quote;
+  
+}

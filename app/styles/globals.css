@@ -3,3 +3,17 @@
   themes: light --default, dark --prefersdark, business
 }
 
+body{
+  background-color: #191919;
+}
+
+@theme{
+  --color-card: #202020;
+  --color-flame: #FA8C01
+}
+
+h1,h2,h3,h4,h5,p{
+  color: #d4d4d4;
+}
+
+

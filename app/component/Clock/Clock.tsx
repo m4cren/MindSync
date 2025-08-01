@@ -28,13 +28,11 @@ const Clock = () => {
    const minute_angle = Number(minute) * 6;
    const hours_angle = Number(hours) * 30;
    return (
-      <div
-         className={` w-full flex flex-col items-center justify-center h-screen`}
-      >
-         <div className="aspect-square scale-135 flex items-center justify-center">
+      <div className={` w-fit flex flex-col items-center  `}>
+         <div className="aspect-square scale-80 flex justify-center ">
             <div
-               style={{ border: "3px solid #ececec90" }}
-               className="relative overflow-hidden rounded-full min-[580px]:mt-15  shadow-xl  bg-[rgba(0,0,0,0.35)] [box-shadow:0_0_15px_rgba(0,0,0,0.7)] w-[14rem] h-[14rem] min-[390px]:w-[17rem] min-[390px]:h-[17rem] min-[580px]:w-[21rem] min-[580px]:h-[21rem]  flex"
+               style={{ border: "0.3vw solid #ececec90" }}
+               className="relative overflow-hidden rounded-full  shadow-xl  bg-[rgba(0,0,0,0.35)] [box-shadow:0_0_15px_rgba(0,0,0,0.7)] w-[25vw] h-[25vw]  flex"
             >
                <CenterDot />
                <MinuteHand rotation={minute_angle} />
@@ -46,13 +44,7 @@ const Clock = () => {
                ))}
             </div>
          </div>
-         <DateTime
-            day={day}
-            amPm={amPm}
-            hour={hours}
-            minute={minute}
-            second={seconds}
-         />
+         <DateTime day={day} amPm={amPm} hour={hours} minute={minute} />
       </div>
    );
 };

@@ -1,7 +1,14 @@
 "use client";
 
 import classNames from "classnames";
-import { Bot, House, Landmark, LucideIcon, Sprout } from "lucide-react";
+import {
+   Bot,
+   House,
+   Landmark,
+   LucideIcon,
+   Settings,
+   Sprout,
+} from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -26,6 +33,11 @@ const menus: { label: string; href: string }[] = [
 
       href: "/expenses",
    },
+   {
+      label: "Settings",
+
+      href: "/settings",
+   },
 ];
 
 const iconMap: Record<number, LucideIcon> = {
@@ -33,6 +45,7 @@ const iconMap: Record<number, LucideIcon> = {
    1: Bot,
    2: Sprout,
    3: Landmark,
+   4: Settings,
 };
 
 const Menu = () => {
@@ -58,9 +71,9 @@ const Menu = () => {
       if (isToggle) {
          const changeMenu = (e: KeyboardEvent) => {
             if (e.key === "ArrowLeft") {
-               setSelectedMenu((prev) => (prev > 0 ? prev - 1 : 3));
+               setSelectedMenu((prev) => (prev > 0 ? prev - 1 : 4));
             } else if (e.key === "ArrowRight") {
-               setSelectedMenu((prev) => (prev < 3 ? prev + 1 : 0));
+               setSelectedMenu((prev) => (prev < 4 ? prev + 1 : 0));
             }
          };
 
@@ -93,13 +106,13 @@ const Menu = () => {
 
    if (isToggle) {
       return (
-         <div className="fixed bg-black/30 z-10 backdrop-blur-xl top-0 left-0 bottom-0 right-0 flex flex-col  items-center justify-evenly gap-[7vw]">
+         <div className="fixed bg-black/30 z-10 backdrop-blur-[1.6vw] top-0 left-0 bottom-0 right-0 flex flex-col  items-center justify-evenly gap-[7vw]">
             <Image
                width={200}
                height={200}
                alt="archlinux"
                src={"/images/archlinux.png"}
-               className="menuToggleAnimation"
+               className="menuToggleAnimation w-[16vw] h-[16vw]"
             />
             <ul className="flex flex-row items-center gap-[12vw]">
                {menus.map(({ label }, index) => {
@@ -108,7 +121,7 @@ const Menu = () => {
                      <li
                         key={label}
                         className={classNames(
-                           "menuToggleAnimation text-[1.4vw] font-medium opacity-40! flex flex-col gap-2 items-center scale-100 transition duration-140",
+                           "menuToggleAnimation text-[1.08vw] font-medium opacity-40! flex flex-col gap-2 items-center scale-100 transition duration-140",
                            {
                               " [text-shadow:0_0_10px_rgba(255,255,255,0.35)] opacity-100! scale-115":
                                  selectedMenu === index,
