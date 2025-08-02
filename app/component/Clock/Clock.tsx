@@ -7,6 +7,7 @@ import Markers from "./Markers";
 import DateTime from "./Date&Time";
 import CenterDot from "./CenterDot";
 import useTime from "@/lib/hooks/useTime";
+import Skeleton from "./Skeleton";
 
 const markerPositions = [
    "top-0 left-1/2",
@@ -22,7 +23,7 @@ const Clock = () => {
       setIsClient(true);
    }, []);
 
-   if (!isClient) return null;
+   if (!isClient) return <Skeleton />;
 
    const second_angle = Number(seconds) * 6;
    const minute_angle = Number(minute) * 6;

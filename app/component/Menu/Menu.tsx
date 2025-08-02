@@ -1,5 +1,7 @@
 "use client";
 
+import { useGlobalState } from "@/lib/hooks/useGlobalState";
+import { MenuStateTypes } from "@/lib/types/StateTypes";
 import classNames from "classnames";
 import {
    Bot,
@@ -12,7 +14,7 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-const menus: { label: string; href: string }[] = [
+const menus: MenuStateTypes[] = [
    {
       label: "Home",
 
@@ -49,7 +51,10 @@ const iconMap: Record<number, LucideIcon> = {
 };
 
 const Menu = () => {
-   const [isToggle, setIsToggle] = useState<boolean>(false);
+   const {
+      dispatch,
+      popupState: { popup, togglePopup, untogglePopup },
+   } = useGlobalState();
    const [selectedMenu, setSelectedMenu] = useState<number>(0);
 
    const router = useRouter();
@@ -57,7 +62,10 @@ const Menu = () => {
    useEffect(() => {
       const handleKeyDown = (e: KeyboardEvent) => {
          if (e.ctrlKey && e.altKey) {
-            setIsToggle((prev) => !prev);
+            dispatch(togglePopup("menu"));
+         }
+         if (e.ctrlKey && e.key.toLocaleLowerCase() === ".") {
+            dispatch(untogglePopup("menu"));
          }
       };
 
@@ -68,7 +76,8 @@ const Menu = () => {
       };
    }, []);
    useEffect(() => {
-      if (isToggle) {
+      console.log(popup);
+      if (popup.menu) {
          const changeMenu = (e: KeyboardEvent) => {
             if (e.key === "ArrowLeft") {
                setSelectedMenu((prev) => (prev > 0 ? prev - 1 : 4));
@@ -83,17 +92,17 @@ const Menu = () => {
             window.removeEventListener("keydown", changeMenu);
          };
       }
-   }, [isToggle]);
+   }, [popup]);
 
    useEffect(() => {
-      if (isToggle) {
+      if (popup.menu) {
          const enterMenu = (e: KeyboardEvent) => {
             const selectedHref = menus.find(
                (_, index) => index === selectedMenu,
             );
             if (e.key === "Enter") {
                router.push(`${selectedHref?.href}`);
-               setIsToggle(false);
+               dispatch(untogglePopup("menu"));
             }
          };
 
@@ -102,9 +111,9 @@ const Menu = () => {
             window.removeEventListener("keydown", enterMenu);
          };
       }
-   }, [isToggle, selectedMenu]);
+   }, [popup, selectedMenu]);
 
-   if (isToggle) {
+   if (popup.menu) {
       return (
          <div className="fixed bg-black/30 z-10 backdrop-blur-[1.6vw] top-0 left-0 bottom-0 right-0 flex flex-col  items-center justify-evenly gap-[7vw]">
             <Image
