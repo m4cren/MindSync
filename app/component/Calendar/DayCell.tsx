@@ -7,7 +7,7 @@ const DayCell: React.FC<{ day: Day }> = ({ day }) => {
       day.isCurrentMonth ? "text-[#d4d4d4]" : "text-[#d4d4d440]",
       day.isToday
          ? "bg-[#d4d4d4] font-semibold text-card"
-         : "hover:bg-[#d4d4d4]",
+         : "hover:bg-[#d4d4d4] hover:text-card",
    ].join(" ");
 
    return <div className={classes}>{day.date.getDate()}</div>;

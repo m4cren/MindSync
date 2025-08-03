@@ -1,15 +1,27 @@
 .menuToggleAnimation {
-    animation: menuToggle 0.2s forwards ease-in;
+   animation: menuToggle 0.2s forwards ease-in;
+}
+.finishTaskAnimation {
+   animation: finishTask 0.4s forwards ease-out;
 }
 
-
-@keyframes menuToggle{
-    from{
-        transform: scale(0) ;
-        opacity: 0;
-    }
-    to{
-        transform: scale(1);
-        opacity: 100;
-    }
+@keyframes menuToggle {
+   from {
+      transform: scale(0);
+      opacity: 0;
+   }
+   to {
+      transform: scale(1);
+      opacity: 100;
+   }
+}
+@keyframes finishTask {
+   from {
+      transform: translateX(0);
+      opacity: 100;
+   }
+   to {
+      transform: translateX(100%);
+      opacity: 0;
+   }
 }

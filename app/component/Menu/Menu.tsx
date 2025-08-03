@@ -1,7 +1,8 @@
 "use client";
 
 import { useGlobalState } from "@/lib/hooks/useGlobalState";
-import { MenuStateTypes } from "@/lib/types/StateTypes";
+import { MenuStateTypes } from "@/lib/types";
+
 import classNames from "classnames";
 import {
    Bot,
@@ -76,7 +77,6 @@ const Menu = () => {
       };
    }, []);
    useEffect(() => {
-      console.log(popup);
       if (popup.menu) {
          const changeMenu = (e: KeyboardEvent) => {
             if (e.key === "ArrowLeft") {
