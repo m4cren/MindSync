@@ -2,6 +2,8 @@ import React from "react";
 import Header from "../_component/Header";
 
 import Dashboard from "../_component/Dashboard";
+import Accounts from "./_component/Accounts";
+import Details from "./_component/Details";
 
 const page = () => {
    return (
@@ -13,7 +15,10 @@ const page = () => {
                <Dashboard />
             </div>
 
-            <div className="flex flex-col gap-[2vw]"></div>
+            <div className="flex flex-col gap-[2vw]">
+               <Accounts />
+               <Details />
+            </div>
          </div>
       </>
    );

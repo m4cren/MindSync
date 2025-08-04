@@ -3,7 +3,7 @@ import { PropsWithChildren } from "react";
 
 const layout = ({ children }: PropsWithChildren) => {
    return (
-      <main className="flex flex-col  w-screen h-fit pb-[20vw]">
+      <main className="flex flex-col  w-screen h-fit min-h-screen pb-[20vw]">
          <Image
             src={"/images/banner/banner.gif"}
             width={1920}

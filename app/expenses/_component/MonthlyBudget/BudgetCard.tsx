@@ -38,7 +38,7 @@ const BudgetCard = ({ alloted_budget, label, total_expense }: Props) => {
                Alloted budget:
             </p>
             <h4 className="text-[1vw] font-medium opacity-80">
-               ${alloted_budget}
+               ₱{alloted_budget}
             </h4>
          </div>
          {parseInt(percentage) > 100 ? (
@@ -59,7 +59,7 @@ const BudgetCard = ({ alloted_budget, label, total_expense }: Props) => {
                </div>
             </div>
          )}
-         <h4 className="text-[0.9vw] font-bold">${total_expense}</h4>
+         <h4 className="text-[0.9vw] font-bold">₱{total_expense}</h4>
       </li>
    );
 };
