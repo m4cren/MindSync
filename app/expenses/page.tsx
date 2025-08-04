@@ -1,11 +1,21 @@
 import { Metadata } from "next";
-import React from "react";
+import Security from "./security/component/Security";
+import Main from "./_component/Main";
+import Image from "next/image";
 
 const page = () => {
    return (
-      <div className="flex items-center justify-center w-screen h-screen">
-         <h1 className="text-2xl">Expense Tracker In Progress</h1>
-      </div>
+      <>
+         <Image
+            src={"/images/banner/banner.gif"}
+            width={1920}
+            height={1080}
+            alt="banner"
+            className="w-full h-[15vw] object-cover object-center"
+         />
+
+         <Main />
+      </>
    );
 };
 

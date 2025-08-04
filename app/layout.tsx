@@ -4,6 +4,7 @@ import "./styles/globals.css";
 import "./styles/animations.css";
 import Menu from "./component/Menu/Menu";
 import ReduxProvider from "@/store/ReduxProvider";
+import DeleteCookieOnLoad from "./component/DeleteCookieOnLoad";
 
 const inter = Inter({
    variable: "--font-inter",
@@ -23,6 +24,7 @@ export default function RootLayout({
 }>) {
    return (
       <html lang="en" data-theme="business">
+         <DeleteCookieOnLoad />
          <ReduxProvider>
             <body className={`${inter.variable}  antialiased`}>
                <Menu />

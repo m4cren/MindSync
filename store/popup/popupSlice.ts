@@ -1,4 +1,4 @@
-import { PopupStateTypes } from "@/lib/types/PopupStateTypes";
+import { PopupStateTypes } from "@/lib/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: PopupStateTypes = {

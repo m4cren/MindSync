@@ -1,6 +1,10 @@
 import React from "react";
 
-const labels = ["MindSync Beta 0.3v", "Host 0.0103 x64", "Archlinux 64-bit"];
+const labels = [
+   "MindSync Beta 0.3v",
+   "Next.js 15.4.4 (stale)",
+   "Archlinux 64-bit",
+];
 
 const Footer = () => {
    return (
