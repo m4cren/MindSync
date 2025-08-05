@@ -13,7 +13,7 @@ interface Props {
 const Filter = ({ setIsFilter, filter }: Props) => {
    const router = useRouter();
    return (
-      <div className="absolute top-0 right-0 z-10 flex flex-col gap-[0.8vw] bg-card w-[20vw] h-fit rounded-[0.7vw] p-[1vw] shadow-2xl">
+      <div className="absolute top-0 right-0 z-8 flex flex-col gap-[0.8vw] bg-card w-[20vw] h-fit rounded-[0.7vw] p-[1vw] shadow-2xl">
          <div className="flex items-center justify-between">
             <p className="text-[0.85vw] opacity-50">
                Filter by {filter ? filter : "..."}

@@ -42,6 +42,7 @@ const Task = ({ category, date_str, label, id, date }: Props) => {
    const taskDateStr = new Date(date!).toISOString().slice(0, 10);
 
    const isOverdue = taskDateStr < todayStr;
+
    return (
       <>
          <li

@@ -34,6 +34,14 @@ const Accounts = () => {
 
    const dateToday = new Date();
    const hasUpdated = useRef(false);
+   const formattedDate = dateToday.toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+   });
+   const sortedNetWorth = sort(netWorth).desc((t) =>
+      new Date(t.date_str).getTime(),
+   );
 
    useEffect(() => {
       if (hasUpdated.current) return;
@@ -43,18 +51,9 @@ const Accounts = () => {
          },
          0,
       );
-      console.log(totalNetWorthThisDay);
-
-      const formattedDate = dateToday.toLocaleDateString("en-US", {
-         month: "short",
-         day: "2-digit",
-         year: "numeric",
-      });
-      const sortedNetWorth = sort(netWorth).desc((t) => t.date_str);
-      console.log(formattedDate, sortedNetWorth[0].date_str);
 
       if (formattedDate === sortedNetWorth[0].date_str) {
-         console.log("No record sshould be added");
+         console.log("No record added");
       } else {
          const args: NetWorthArgs = {
             balance: totalNetWorthThisDay,

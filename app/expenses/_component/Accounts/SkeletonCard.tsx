@@ -1,15 +1,14 @@
 "use client";
 import React from "react";
 
+const skeletonCount = [1, 2, 3, 4, 5];
+
 const SkeletonCard = () => {
    return (
       <ul className="flex flex-col gap-[0.6vw]">
-         <li className="flex flex-col animate-pulse h-[5vw] bg-card rounded-[0.6vw]"></li>
-         <li className="flex flex-col animate-pulse h-[5vw] bg-card rounded-[0.6vw]"></li>
-         <li className="flex flex-col animate-pulse h-[5vw] bg-card rounded-[0.6vw]"></li>
-         <li className="flex flex-col animate-pulse h-[5vw] bg-card rounded-[0.6vw]"></li>
-         <li className="flex flex-col animate-pulse h-[5vw] bg-card rounded-[0.6vw]"></li>
-         <li className="flex flex-col animate-pulse h-[5vw] bg-card rounded-[0.6vw]"></li>
+         {skeletonCount.map((_, key) => (
+            <li key={key} className="animate-pulse h-20 bg-card rounded-sm" />
+         ))}
       </ul>
    );
 };

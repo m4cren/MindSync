@@ -1,75 +1,121 @@
 "use client";
 import { useGlobalState } from "@/lib/hooks/useGlobalState";
-import { NetWorthTypes } from "@/lib/types";
+import { FiltererTypes, NetWorthTypes } from "@/lib/types";
+import classNames from "classnames";
 import { sort } from "fast-sort";
-import { Landmark } from "lucide-react";
-import React from "react";
+import { Funnel, Landmark, XIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
    CartesianGrid,
-   Legend,
    Line,
    LineChart,
    Tooltip,
    TooltipContentProps,
-   TooltipProps,
    XAxis,
    YAxis,
 } from "recharts";
-const groupNetWorthByMonth = (data: NetWorthTypes[]): NetWorthTypes[] => {
-   const map = new Map<string, NetWorthTypes>();
-
-   data.forEach(({ id, balance, date_str }) => {
-      const month = date_str.slice(0, 7); // "YYYY-MM"
-
-      if (map.has(month)) {
-         const existing = map.get(month)!;
-         existing.balance += balance;
-      } else {
-         map.set(month, {
-            id: undefined, // or generate a new ID if needed
-            balance,
-            date_str: month, // only store "YYYY-MM" as date_str
-         });
-      }
-   });
-
-   return Array.from(map.values());
+import DateFilter from "./DateFilter";
+const monthMap: Record<string, string> = {
+   Jan: "01",
+   Feb: "02",
+   Mar: "03",
+   Apr: "04",
+   May: "05",
+   Jun: "06",
+   Jul: "07",
+   Aug: "08",
+   Sep: "09",
+   Oct: "10",
+   Nov: "11",
+   Dec: "12",
 };
-export const groupNetWorthByYear = (data: NetWorthTypes[]): NetWorthTypes[] => {
-   const map = new Map<string, NetWorthTypes>();
 
-   data.forEach(({ id, balance, date_str }) => {
-      const year = date_str.slice(0, 4); // "YYYY"
+const getMonthYear = (date: string) => {
+   const [month, , year] = date.split(" ");
 
-      if (map.has(year)) {
-         const existing = map.get(year)!;
-         existing.balance += balance;
-      } else {
-         map.set(year, {
-            id: undefined,
-            balance,
-            date_str: year,
-         });
-      }
-   });
+   return `${month} ${year}`;
+};
 
-   return Array.from(map.values());
+const getYear = (date: string) => {
+   const [, , year] = date.split(" ");
+
+   return `${year}`;
 };
 
 const Chart = () => {
    const {
       netWorthState: { netWorth },
    } = useGlobalState();
+   const [filterChart, setFilterChart] = useState<FiltererTypes>(null);
+   const sortData = (array: NetWorthTypes[], filterer: FiltererTypes) => {
+      const reduced = array.reduce(
+         (acc, curr) => {
+            const key =
+               filterer === "Month"
+                  ? getMonthYear(curr.date_str)!
+                  : filterer === "Year"
+                    ? getYear(curr.date_str)!
+                    : curr.date_str!;
 
-   const sortedData = sort(netWorth.netWorth).asc((t) => t.date_str);
-   const reducedDataByMonth = groupNetWorthByMonth(sortedData);
+            if (!acc[key]) {
+               acc[key] = 0;
+            }
+
+            acc[key]! += curr.balance;
+
+            return acc;
+         },
+         {} as Record<string, number>,
+      );
+
+      return reduced;
+   };
+
+   const convertToArray = Object.entries(
+      sortData(netWorth.netWorth, filterChart),
+   ).map(([date_str, balance]) => ({
+      balance,
+      date_str,
+   }));
+
+   const sortedData = sort(convertToArray).asc((item) => {
+      if (filterChart === "Month") {
+         const [monthStr, year] = item.date_str.split(" ");
+         const month = monthMap[monthStr];
+
+         return new Date(`${year}-${month}`).getTime();
+      } else {
+         return new Date(item.date_str).getTime();
+      }
+   });
+
+   const [isFilter, setIsFilter] = useState<boolean>(false);
 
    return (
-      <div className="flex flex-col gap-[1vw] w-full h-fit border-2 border-card rounded-[0.5vw] p-[1.25vw]">
-         <div className="flex items-center gap-[0.6vw]">
-            <Landmark size={18} />
+      <div className="relative flex flex-col gap-[1vw] w-full h-fit border-2 border-card rounded-[0.5vw] p-[1.25vw]">
+         {isFilter && (
+            <DateFilter
+               filterChart={filterChart}
+               setFilterChart={setFilterChart}
+               setIsFilter={setIsFilter}
+            />
+         )}
 
-            <h1 className="text-[0.9vw] font-medium opacity-50">Net Worth</h1>
+         <div className="flex items-center justify-between">
+            <div className="flex items-center gap-[0.6vw]">
+               <Landmark size={18} />
+
+               <h1 className="text-[0.9vw] font-medium opacity-50">
+                  Net Worth
+               </h1>
+            </div>
+            <button
+               className="cursor-pointer"
+               onClick={() => setIsFilter(true)}
+            >
+               <Funnel />
+            </button>
          </div>
          <hr className="text-card border-2" />
 
@@ -79,7 +125,7 @@ const Chart = () => {
             <LineChart
                width={850}
                height={350}
-               data={reducedDataByMonth}
+               data={sortedData}
                layout="horizontal"
             >
                <CartesianGrid vertical={false} opacity={0.1} />

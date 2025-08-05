@@ -1,6 +1,6 @@
 "use client";
 import { useGlobalState } from "@/lib/hooks/useGlobalState";
-import { generateToken } from "@/lib/idGenerator";
+import { generateToken } from "@/lib/generateToken";
 import { TaskFormTypes } from "@/lib/types";
 
 import { Calendar, Logs } from "lucide-react";
@@ -36,7 +36,7 @@ const AddTask = () => {
       dispatch(untogglePopup("addTask"));
    };
    return (
-      <div className="fixed bg-black/30 z-10 backdrop-blur-[1.6vw] top-0 left-0 bottom-0 right-0 w-full h-screen flex items-center justify-center">
+      <div className="fixed bg-black/30 z-8 backdrop-blur-[1.6vw] top-0 left-0 bottom-0 right-0 w-full h-screen flex items-center justify-center">
          <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-[1.2vw] menuToggleAnimation bg-card w-[40vw] h-fit rounded-[1vw] p-[4vw]"

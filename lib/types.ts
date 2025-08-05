@@ -46,3 +46,5 @@ export type NetWorthArgs = {
    balance: number;
    date_str: string;
 };
+
+export type FiltererTypes = "Month" | "Year" | null;
