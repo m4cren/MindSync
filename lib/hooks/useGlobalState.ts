@@ -4,6 +4,8 @@ import { togglePopup, untogglePopup } from "@/store/popup/popupSlice";
 import { fetchTasks, addTask, finishTask } from "@/store/tasks/asyncFunc";
 import { fetchAccounts } from "@/store/accounts/asyncFunc";
 import { fetchNetWorth, updateNetWorth } from "@/store/netWorth/asyncFunc";
+import { fetchIncome } from "@/store/income/asyncFunc";
+import { fetchExpense } from "@/store/expense/asyncFunc";
 import { useEffect } from "react";
 
 export const useGlobalState = () => {
@@ -12,11 +14,15 @@ export const useGlobalState = () => {
    const dispatch = useDispatch<AppDispatch>();
    const accounts = useSelector((state: RootState) => state.account);
    const netWorth = useSelector((state: RootState) => state.netWorth);
+   const income = useSelector((state: RootState) => state.income);
+   const expense = useSelector((state: RootState) => state.expense);
 
    useEffect(() => {
       dispatch(fetchTasks());
       dispatch(fetchAccounts());
       dispatch(fetchNetWorth());
+      dispatch(fetchIncome());
+      dispatch(fetchExpense());
    }, []);
 
    return {
@@ -25,5 +31,7 @@ export const useGlobalState = () => {
       taskState: { tasks, fetchTasks, addTask, finishTask },
       accountState: { accounts },
       netWorthState: { netWorth, updateNetWorth },
+      incomeState: { income },
+      expenseState: { expense },
    };
 };

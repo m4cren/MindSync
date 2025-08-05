@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../_component/Header";
 
 import Dashboard from "../_component/Dashboard";
+import ExpenseHistory from "./ExpenseHistory";
 
 const page = () => {
    return (
@@ -13,7 +14,7 @@ const page = () => {
                <Dashboard />
             </div>
 
-            <div className="flex flex-col gap-[2vw]"></div>
+            <ExpenseHistory />
          </div>
       </>
    );

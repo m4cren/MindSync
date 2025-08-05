@@ -10,10 +10,10 @@ import {
 } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 import SkeletonCard from "./SkeletonCard";
-import { AccountTypes, NetWorthArgs } from "@/lib/types";
+import { AccountNameTypes, AccountTypes, NetWorthArgs } from "@/lib/types";
 import { sort } from "fast-sort";
 
-export const accountIconMap: Record<string, LucideIcon> = {
+export const accountIconMap: Record<AccountNameTypes, LucideIcon> = {
    Wallet: Wallet,
    GCash: CreditCard,
    GoTyme: CreditCard,

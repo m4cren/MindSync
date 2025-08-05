@@ -1,7 +1,12 @@
 import { HandCoins } from "lucide-react";
 import BudgetCard from "./BudgetCard";
+import { BudgetTypes } from "@/lib/types";
 
-const budgetAllocation = [
+const budgetAllocation: {
+   label: BudgetTypes;
+   alloted_budget: number;
+   total_expense: number;
+}[] = [
    { label: "Food", alloted_budget: 1000, total_expense: 450 },
    { label: "Gas/Transportation", alloted_budget: 1000, total_expense: 450 },
    { label: "Gym", alloted_budget: 1000, total_expense: 450 },

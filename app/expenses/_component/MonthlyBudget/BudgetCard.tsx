@@ -1,3 +1,4 @@
+import { BudgetTypes } from "@/lib/types";
 import {
    AlertCircle,
    Dumbbell,
@@ -10,7 +11,7 @@ import {
 } from "lucide-react";
 import React from "react";
 
-const budgetIconMap: Record<string, LucideIcon> = {
+export const budgetIconMap: Record<BudgetTypes, LucideIcon> = {
    Food: Utensils,
    "Gas/Transportation": Fuel,
    Gym: Dumbbell,
@@ -19,7 +20,7 @@ const budgetIconMap: Record<string, LucideIcon> = {
    Miscellaneous: VenetianMask,
 };
 interface Props {
-   label: string;
+   label: BudgetTypes;
    alloted_budget: number;
    total_expense: number;
 }
