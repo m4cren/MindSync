@@ -92,3 +92,17 @@ export type ExpenseStateTypes = {
    isPending: boolean;
    errMsg: string | null;
 };
+
+export type TransferTypes = {
+   id?: string;
+   amount: number;
+   from_acc: AccountNameTypes;
+   to_acc: AccountNameTypes;
+   date_str: string;
+};
+
+export type TransferStateTypes = {
+   transfer: TransferTypes[];
+   isPending: boolean;
+   errMsg: string | null;
+};

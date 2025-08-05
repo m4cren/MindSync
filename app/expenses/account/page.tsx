@@ -8,7 +8,10 @@ import Details from "./_component/Details";
 const page = () => {
    return (
       <>
-         <Header label="Accounts" />
+         <Header
+            label="Accounts"
+            quote={`“Your account is more than just numbers — it’s a reflection of your habits, your discipline, and your vision. Stay aware, stay intentional, and let your account tell a story of growth and clarity.”`}
+         />
          <hr className="text-card border-2" />
          <div className="grid grid-cols-[22vw_1fr]">
             <div className="flex flex-col gap-[2vw]">

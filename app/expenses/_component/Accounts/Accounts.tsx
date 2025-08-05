@@ -32,16 +32,13 @@ const Accounts = () => {
       },
    } = useGlobalState();
 
-   const dateToday = new Date();
    const hasUpdated = useRef(false);
+   const dateToday = new Date();
    const formattedDate = dateToday.toLocaleDateString("en-US", {
       month: "short",
       day: "2-digit",
       year: "numeric",
    });
-   const sortedNetWorth = sort(netWorth).desc((t) =>
-      new Date(t.date_str).getTime(),
-   );
 
    useEffect(() => {
       if (hasUpdated.current) return;
@@ -51,7 +48,11 @@ const Accounts = () => {
          },
          0,
       );
+      const sortedNetWorth = sort(netWorth).desc((t) =>
+         new Date(t.date_str).getTime(),
+      );
 
+      if (!sortedNetWorth[0]) return;
       if (formattedDate === sortedNetWorth[0].date_str) {
          console.log("No record added");
       } else {
@@ -86,7 +87,7 @@ const Accounts = () => {
                            <IconComponent size={18} />
                            <h4 className="text-[1vw] font-bold">{name}</h4>
                         </div>
-                        <h3 className="text-[1.2vw] opacity-80 font-light">
+                        <h3 className="text-[1vw] opacity-80 font-light">
                            ₱{balance}
                         </h3>
                      </li>

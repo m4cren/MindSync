@@ -1,10 +1,8 @@
 "use client";
 import { useGlobalState } from "@/lib/hooks/useGlobalState";
-import { Users, Wallet } from "lucide-react";
+import { Users } from "lucide-react";
 import { accountIconMap } from "../../_component/Accounts/Accounts";
-import CardSkeleton from "./CardSkeleton";
-import { useEffect } from "react";
-import { AccountTypes } from "@/lib/types";
+import CardSkeleton from "../../_component/CardSkeleton";
 
 const Accounts = () => {
    const {
@@ -36,7 +34,7 @@ const Accounts = () => {
                            <IconComponent size={20} />
                            <h3 className="text-[1.1vw] font-bold">{name}</h3>
                         </div>
-                        <p className="text-[1.25vw] opacity-70">₱{balance}</p>
+                        <p className="text-[1vw] opacity-70">₱{balance}</p>
                      </li>
                   );
                })}

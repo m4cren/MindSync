@@ -10,7 +10,14 @@ import {
    VenetianMask,
 } from "lucide-react";
 import React from "react";
-
+const AllotedBudgetMap = {
+   Food: 1000,
+   "Gas/Transportation": 2000,
+   Gym: 1500,
+   "Utilities & Subscription": 3000,
+   Leisures: 500,
+   Miscellaneous: 400,
+};
 export const budgetIconMap: Record<BudgetTypes, LucideIcon> = {
    Food: Utensils,
    "Gas/Transportation": Fuel,
@@ -20,26 +27,26 @@ export const budgetIconMap: Record<BudgetTypes, LucideIcon> = {
    Miscellaneous: VenetianMask,
 };
 interface Props {
-   label: BudgetTypes;
-   alloted_budget: number;
-   total_expense: number;
-}
-const BudgetCard = ({ alloted_budget, label, total_expense }: Props) => {
-   const IconComponent = budgetIconMap[label];
+   category: BudgetTypes;
 
-   const percentage = ((total_expense / alloted_budget) * 100).toFixed(0);
+   amount: number;
+}
+const BudgetCard = ({ category, amount }: Props) => {
+   const IconComponent = budgetIconMap[category];
+
+   const percentage = ((amount / AllotedBudgetMap[category]) * 100).toFixed(0);
    return (
       <li className="bg-card p-[1vw] rounded-[0.6vw] flex flex-col gap-[0.4vw]">
          <div className="flex items-center gap-[0.6vw]">
             <IconComponent size={16} />
-            <h3 className="text-[1.1vw] font-bold">{label}</h3>
+            <h3 className="text-[1.1vw] font-bold">{category}</h3>
          </div>
          <div className="flex items-center gap-[0.6vw]">
             <p className="text-[0.8vw] font-medium opacity-60">
                Alloted budget:
             </p>
-            <h4 className="text-[1vw] font-medium opacity-80">
-               ₱{alloted_budget}
+            <h4 className="text-[0.9vw] font-light opacity-80">
+               ₱{AllotedBudgetMap[category]}
             </h4>
          </div>
          {parseInt(percentage) > 100 ? (
@@ -60,7 +67,7 @@ const BudgetCard = ({ alloted_budget, label, total_expense }: Props) => {
                </div>
             </div>
          )}
-         <h4 className="text-[0.9vw] font-bold">₱{total_expense}</h4>
+         <h4 className="text-[0.9vw] font-bold">₱{amount}</h4>
       </li>
    );
 };

@@ -38,7 +38,7 @@ const Details = () => {
          {accounts.isPending ? (
             <TableSkeleton />
          ) : (
-            <table className="table-auto">
+            <table>
                <thead>
                   <tr>
                      {tableHeader.map(({ icon, label }, index) => {

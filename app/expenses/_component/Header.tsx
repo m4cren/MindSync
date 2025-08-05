@@ -30,7 +30,7 @@ const Header = ({ label, quote }: Props) => {
          {quote && (
             <div className="flex items-center gap-[1.3vw]">
                <div className="bg-[#d4d4d450] w-[0.25vw] h-[3.5vw]"></div>
-               <p className="text-[1vw]">
+               <p className="text-[1vw] max-w-[69vw]">
                   <i>{quote}</i>
                </p>
             </div>

@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 
 const skeletonCount = [1, 2, 3, 4, 5];

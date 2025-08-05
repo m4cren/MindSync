@@ -6,6 +6,7 @@ import { fetchAccounts } from "@/store/accounts/asyncFunc";
 import { fetchNetWorth, updateNetWorth } from "@/store/netWorth/asyncFunc";
 import { fetchIncome } from "@/store/income/asyncFunc";
 import { fetchExpense } from "@/store/expense/asyncFunc";
+import { fetchTransfer } from "@/store/transfer/asyncFunc";
 import { useEffect } from "react";
 
 export const useGlobalState = () => {
@@ -16,6 +17,7 @@ export const useGlobalState = () => {
    const netWorth = useSelector((state: RootState) => state.netWorth);
    const income = useSelector((state: RootState) => state.income);
    const expense = useSelector((state: RootState) => state.expense);
+   const transfer = useSelector((state: RootState) => state.transfer);
 
    useEffect(() => {
       dispatch(fetchTasks());
@@ -23,6 +25,7 @@ export const useGlobalState = () => {
       dispatch(fetchNetWorth());
       dispatch(fetchIncome());
       dispatch(fetchExpense());
+      dispatch(fetchTransfer());
    }, []);
 
    return {
@@ -33,5 +36,6 @@ export const useGlobalState = () => {
       netWorthState: { netWorth, updateNetWorth },
       incomeState: { income },
       expenseState: { expense },
+      transferState: { transfer },
    };
 };

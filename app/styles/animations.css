@@ -4,6 +4,12 @@
 .finishTaskAnimation {
    animation: finishTask 0.4s forwards ease-out;
 }
+.recordExpenseToggleAnimation {
+   animation: recordExpense 0.2s forwards ease-out;
+}
+.recordIncomeToggleAnimation {
+   animation: recordIncome 0.2s forwards ease-out;
+}
 
 @keyframes menuToggle {
    from {
@@ -23,5 +29,22 @@
    to {
       transform: translateX(100%);
       opacity: 0;
+   }
+}
+
+@keyframes recordExpense {
+   from {
+      transform: translateX(100%);
+   }
+   to {
+      transform: translateX(0);
+   }
+}
+@keyframes recordIncome {
+   from {
+      transform: translateX(-100%);
+   }
+   to {
+      transform: translateX(0);
    }
 }

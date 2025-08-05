@@ -1,19 +1,35 @@
 @import "tailwindcss";
-@plugin "daisyui"{
-  themes: light --default, dark --prefersdark, business
+@plugin "daisyui" {
+   themes:
+      light --default,
+      dark --prefersdark,
+      business;
 }
 
-body{
-  background-color: #191919;
+body {
+   background-color: #191919;
 }
 
-@theme{
-  --color-card: #202020;
-  --color-flame: #FA8C01
+@theme {
+   --color-card: #202020;
+   --color-flame: #fa8c01;
 }
 
-h1,h2,h3,h4,h5,p{
-  color: #d4d4d4;
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+   color: #d4d4d4;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
 }
 
-
+/* Remove arrows in Firefox */
+input[type="number"] {
+   -moz-appearance: textfield;
+}

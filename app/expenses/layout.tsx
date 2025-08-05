@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { PropsWithChildren } from "react";
+import RecordExpense from "./_component/RecordExpense/RecordExpense";
+import RecordIncome from "./_component/RecordIncome/RecordIncome";
 
 const layout = ({ children }: PropsWithChildren) => {
    return (
@@ -9,8 +11,11 @@ const layout = ({ children }: PropsWithChildren) => {
             width={1920}
             height={1080}
             alt="banner"
+            unoptimized
             className="w-full h-[15vw] object-cover object-center"
          />
+         <RecordExpense />
+         <RecordIncome />
          <section className="flex flex-col gap-[2vw] px-[8vw]">
             {children}
          </section>

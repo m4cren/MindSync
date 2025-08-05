@@ -1,6 +1,8 @@
+"use client";
+
 const TableSkeleton = () => {
    return (
-      <table className="table-auto">
+      <table>
          <thead>
             <tr>
                <th className=" py-[0.6vw] px-[0.5vw]">

@@ -25,7 +25,6 @@ const Security = () => {
             setIsIncorrect(false);
             setCookie();
             setTimeout(() => {
-               setIsPending(false);
                router.push("/expenses");
             }, 1000);
          } else {

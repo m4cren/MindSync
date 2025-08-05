@@ -1,11 +1,9 @@
 "use client";
 import { useGlobalState } from "@/lib/hooks/useGlobalState";
 import { FiltererTypes, NetWorthTypes } from "@/lib/types";
-import classNames from "classnames";
 import { sort } from "fast-sort";
-import { Funnel, Landmark, XIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Funnel, Landmark } from "lucide-react";
+import { useEffect, useState } from "react";
 import {
    CartesianGrid,
    Line,
@@ -31,7 +29,7 @@ const monthMap: Record<string, string> = {
    Dec: "12",
 };
 
-const getMonthYear = (date: string) => {
+export const getMonthYear = (date: string) => {
    const [month, , year] = date.split(" ");
 
    return `${month} ${year}`;
@@ -91,6 +89,11 @@ const Chart = () => {
    });
 
    const [isFilter, setIsFilter] = useState<boolean>(false);
+   const [hasMounted, setHasMounted] = useState(false);
+
+   useEffect(() => {
+      setHasMounted(true);
+   }, []);
 
    return (
       <div className="relative flex flex-col gap-[1vw] w-full h-fit border-2 border-card rounded-[0.5vw] p-[1.25vw]">
@@ -122,32 +125,34 @@ const Chart = () => {
          {netWorth.isPending ? (
             <div className="bg-card animate-pulse rounded-[0.5vw] h-[24.5vw]"></div>
          ) : (
-            <LineChart
-               width={850}
-               height={350}
-               data={sortedData}
-               layout="horizontal"
-            >
-               <CartesianGrid vertical={false} opacity={0.1} />
-               <XAxis
-                  dataKey="date_str"
-                  tick={{
-                     fontFamily: "Inter",
-                     fontSize: 10,
-                     fill: "#d4d4d470",
-                  }}
-               />
-               <YAxis
-                  tick={{
-                     fontFamily: "Inter",
-                     fontSize: 10,
-                     fill: "#d4d4d490",
-                  }}
-               />
-               <Tooltip content={CustomTooltip} isAnimationActive={false} />
+            hasMounted && (
+               <LineChart
+                  width={850}
+                  height={350}
+                  data={sortedData}
+                  layout="horizontal"
+               >
+                  <CartesianGrid vertical={false} opacity={0.1} />
+                  <XAxis
+                     dataKey="date_str"
+                     tick={{
+                        fontFamily: "Inter",
+                        fontSize: 10,
+                        fill: "#d4d4d470",
+                     }}
+                  />
+                  <YAxis
+                     tick={{
+                        fontFamily: "Inter",
+                        fontSize: 10,
+                        fill: "#d4d4d490",
+                     }}
+                  />
+                  <Tooltip content={CustomTooltip} isAnimationActive={false} />
 
-               <Line type="monotone" dataKey="balance" stroke="#d4d4d4" />
-            </LineChart>
+                  <Line type="monotone" dataKey="balance" stroke="#d4d4d4" />
+               </LineChart>
+            )
          )}
       </div>
    );

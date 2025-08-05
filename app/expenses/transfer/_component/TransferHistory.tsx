@@ -1,32 +1,29 @@
 "use client";
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
 import {
    Calendar,
    Coins,
    Funnel,
-   List,
    LucideIcon,
+   Mail,
    Scroll,
-   ShoppingBasket,
-   Vault,
+   Send,
 } from "lucide-react";
 import React from "react";
-import TableSkeleton from "../account/_component/TableSkeleton";
-import { accountIconMap } from "../_component/Accounts/Accounts";
-import { budgetIconMap } from "../_component/MonthlyBudget/BudgetCard";
+import TableSkeleton from "../../account/_component/TableSkeleton";
+import { useGlobalState } from "@/lib/hooks/useGlobalState";
+import { accountIconMap } from "../../_component/Accounts/Accounts";
 
-const expenseHistoryHeader: { label: string; icon: LucideIcon }[] = [
-   { label: "Expense on", icon: ShoppingBasket },
+const transferHistoryHeader: { label: string; icon: LucideIcon }[] = [
+   { label: "From account", icon: Send },
    { label: "Amount", icon: Coins },
-   { label: "Category", icon: List },
-   { label: "Source Account", icon: Vault },
+   { label: "To Account", icon: Mail },
    { label: "Date", icon: Calendar },
 ];
 
-const ExpenseHistory = () => {
+const TransferHistory = () => {
    const {
-      expenseState: {
-         expense: { isPending, expense },
+      transferState: {
+         transfer: { transfer, isPending },
       },
    } = useGlobalState();
    return (
@@ -36,7 +33,7 @@ const ExpenseHistory = () => {
                <Scroll size={18} />
 
                <h1 className="text-[0.9vw] font-medium opacity-50">
-                  Expense History
+                  Transfer History
                </h1>
             </div>
             <button className="cursor-pointer">
@@ -47,11 +44,11 @@ const ExpenseHistory = () => {
 
          {isPending ? (
             <TableSkeleton />
-         ) : expense.length !== 0 ? (
-            <table className="table-auto">
+         ) : transfer.length !== 0 ? (
+            <table>
                <thead>
                   <tr>
-                     {expenseHistoryHeader.map(({ icon, label }, key) => {
+                     {transferHistoryHeader.map(({ icon, label }, key) => {
                         const IconComponent = icon;
                         return (
                            <th key={key} className="py-[0.6vw] px-[0.5vw]">
@@ -65,28 +62,25 @@ const ExpenseHistory = () => {
                   </tr>
                </thead>
                <tbody>
-                  {expense.map(
-                     ({ amount, date_str, account, category, label, id }) => {
-                        const AccountIcon = accountIconMap[account];
-                        const CategoryIcon = budgetIconMap[category];
+                  {transfer.map(
+                     ({ amount, date_str, from_acc, to_acc, id }) => {
+                        const FromAccountIcon = accountIconMap[from_acc];
+                        const ToAccountIcon = accountIconMap[to_acc];
                         return (
                            <tr key={id} className="text-[0.9vw] ">
                               <td className="border-t-2 border-b-2 border-card py-[0.5vw] px-[1vw]">
-                                 {label}
+                                 <span className="flex items-center gap-[0.4vw]">
+                                    <FromAccountIcon size={16} />
+                                    {from_acc}
+                                 </span>
                               </td>
                               <td className="border-2 py-[0.5vw] px-[1vw] border-card">
                                  ₱{amount}
                               </td>
                               <td className="border-2 py-[0.5vw] px-[1vw] border-card">
                                  <span className="flex items-center gap-[0.4vw]">
-                                    <CategoryIcon size={16} />
-                                    {category}
-                                 </span>
-                              </td>
-                              <td className="border-2 py-[0.5vw] px-[1vw] border-card">
-                                 <span className="flex items-center gap-[0.4vw]">
-                                    <AccountIcon size={16} />
-                                    {account}
+                                    <ToAccountIcon size={16} />
+                                    {to_acc}
                                  </span>
                               </td>
                               <td className="border-t-2  border-b-2 border-card py-[0.5vw] px-[1vw]">
@@ -107,4 +101,4 @@ const ExpenseHistory = () => {
    );
 };
 
-export default ExpenseHistory;
+export default TransferHistory;

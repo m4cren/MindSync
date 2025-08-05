@@ -1,6 +1,11 @@
+"use client";
+
 import { HandCoins } from "lucide-react";
 import BudgetCard from "./BudgetCard";
 import { BudgetTypes } from "@/lib/types";
+import { useGlobalState } from "@/lib/hooks/useGlobalState";
+import CardSkeleton from "../CardSkeleton";
+import { getMonthYear } from "../NetWorth/Chart";
 
 const budgetAllocation: {
    label: BudgetTypes;
@@ -20,6 +25,48 @@ const budgetAllocation: {
 ];
 
 const MonthlyBudget = () => {
+   const {
+      expenseState: {
+         expense: { expense, isPending },
+      },
+   } = useGlobalState();
+
+   const presentMonth = new Date().toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+   });
+   const dataThisMonth = expense.filter(({ date_str }) => {
+      const monthYear = getMonthYear(date_str);
+
+      return monthYear === getMonthYear(presentMonth);
+   });
+
+   console.log(dataThisMonth);
+
+   const groupByCategory = dataThisMonth.reduce(
+      (acc, curr) => {
+         if (!acc[curr.category]) {
+            acc[curr.category] = 0;
+         }
+
+         acc[curr.category]! += curr.amount;
+
+         return acc;
+      },
+      {} as Record<string, number>,
+   );
+
+   const toArray: { category: BudgetTypes; amount: number }[] = Object.entries(
+      groupByCategory,
+   ).map(
+      ([category, amount]) =>
+         ({
+            category,
+            amount,
+         }) as { category: BudgetTypes; amount: number },
+   );
+
    return (
       <div className="flex flex-col gap-[1vw] w-full h-fit border-2 border-card rounded-[0.5vw] p-[1.25vw]">
          <div className="flex items-center gap-[0.6vw]">
@@ -30,18 +77,15 @@ const MonthlyBudget = () => {
             </h1>
          </div>
          <hr className="text-card border-2" />
-         <ul className="grid grid-cols-3 gap-[1.2vw]">
-            {budgetAllocation.map(
-               ({ alloted_budget, label, total_expense }, key) => (
-                  <BudgetCard
-                     key={key}
-                     label={label}
-                     alloted_budget={alloted_budget}
-                     total_expense={total_expense}
-                  />
-               ),
-            )}
-         </ul>
+         {isPending ? (
+            <CardSkeleton />
+         ) : (
+            <ul className="grid grid-cols-3 gap-[1.2vw]">
+               {toArray.map(({ amount, category }, key) => (
+                  <BudgetCard key={key} category={category} amount={amount} />
+               ))}
+            </ul>
+         )}
       </div>
    );
 };
