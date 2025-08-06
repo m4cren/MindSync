@@ -36,7 +36,13 @@ const ExpenseForm = () => {
             day: "2-digit",
             year: "numeric",
          });
-         dispatch(recordExpense({ ...data, date_str: formattedDate }));
+         dispatch(
+            recordExpense({
+               ...data,
+               date_str: formattedDate,
+               created_at: dateObj,
+            }),
+         );
          dispatch(untogglePopup("recordExpense"));
       }
    };

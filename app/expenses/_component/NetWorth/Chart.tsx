@@ -46,30 +46,61 @@ const Chart = () => {
       netWorthState: { netWorth },
    } = useGlobalState();
    const [filterChart, setFilterChart] = useState<FiltererTypes>(null);
+
    const sortData = (array: NetWorthTypes[], filterer: FiltererTypes) => {
-      const reduced = array.reduce(
+      // Case 1: Month or Year → store latest balance per period
+      if (filterer === "Month" || filterer === "Year") {
+         const reduced = array.reduce(
+            (acc, curr) => {
+               const key =
+                  filterer === "Month"
+                     ? getMonthYear(curr.date_str)
+                     : getYear(curr.date_str);
+
+               const stored = acc[key];
+
+               if (
+                  !stored ||
+                  new Date(curr.date_str) > new Date(stored.date_str)
+               ) {
+                  acc[key] = {
+                     date_str: curr.date_str,
+                     balance: curr.balance,
+                  };
+               }
+
+               return acc;
+            },
+            {} as Record<string, { date_str: string; balance: number }>,
+         );
+
+         // Flatten result to only return balances
+         const final: Record<string, number> = {};
+         for (const [key, value] of Object.entries(reduced)) {
+            final[key] = value.balance;
+         }
+
+         return final;
+      }
+
+      // Case 2: Default (e.g., daily) → sum balances
+      const summed = array.reduce(
          (acc, curr) => {
-            const key =
-               filterer === "Month"
-                  ? getMonthYear(curr.date_str)!
-                  : filterer === "Year"
-                    ? getYear(curr.date_str)!
-                    : curr.date_str!;
+            const key = curr.date_str;
 
             if (!acc[key]) {
                acc[key] = 0;
             }
 
-            acc[key]! += curr.balance;
+            acc[key] += curr.balance;
 
             return acc;
          },
          {} as Record<string, number>,
       );
 
-      return reduced;
+      return summed;
    };
-
    const convertToArray = Object.entries(
       sortData(netWorth.netWorth, filterChart),
    ).map(([date_str, balance]) => ({

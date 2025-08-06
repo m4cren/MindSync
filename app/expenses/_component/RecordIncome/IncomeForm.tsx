@@ -45,7 +45,13 @@ const IncomeForm = () => {
             day: "2-digit",
             year: "numeric",
          });
-         dispatch(recordIncome({ ...data, date_str: formattedDate }));
+         dispatch(
+            recordIncome({
+               ...data,
+               date_str: formattedDate,
+               created_at: dateObj,
+            }),
+         );
 
          dispatch(untogglePopup("recordIncome"));
       }

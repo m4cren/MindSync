@@ -25,7 +25,13 @@ const TransferForm = () => {
             day: "2-digit",
             year: "numeric",
          });
-         dispatch(recordTransfer({ ...data, date_str: formattedDate }));
+         dispatch(
+            recordTransfer({
+               ...data,
+               date_str: formattedDate,
+               created_at: dateObj,
+            }),
+         );
 
          dispatch(untogglePopup("recordTransfer"));
       }
@@ -173,6 +179,7 @@ const TransferForm = () => {
                {...register("date_str")}
                type="date"
                id="date"
+               required
                className="outline-none border-1 border-[#d4d4d430] rounded-[0.35vw] px-[1vw] text-[0.9vw] py-[0.25vw]"
             />
          </div>

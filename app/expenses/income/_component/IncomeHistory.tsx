@@ -10,15 +10,13 @@ import {
    Scroll,
 } from "lucide-react";
 import TableSkeleton from "../../account/_component/TableSkeleton";
-import { accountIconMap } from "../../_component/Accounts/Accounts";
 import { sort } from "fast-sort";
-
-const incomeHistoryHeader: { label: string; icon: LucideIcon }[] = [
-   { label: "Income Stream", icon: Banknote },
-   { label: "Amount", icon: Coins },
-   { label: "Received In", icon: BanknoteArrowDown },
-   { label: "Date", icon: Calendar },
-];
+import Table from "./Table";
+import { useSearchParams } from "next/navigation";
+import Pagination from "@/app/component/Pagination";
+import { PAGE_SIZE } from "@/lib/constant";
+import { usePagination } from "@/lib/hooks/usePagination";
+import { IncomeTypes } from "@/lib/types";
 
 const IncomeHistory = () => {
    const {
@@ -26,9 +24,11 @@ const IncomeHistory = () => {
          income: { isPending, income },
       },
    } = useGlobalState();
-   const sortedByDate = sort(income).desc((item) =>
-      new Date(item.date_str).getTime(),
-   );
+   const searchParams = useSearchParams();
+   const paramsName = "income_history_page";
+   const currentPage = Number(searchParams.get(paramsName));
+
+   const paginatedIncome = usePagination<IncomeTypes>(income, currentPage);
    return (
       <div className="flex flex-col gap-[1vw] w-full h-fit border-2 border-card rounded-[0.5vw] p-[1.25vw]">
          <div className="flex items-center justify-between">
@@ -48,49 +48,15 @@ const IncomeHistory = () => {
          {isPending ? (
             <TableSkeleton />
          ) : income.length !== 0 ? (
-            <table>
-               <thead>
-                  <tr>
-                     {incomeHistoryHeader.map(({ icon, label }, key) => {
-                        const IconComponent = icon;
-                        return (
-                           <th key={key} className="py-[0.6vw] px-[0.5vw]">
-                              <span className="flex items-center gap-[0.3vw] text-[0.9vw] font-medium opacity-80">
-                                 <IconComponent size={15} />
-                                 {label}
-                              </span>
-                           </th>
-                        );
-                     })}
-                  </tr>
-               </thead>
-               <tbody>
-                  {sortedByDate.map(
-                     ({ amount, date_str, income_stream, received_in, id }) => {
-                        const IconComponent = accountIconMap[received_in];
-                        return (
-                           <tr key={id} className="text-[0.9vw] ">
-                              <td className="border-t-2 border-b-2 border-card py-[0.5vw] px-[1vw]">
-                                 {income_stream}
-                              </td>
-                              <td className="border-2 py-[0.5vw] px-[1vw] border-card">
-                                 ₱{amount}
-                              </td>
-                              <td className="border-2 py-[0.5vw] px-[1vw] border-card">
-                                 <span className="flex items-center gap-[0.4vw]">
-                                    <IconComponent size={16} />
-                                    {received_in}
-                                 </span>
-                              </td>
-                              <td className="border-t-2  border-b-2 border-card py-[0.5vw] px-[1vw]">
-                                 {date_str}
-                              </td>
-                           </tr>
-                        );
-                     },
-                  )}
-               </tbody>
-            </table>
+            <>
+               <Table sortedByDate={paginatedIncome} />
+
+               <Pagination
+                  name={paramsName}
+                  currentPage={currentPage}
+                  items={income.length}
+               />
+            </>
          ) : (
             <p className="text-[1vw] font-medium opacity-50 text-center py-[1vw]">
                You have no expense history

@@ -64,6 +64,7 @@ export type IncomeTypes = {
    amount: number;
    received_in: AccountNameTypes;
    date_str: string;
+   created_at: Date;
 };
 
 export type IncomeStateTypes = {
@@ -86,6 +87,7 @@ export type ExpenseTypes = {
    amount: number;
    category: BudgetTypes;
    date_str: string;
+   created_at: Date;
 };
 export type ExpenseStateTypes = {
    expense: ExpenseTypes[];
@@ -99,6 +101,7 @@ export type TransferTypes = {
    from_acc: AccountNameTypes;
    to_acc: AccountNameTypes;
    date_str: string;
+   created_at: Date;
 };
 
 export type TransferStateTypes = {
