@@ -7,23 +7,6 @@ import { useGlobalState } from "@/lib/hooks/useGlobalState";
 import CardSkeleton from "../CardSkeleton";
 import { getMonthYear } from "../NetWorth/Chart";
 
-const budgetAllocation: {
-   label: BudgetTypes;
-   alloted_budget: number;
-   total_expense: number;
-}[] = [
-   { label: "Food", alloted_budget: 1000, total_expense: 450 },
-   { label: "Gas/Transportation", alloted_budget: 1000, total_expense: 450 },
-   { label: "Gym", alloted_budget: 1000, total_expense: 450 },
-   {
-      label: "Utilities & Subscription",
-      alloted_budget: 1000,
-      total_expense: 450,
-   },
-   { label: "Leisures", alloted_budget: 1000, total_expense: 450 },
-   { label: "Miscellaneous", alloted_budget: 1000, total_expense: 450 },
-];
-
 const MonthlyBudget = () => {
    const {
       expenseState: {
@@ -41,8 +24,6 @@ const MonthlyBudget = () => {
 
       return monthYear === getMonthYear(presentMonth);
    });
-
-   console.log(dataThisMonth);
 
    const groupByCategory = dataThisMonth.reduce(
       (acc, curr) => {
@@ -79,12 +60,16 @@ const MonthlyBudget = () => {
          <hr className="text-card border-2" />
          {isPending ? (
             <CardSkeleton />
-         ) : (
+         ) : toArray.length !== 0 ? (
             <ul className="grid grid-cols-3 gap-[1.2vw]">
                {toArray.map(({ amount, category }, key) => (
                   <BudgetCard key={key} category={category} amount={amount} />
                ))}
             </ul>
+         ) : (
+            <p className="text-[1vw] font-medium opacity-50 text-center py-[1vw]">
+               You have no expense history
+            </p>
          )}
       </div>
    );

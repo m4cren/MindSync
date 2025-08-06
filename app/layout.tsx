@@ -26,7 +26,9 @@ export default function RootLayout({
       <html lang="en" data-theme="business">
          <DeleteCookieOnLoad />
          <ReduxProvider>
-            <body className={`${inter.variable}  antialiased`}>
+            <body
+               className={`${inter.variable}  antialiased overflow-x-hidden `}
+            >
                <Menu />
                {children}
             </body>

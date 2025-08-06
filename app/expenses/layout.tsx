@@ -2,6 +2,7 @@ import Image from "next/image";
 import { PropsWithChildren } from "react";
 import RecordExpense from "./_component/RecordExpense/RecordExpense";
 import RecordIncome from "./_component/RecordIncome/RecordIncome";
+import RecordTransfer from "./_component/RecordTransfer/RecordTransfer";
 
 const layout = ({ children }: PropsWithChildren) => {
    return (
@@ -16,6 +17,7 @@ const layout = ({ children }: PropsWithChildren) => {
          />
          <RecordExpense />
          <RecordIncome />
+         <RecordTransfer />
          <section className="flex flex-col gap-[2vw] px-[8vw]">
             {children}
          </section>

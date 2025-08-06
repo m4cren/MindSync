@@ -96,7 +96,7 @@ const Chart = () => {
    }, []);
 
    return (
-      <div className="relative flex flex-col gap-[1vw] w-full h-fit border-2 border-card rounded-[0.5vw] p-[1.25vw]">
+      <div className="relative flex flex-col gap-[1vw]  h-fit border-2 border-card rounded-[0.5vw] p-[1.25vw]">
          {isFilter && (
             <DateFilter
                filterChart={filterChart}
@@ -123,12 +123,14 @@ const Chart = () => {
          <hr className="text-card border-2" />
 
          {netWorth.isPending ? (
-            <div className="bg-card animate-pulse rounded-[0.5vw] h-[24.5vw]"></div>
+            <div className="bg-card animate-pulse  rounded-[0.5vw] h-[24.5vw]"></div>
          ) : (
             hasMounted && (
                <LineChart
-                  width={850}
-                  height={350}
+                  // width={1080} for Desktop application
+                  width={800}
+                  // height={540}
+                  height={400}
                   data={sortedData}
                   layout="horizontal"
                >

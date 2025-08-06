@@ -4,9 +4,9 @@ import { togglePopup, untogglePopup } from "@/store/popup/popupSlice";
 import { fetchTasks, addTask, finishTask } from "@/store/tasks/asyncFunc";
 import { fetchAccounts } from "@/store/accounts/asyncFunc";
 import { fetchNetWorth, updateNetWorth } from "@/store/netWorth/asyncFunc";
-import { fetchIncome } from "@/store/income/asyncFunc";
-import { fetchExpense } from "@/store/expense/asyncFunc";
-import { fetchTransfer } from "@/store/transfer/asyncFunc";
+import { fetchIncome, recordIncome } from "@/store/income/asyncFunc";
+import { fetchExpense, recordExpense } from "@/store/expense/asyncFunc";
+import { fetchTransfer, recordTransfer } from "@/store/transfer/asyncFunc";
 import { useEffect } from "react";
 
 export const useGlobalState = () => {
@@ -34,8 +34,8 @@ export const useGlobalState = () => {
       taskState: { tasks, fetchTasks, addTask, finishTask },
       accountState: { accounts },
       netWorthState: { netWorth, updateNetWorth },
-      incomeState: { income },
-      expenseState: { expense },
-      transferState: { transfer },
+      incomeState: { income, recordIncome },
+      expenseState: { expense, recordExpense },
+      transferState: { transfer, recordTransfer },
    };
 };

@@ -14,6 +14,7 @@ import React from "react";
 import TableSkeleton from "../../account/_component/TableSkeleton";
 import { accountIconMap } from "../../_component/Accounts/Accounts";
 import { budgetIconMap } from "../../_component/MonthlyBudget/BudgetCard";
+import { sort } from "fast-sort";
 
 const expenseHistoryHeader: { label: string; icon: LucideIcon }[] = [
    { label: "Expense on", icon: ShoppingBasket },
@@ -29,6 +30,9 @@ const ExpenseHistory = () => {
          expense: { isPending, expense },
       },
    } = useGlobalState();
+   const sortedByDate = sort(expense).desc((item) =>
+      new Date(item.date_str).getTime(),
+   );
    return (
       <div className="flex flex-col gap-[1vw] w-full h-fit border-2 border-card rounded-[0.5vw] p-[1.25vw]">
          <div className="flex items-center justify-between">
@@ -65,7 +69,7 @@ const ExpenseHistory = () => {
                   </tr>
                </thead>
                <tbody>
-                  {expense.map(
+                  {sortedByDate.map(
                      ({ amount, date_str, account, category, label, id }) => {
                         const AccountIcon = accountIconMap[account];
                         const CategoryIcon = budgetIconMap[category];

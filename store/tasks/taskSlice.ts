@@ -24,7 +24,6 @@ export const taskSlice = createSlice({
          .addCase(
             fetchTasks.fulfilled,
             (state, action: PayloadAction<TaskFormTypes[]>) => {
-               console.log(action.payload);
                state.isLoading = false;
                state.tasks = action.payload;
             },

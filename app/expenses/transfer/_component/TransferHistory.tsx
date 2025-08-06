@@ -12,6 +12,7 @@ import React from "react";
 import TableSkeleton from "../../account/_component/TableSkeleton";
 import { useGlobalState } from "@/lib/hooks/useGlobalState";
 import { accountIconMap } from "../../_component/Accounts/Accounts";
+import { sort } from "fast-sort";
 
 const transferHistoryHeader: { label: string; icon: LucideIcon }[] = [
    { label: "From account", icon: Send },
@@ -26,6 +27,10 @@ const TransferHistory = () => {
          transfer: { transfer, isPending },
       },
    } = useGlobalState();
+
+   const sortedByDate = sort(transfer).desc((item) =>
+      new Date(item.date_str).getTime(),
+   );
    return (
       <div className="flex flex-col gap-[1vw] w-full h-fit border-2 border-card rounded-[0.5vw] p-[1.25vw]">
          <div className="flex items-center justify-between">
@@ -62,7 +67,7 @@ const TransferHistory = () => {
                   </tr>
                </thead>
                <tbody>
-                  {transfer.map(
+                  {sortedByDate.map(
                      ({ amount, date_str, from_acc, to_acc, id }) => {
                         const FromAccountIcon = accountIconMap[from_acc];
                         const ToAccountIcon = accountIconMap[to_acc];
