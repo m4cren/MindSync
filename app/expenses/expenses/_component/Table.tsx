@@ -1,12 +1,9 @@
 import { ExpenseTypes } from "@/lib/types";
-import React from "react";
 import {
    Calendar,
    Coins,
-   Funnel,
    List,
    LucideIcon,
-   Scroll,
    ShoppingBasket,
    Vault,
 } from "lucide-react";

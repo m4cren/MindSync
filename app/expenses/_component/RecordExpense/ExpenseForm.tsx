@@ -1,10 +1,14 @@
 "use client";
+
+import { useOnlyAccount } from "@/lib/hooks/accounts/useOnlyAccount";
+import { useRecordExpense } from "@/lib/hooks/expense/useRecordExpense";
+import { usePopupState } from "@/lib/hooks/popup/usePopupState";
 import { AccountNameTypes, BudgetTypes, ExpenseTypes } from "@/lib/types";
 import { Calendar, Coins, Logs, Plus, UserCircle } from "lucide-react";
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { accountOptions } from "../RecordIncome/IncomeForm";
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
+
 const budgetCategories: BudgetTypes[] = [
    "Food",
    "Gas/Transportation",
@@ -15,38 +19,42 @@ const budgetCategories: BudgetTypes[] = [
 ];
 
 const ExpenseForm = () => {
+   const { untogglePopup } = usePopupState();
    const {
+      accounts: { accounts },
       dispatch,
-      popupState: { untogglePopup },
-      expenseState: { recordExpense },
-      accountState: {
-         accounts: { accounts, isPending },
-      },
-   } = useGlobalState();
+   } = useOnlyAccount();
+   const { recordExpense } = useRecordExpense();
+
    const { register, handleSubmit } = useForm<ExpenseTypes>();
 
    const [amountInput, setAmountInput] = useState<number>(0);
 
    const onSubmit = (data: ExpenseTypes) => {
-      if (data && data.date_str) {
-         const dateObj = new Date(data.date_str);
+      const dateObj = new Date(data.date_str);
+      const dateToday = new Date();
 
-         const formattedDate = dateObj.toLocaleDateString("en-US", {
-            month: "short",
-            day: "2-digit",
-            year: "numeric",
-         });
-         dispatch(
-            recordExpense({
-               ...data,
-               date_str: formattedDate,
-               created_at: dateObj,
-            }),
-         );
-         dispatch(untogglePopup("recordExpense"));
-      }
+      const dateTodayFormatted = dateToday.toLocaleDateString("en-US", {
+         month: "short",
+         day: "2-digit",
+         year: "numeric",
+      });
+      const formFormattedDate = dateObj.toLocaleDateString("en-US", {
+         month: "short",
+         day: "2-digit",
+         year: "numeric",
+      });
+
+      dispatch(
+         recordExpense({
+            ...data,
+            date_str: data.created_at ? formFormattedDate : dateTodayFormatted,
+            created_at: data.created_at ? dateObj : dateToday,
+         }),
+      );
+
+      dispatch(untogglePopup("recordExpense"));
    };
-
    const handleChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
       setAmountInput(Number(e.target.value));
    };
@@ -173,7 +181,6 @@ const ExpenseForm = () => {
                {...register("date_str")}
                type="date"
                id="date"
-               required
                className="outline-none border-1 border-[#d4d4d430] rounded-[0.35vw] px-[1vw] text-[0.9vw] py-[0.25vw]"
             />
          </div>

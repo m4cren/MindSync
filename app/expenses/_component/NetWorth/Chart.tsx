@@ -1,5 +1,5 @@
 "use client";
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
+
 import { FiltererTypes, NetWorthTypes } from "@/lib/types";
 import { sort } from "fast-sort";
 import { Funnel, Landmark } from "lucide-react";
@@ -14,6 +14,7 @@ import {
    YAxis,
 } from "recharts";
 import DateFilter from "./DateFilter";
+import { useNetworthState } from "@/lib/hooks/useNetworthState";
 const monthMap: Record<string, string> = {
    Jan: "01",
    Feb: "02",
@@ -43,8 +44,8 @@ const getYear = (date: string) => {
 
 const Chart = () => {
    const {
-      netWorthState: { netWorth },
-   } = useGlobalState();
+      netWorth: { isPending, netWorth },
+   } = useNetworthState();
    const [filterChart, setFilterChart] = useState<FiltererTypes>(null);
 
    const sortData = (array: NetWorthTypes[], filterer: FiltererTypes) => {
@@ -101,12 +102,12 @@ const Chart = () => {
 
       return summed;
    };
-   const convertToArray = Object.entries(
-      sortData(netWorth.netWorth, filterChart),
-   ).map(([date_str, balance]) => ({
-      balance,
-      date_str,
-   }));
+   const convertToArray = Object.entries(sortData(netWorth, filterChart)).map(
+      ([date_str, balance]) => ({
+         balance,
+         date_str,
+      }),
+   );
 
    const sortedData = sort(convertToArray).asc((item) => {
       if (filterChart === "Month") {
@@ -153,7 +154,7 @@ const Chart = () => {
          </div>
          <hr className="text-card border-2" />
 
-         {netWorth.isPending ? (
+         {isPending ? (
             <div className="bg-card animate-pulse  rounded-[0.5vw] h-[24.5vw]"></div>
          ) : (
             hasMounted && (

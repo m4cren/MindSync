@@ -1,14 +1,11 @@
 "use client";
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
-import React, { useEffect, useState } from "react";
+
+import { usePopupState } from "@/lib/hooks/popup/usePopupState";
+import { useEffect } from "react";
 import TransferForm from "./TransferForm";
-import { AccountNameTypes } from "@/lib/types";
 
 const RecordTransfer = () => {
-   const {
-      dispatch,
-      popupState: { popup, togglePopup, untogglePopup },
-   } = useGlobalState();
+   const { popup, togglePopup, untogglePopup, dispatch } = usePopupState();
 
    useEffect(() => {
       const toggleRecordTransfer = (e: KeyboardEvent) => {
@@ -24,7 +21,7 @@ const RecordTransfer = () => {
       return () => {
          window.removeEventListener("keydown", toggleRecordTransfer);
       };
-   }, []);
+   }, [dispatch, togglePopup, untogglePopup]);
 
    if (popup.recordTransfer) {
       return (

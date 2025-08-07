@@ -2,7 +2,7 @@
 import setCookie from "@/actions/setCookie";
 import verifyPin from "@/actions/verifyPin";
 
-import { Landmark } from "lucide-react";
+import { Landmark, Lock } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -58,19 +58,11 @@ const Security = () => {
 
    return (
       <div className="fixed bg-black/30 z-9 backdrop-blur-[1.6vw] top-0 left-0 bottom-0 right-0 flex flex-col  items-center justify-around">
-         <Image
-            width={200}
-            height={200}
-            alt="archlinux"
-            src={"/images/archlinux.png"}
-            className="menuToggleAnimation w-[16vw] h-[16vw]"
-         />
+         <div className="flex flex-col items-center justify-center gap-[0.4vw]">
+            <Lock size={200} />
+            <p className="text-[2vw] font-semibold">Cash Flow</p>
+         </div>
          <ul className="flex flex-col items-center gap-[2vw]">
-            <div className="flex flex-col items-center justify-center gap-[0.2vw]">
-               <Landmark size={40} />
-               <p>Cash Flow</p>
-            </div>
-
             {!isPending ? (
                <input
                   type="password"

@@ -1,29 +1,18 @@
 "use client";
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
-import {
-   Banknote,
-   BanknoteArrowDown,
-   Calendar,
-   Coins,
-   Funnel,
-   LucideIcon,
-   Scroll,
-} from "lucide-react";
-import TableSkeleton from "../../account/_component/TableSkeleton";
-import { sort } from "fast-sort";
-import Table from "./Table";
-import { useSearchParams } from "next/navigation";
+
 import Pagination from "@/app/component/Pagination";
-import { PAGE_SIZE } from "@/lib/constant";
+import { useIncomeState } from "@/lib/hooks/income/useIncomeState";
 import { usePagination } from "@/lib/hooks/usePagination";
 import { IncomeTypes } from "@/lib/types";
+import { Funnel, Scroll } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import TableSkeleton from "../../account/_component/TableSkeleton";
+import Table from "./Table";
 
 const IncomeHistory = () => {
    const {
-      incomeState: {
-         income: { isPending, income },
-      },
-   } = useGlobalState();
+      income: { income, isPending },
+   } = useIncomeState();
    const searchParams = useSearchParams();
    const paramsName = "income_history_page";
    const currentPage = Number(searchParams.get(paramsName));

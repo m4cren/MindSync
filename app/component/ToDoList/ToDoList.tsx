@@ -1,6 +1,5 @@
 "use client";
 
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
 import { useEffect } from "react";
 import AddTask from "./AddTask";
 import Head from "./Head";
@@ -8,19 +7,19 @@ import Task from "./Task";
 import TaskSkeleton from "./TaskSkeleton";
 import { sort } from "fast-sort";
 import { useSearchParams } from "next/navigation";
+import { usePopupState } from "@/lib/hooks/popup/usePopupState";
+import { useTasksState } from "@/lib/hooks/tasks/useTasksState";
 
 const ToDoList = () => {
    const searchParams = useSearchParams();
    const filter = searchParams.get("filter_tasks");
+   const { popup, togglePopup, untogglePopup } = usePopupState();
    const {
       dispatch,
-      popupState: { popup, togglePopup, untogglePopup },
-      taskState: {
-         tasks: { tasks, isLoading },
-      },
-   } = useGlobalState();
+      tasks: { tasks, isLoading },
+   } = useTasksState();
 
-   const sortedTasks = sort(tasks).desc((t) => t.date);
+   const sortedTasks = sort(tasks).asc((t) => t.date);
    const filteredTasks = !filter
       ? sortedTasks
       : sortedTasks.filter(({ category }) => category === filter);
@@ -40,7 +39,7 @@ const ToDoList = () => {
       return () => {
          window.removeEventListener("keydown", handleKeyDown);
       };
-   }, []);
+   }, [dispatch, togglePopup, untogglePopup]);
 
    return (
       <>

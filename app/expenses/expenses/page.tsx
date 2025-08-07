@@ -1,7 +1,7 @@
-import React from "react";
 import Header from "../_component/Header";
 
 import Dashboard from "../_component/Dashboard";
+import Chart from "./_component/Chart";
 import ExpenseHistory from "./_component/ExpenseHistory";
 
 const page = () => {
@@ -17,7 +17,10 @@ const page = () => {
                <Dashboard />
             </div>
 
-            <ExpenseHistory />
+            <div className="flex flex-col gap-[2vw]">
+               <ExpenseHistory />
+               <Chart />
+            </div>
          </div>
       </>
    );

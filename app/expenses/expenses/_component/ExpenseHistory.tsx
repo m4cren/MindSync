@@ -1,30 +1,18 @@
 "use client";
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
-import {
-   Calendar,
-   Coins,
-   Funnel,
-   List,
-   LucideIcon,
-   Scroll,
-   ShoppingBasket,
-   Vault,
-} from "lucide-react";
-import React from "react";
-import TableSkeleton from "../../account/_component/TableSkeleton";
-import { sort } from "fast-sort";
+
+import Pagination from "@/app/component/Pagination";
+import { useExpenseState } from "@/lib/hooks/expense/useExpenseState";
 import { usePagination } from "@/lib/hooks/usePagination";
 import { ExpenseTypes } from "@/lib/types";
+import { Scroll } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import TableSkeleton from "../../account/_component/TableSkeleton";
 import Table from "./Table";
-import Pagination from "@/app/component/Pagination";
 
 const ExpenseHistory = () => {
    const {
-      expenseState: {
-         expense: { isPending, expense },
-      },
-   } = useGlobalState();
+      expense: { expense, isPending },
+   } = useExpenseState();
    const pageName = "expense_history_page";
    const searchParams = useSearchParams();
    const currentPage = Number(searchParams.get(pageName));
@@ -39,9 +27,6 @@ const ExpenseHistory = () => {
                   Expense History
                </h1>
             </div>
-            <button className="cursor-pointer">
-               <Funnel />
-            </button>
          </div>
          <hr className="text-card border-2" />
 

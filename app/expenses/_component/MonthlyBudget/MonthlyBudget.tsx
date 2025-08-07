@@ -1,19 +1,19 @@
 "use client";
 
+import { BudgetTypes } from "@/lib/types";
 import { HandCoins } from "lucide-react";
 import BudgetCard from "./BudgetCard";
-import { BudgetTypes } from "@/lib/types";
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
+
+import { useExpenseState } from "@/lib/hooks/expense/useExpenseState";
+import { memo } from "react";
 import CardSkeleton from "../CardSkeleton";
 import { getMonthYear } from "../NetWorth/Chart";
 
 const MonthlyBudget = () => {
    const {
-      expenseState: {
-         expense: { expense, isPending },
-      },
-   } = useGlobalState();
-
+      expense: { expense, isPending },
+   } = useExpenseState();
+   console.log("monthly budget rendered");
    const presentMonth = new Date().toLocaleDateString("en-US", {
       month: "short",
       day: "2-digit",
@@ -75,4 +75,4 @@ const MonthlyBudget = () => {
    );
 };
 
-export default MonthlyBudget;
+export default memo(MonthlyBudget);

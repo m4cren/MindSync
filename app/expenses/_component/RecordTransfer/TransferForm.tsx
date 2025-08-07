@@ -1,40 +1,47 @@
-import { Calendar, Coins, Plus, Send, UserCircle, Wallet } from "lucide-react";
-import React, { ChangeEvent, useEffect, useState } from "react";
-import { accountOptions } from "../RecordIncome/IncomeForm";
 import { AccountNameTypes, TransferTypes } from "@/lib/types";
+import { Calendar, Plus, Send, Wallet } from "lucide-react";
+import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
+import { accountOptions } from "../RecordIncome/IncomeForm";
+
+import { useOnlyAccount } from "@/lib/hooks/accounts/useOnlyAccount";
+import { usePopupState } from "@/lib/hooks/popup/usePopupState";
+import { useRecordTransfer } from "@/lib/hooks/transfer/useRecordTransfer";
 
 const TransferForm = () => {
+   const { untogglePopup } = usePopupState();
    const {
       dispatch,
-      popupState: { untogglePopup },
-      transferState: { recordTransfer },
-      accountState: {
-         accounts: { accounts },
-      },
-   } = useGlobalState();
+      accounts: { accounts },
+   } = useOnlyAccount();
+   const { recordTransfer } = useRecordTransfer();
+
    const { register, handleSubmit } = useForm<TransferTypes>();
 
    const onSubmit = (data: TransferTypes) => {
-      if (data && data.date_str) {
-         const dateObj = new Date(data.date_str);
+      const dateObj = new Date(data.date_str);
+      const dateToday = new Date();
 
-         const formattedDate = dateObj.toLocaleDateString("en-US", {
-            month: "short",
-            day: "2-digit",
-            year: "numeric",
-         });
-         dispatch(
-            recordTransfer({
-               ...data,
-               date_str: formattedDate,
-               created_at: dateObj,
-            }),
-         );
+      const dateTodayFormatted = dateToday.toLocaleDateString("en-US", {
+         month: "short",
+         day: "2-digit",
+         year: "numeric",
+      });
+      const formFormattedDate = dateObj.toLocaleDateString("en-US", {
+         month: "short",
+         day: "2-digit",
+         year: "numeric",
+      });
 
-         dispatch(untogglePopup("recordTransfer"));
-      }
+      dispatch(
+         recordTransfer({
+            ...data,
+            date_str: data.created_at ? formFormattedDate : dateTodayFormatted,
+            created_at: data.created_at ? dateObj : dateToday,
+         }),
+      );
+
+      dispatch(untogglePopup("recordTransfer"));
    };
    const [amountInput, setAmountInput] = useState<number>(0);
    const handleChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,9 +60,6 @@ const TransferForm = () => {
          [e.target.name]: e.target.value,
       });
    };
-   useEffect(() => {
-      console.log(selectedAccount);
-   }, [selectedAccount]);
 
    const fromAccBalance = accounts.find(
       ({ name }) => name === selectedAccount.from_acc,
@@ -179,7 +183,6 @@ const TransferForm = () => {
                {...register("date_str")}
                type="date"
                id="date"
-               required
                className="outline-none border-1 border-[#d4d4d430] rounded-[0.35vw] px-[1vw] text-[0.9vw] py-[0.25vw]"
             />
          </div>

@@ -1,4 +1,5 @@
 {
+   "type": "module",
    "name": "mind-sync",
    "version": "0.1.0",
    "private": true,
@@ -34,6 +35,7 @@
       "eslint-config-next": "15.4.4",
       "prettier": "^3.6.2",
       "tailwindcss": "^4",
-      "typescript": "^5"
+      "ts-node": "^10.9.2",
+      "typescript": "^5.9.2"
    }
 }

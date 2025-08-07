@@ -1,13 +1,11 @@
 "use client";
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
-import ExpenseForm from "./ExpenseForm";
+
+import { usePopupState } from "@/lib/hooks/popup/usePopupState";
 import { useEffect } from "react";
+import ExpenseForm from "./ExpenseForm";
 
 const RecordExpense = () => {
-   const {
-      dispatch,
-      popupState: { popup, togglePopup, untogglePopup },
-   } = useGlobalState();
+   const { popup, togglePopup, untogglePopup, dispatch } = usePopupState();
 
    useEffect(() => {
       const toggleRecordExpense = (e: KeyboardEvent) => {
@@ -23,7 +21,7 @@ const RecordExpense = () => {
       return () => {
          window.removeEventListener("keydown", toggleRecordExpense);
       };
-   }, []);
+   }, [dispatch, togglePopup, untogglePopup]);
 
    if (popup.recordExpense) {
       return (

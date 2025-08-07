@@ -1,5 +1,6 @@
 "use client";
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
+
+import { useTasksState } from "@/lib/hooks/tasks/useTasksState";
 import classNames from "classnames";
 import {
    AlertCircle,
@@ -34,10 +35,7 @@ export const taskCategoryBg: Record<string, { bg: string; icon: LucideIcon }> =
    };
 const Task = ({ category, date_str, label, id, date }: Props) => {
    const [isDone, setIsDone] = useState<boolean>(false);
-   const {
-      dispatch,
-      taskState: { finishTask },
-   } = useGlobalState();
+   const { finishTask, dispatch } = useTasksState();
    const todayStr = new Date().toISOString().slice(0, 10);
    const taskDateStr = new Date(date!).toISOString().slice(0, 10);
 

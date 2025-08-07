@@ -1,22 +1,14 @@
 "use client";
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
-import {
-   AccountNameTypes,
-   BudgetTypes,
-   ExpenseTypes,
-   IncomeTypes,
-} from "@/lib/types";
-import { Calendar, Coins, Logs, Plus, UserCircle } from "lucide-react";
+
+import { useAccountState } from "@/lib/hooks/accounts/useAccountState";
+import { useOnlyAccount } from "@/lib/hooks/accounts/useOnlyAccount";
+import { useIncomeState } from "@/lib/hooks/income/useIncomeState";
+import { useRecordIncome } from "@/lib/hooks/income/useRecordIncome";
+import { usePopupState } from "@/lib/hooks/popup/usePopupState";
+import { AccountNameTypes, IncomeTypes } from "@/lib/types";
+import { Calendar, Coins, Plus, UserCircle } from "lucide-react";
 import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
-const budgetCategories: BudgetTypes[] = [
-   "Food",
-   "Gas/Transportation",
-   "Gym",
-   "Leisures",
-   "Utilities & Subscription",
-   "Miscellaneous",
-];
 
 export const accountOptions: AccountNameTypes[] = [
    "Wallet",
@@ -27,34 +19,38 @@ export const accountOptions: AccountNameTypes[] = [
 ];
 const IncomeForm = () => {
    const { register, handleSubmit } = useForm<IncomeTypes>();
+   const { untogglePopup } = usePopupState();
    const {
+      accounts: { accounts },
       dispatch,
-      popupState: { untogglePopup },
-      incomeState: { recordIncome },
-      accountState: {
-         accounts: { accounts },
-      },
-   } = useGlobalState();
+   } = useOnlyAccount();
+   const { recordIncome } = useRecordIncome();
 
    const onSubmit = (data: IncomeTypes) => {
-      if (data && data.date_str) {
-         const dateObj = new Date(data.date_str);
+      const dateObj = new Date(data.date_str);
 
-         const formattedDate = dateObj.toLocaleDateString("en-US", {
-            month: "short",
-            day: "2-digit",
-            year: "numeric",
-         });
-         dispatch(
-            recordIncome({
-               ...data,
-               date_str: formattedDate,
-               created_at: dateObj,
-            }),
-         );
+      const dateToday = new Date();
 
-         dispatch(untogglePopup("recordIncome"));
-      }
+      const dateTodayFormatted = dateToday.toLocaleDateString("en-US", {
+         month: "short",
+         day: "2-digit",
+         year: "numeric",
+      });
+      const formFormattedDate = dateObj.toLocaleDateString("en-US", {
+         month: "short",
+         day: "2-digit",
+         year: "numeric",
+      });
+
+      dispatch(
+         recordIncome({
+            ...data,
+            date_str: data.created_at ? formFormattedDate : dateTodayFormatted,
+            created_at: data.created_at ? dateObj : dateToday,
+         }),
+      );
+
+      dispatch(untogglePopup("recordIncome"));
    };
    const [amountInput, setAmountInput] = useState<number>(0);
    const handleChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {

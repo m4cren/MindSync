@@ -5,6 +5,7 @@ import "./styles/animations.css";
 import Menu from "./component/Menu/Menu";
 import ReduxProvider from "@/store/ReduxProvider";
 import DeleteCookieOnLoad from "./component/DeleteCookieOnLoad";
+import InitialAppLoader from "./component/InitialAppLoader";
 
 const inter = Inter({
    variable: "--font-inter",
@@ -29,8 +30,10 @@ export default function RootLayout({
             <body
                className={`${inter.variable}  antialiased overflow-x-hidden `}
             >
-               <Menu />
-               {children}
+               <InitialAppLoader>
+                  <Menu />
+                  {children}
+               </InitialAppLoader>
             </body>
          </ReduxProvider>
       </html>

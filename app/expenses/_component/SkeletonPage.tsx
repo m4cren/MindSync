@@ -1,6 +1,6 @@
 import React from "react";
 
-const loading = () => {
+const SkeletonPage = () => {
    return (
       <>
          <div className="flex flex-col gap-[1vw] -mt-[3vw]">
@@ -28,4 +28,4 @@ const loading = () => {
    );
 };
 
-export default loading;
+export default SkeletonPage;

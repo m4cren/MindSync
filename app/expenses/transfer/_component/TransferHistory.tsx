@@ -1,33 +1,18 @@
 "use client";
-import {
-   Calendar,
-   ChevronLeft,
-   ChevronRight,
-   Coins,
-   Funnel,
-   LucideIcon,
-   Mail,
-   Scroll,
-   Send,
-} from "lucide-react";
-import React from "react";
+import { Funnel, Scroll } from "lucide-react";
 import TableSkeleton from "../../account/_component/TableSkeleton";
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
 
-import { sort } from "fast-sort";
-import Table from "./Table";
 import Pagination from "@/app/component/Pagination";
-import { useSearchParams } from "next/navigation";
-import { PAGE_SIZE } from "@/lib/constant";
 import { usePagination } from "@/lib/hooks/usePagination";
+import { useTransferState } from "@/lib/hooks/transfer/useTransferState";
 import { TransferTypes } from "@/lib/types";
+import { useSearchParams } from "next/navigation";
+import Table from "./Table";
 
 const TransferHistory = () => {
    const {
-      transferState: {
-         transfer: { transfer, isPending },
-      },
-   } = useGlobalState();
+      transfer: { isPending, transfer },
+   } = useTransferState();
    const searchParams = useSearchParams();
    const paramsName = "transfer_history_page";
    const currentPage = Number(searchParams.get(paramsName));

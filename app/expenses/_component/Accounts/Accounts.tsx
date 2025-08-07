@@ -1,5 +1,5 @@
 "use client";
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
+
 import {
    CreditCard,
    LucideIcon,
@@ -12,6 +12,8 @@ import React, { useEffect, useRef } from "react";
 import SkeletonCard from "./SkeletonCard";
 import { AccountNameTypes, AccountTypes, NetWorthArgs } from "@/lib/types";
 import { sort } from "fast-sort";
+import { useAccountState } from "@/lib/hooks/accounts/useAccountState";
+import { useNetworthState } from "@/lib/hooks/useNetworthState";
 
 export const accountIconMap: Record<AccountNameTypes, LucideIcon> = {
    Wallet: Wallet,
@@ -23,14 +25,13 @@ export const accountIconMap: Record<AccountNameTypes, LucideIcon> = {
 
 const Accounts = () => {
    const {
+      accounts: { accounts, isPending },
+   } = useAccountState();
+   const {
+      netWorth: { netWorth },
+      updateNetWorth,
       dispatch,
-
-      accountState: { accounts },
-      netWorthState: {
-         netWorth: { netWorth },
-         updateNetWorth,
-      },
-   } = useGlobalState();
+   } = useNetworthState();
 
    const hasUpdated = useRef(false);
    const dateToday = new Date();
@@ -42,7 +43,7 @@ const Accounts = () => {
 
    useEffect(() => {
       if (hasUpdated.current) return;
-      const totalNetWorthThisDay: number = accounts.accounts.reduce(
+      const totalNetWorthThisDay: number = accounts.reduce(
          (sum: number, acc: AccountTypes) => {
             return sum + acc.balance;
          },
@@ -72,11 +73,11 @@ const Accounts = () => {
             <h1 className="text-[0.9vw] font-medium opacity-50">Accounts</h1>
          </div>
          <hr className="text-card border-2" />
-         {accounts.isPending ? (
+         {isPending ? (
             <SkeletonCard />
          ) : (
             <ul className="flex flex-col gap-[0.6vw]">
-               {accounts.accounts.map(({ balance, name, id }) => {
+               {accounts.map(({ balance, name, id }) => {
                   const IconComponent = accountIconMap[name];
                   return (
                      <li

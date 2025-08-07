@@ -1,13 +1,12 @@
 "use client";
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
+
 import { Users } from "lucide-react";
 import { accountIconMap } from "../../_component/Accounts/Accounts";
 import CardSkeleton from "../../_component/CardSkeleton";
+import { useAccountState } from "@/lib/hooks/accounts/useAccountState";
 
 const Accounts = () => {
-   const {
-      accountState: { accounts },
-   } = useGlobalState();
+   const { accounts } = useAccountState();
 
    return (
       <div className="flex flex-col gap-[1vw] w-full h-fit border-2 border-card rounded-[0.5vw] p-[1.25vw]">

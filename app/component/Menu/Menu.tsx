@@ -1,6 +1,6 @@
 "use client";
 
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
+import { usePopupState } from "@/lib/hooks/popup/usePopupState";
 import { MenuStateTypes } from "@/lib/types";
 
 import classNames from "classnames";
@@ -52,10 +52,7 @@ const iconMap: Record<number, LucideIcon> = {
 };
 
 const Menu = () => {
-   const {
-      dispatch,
-      popupState: { popup, togglePopup, untogglePopup },
-   } = useGlobalState();
+   const { dispatch, popup, togglePopup, untogglePopup } = usePopupState();
    const [selectedMenu, setSelectedMenu] = useState<number>(0);
 
    const router = useRouter();
@@ -75,7 +72,7 @@ const Menu = () => {
       return () => {
          window.removeEventListener("keydown", handleKeyDown);
       };
-   }, []);
+   }, [dispatch, untogglePopup, togglePopup]);
    useEffect(() => {
       if (popup.menu) {
          const changeMenu = (e: KeyboardEvent) => {

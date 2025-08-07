@@ -1,14 +1,11 @@
 "use client";
-import { useGlobalState } from "@/lib/hooks/useGlobalState";
 
+import { usePopupState } from "@/lib/hooks/popup/usePopupState";
 import { useEffect } from "react";
 import IncomeForm from "./IncomeForm";
 
 const RecordIncome = () => {
-   const {
-      dispatch,
-      popupState: { popup, togglePopup, untogglePopup },
-   } = useGlobalState();
+   const { popup, togglePopup, untogglePopup, dispatch } = usePopupState();
 
    useEffect(() => {
       const toggleRecordIncome = (e: KeyboardEvent) => {
@@ -24,7 +21,7 @@ const RecordIncome = () => {
       return () => {
          window.removeEventListener("keydown", toggleRecordIncome);
       };
-   }, []);
+   }, [dispatch, untogglePopup, togglePopup]);
 
    if (popup.recordIncome) {
       return (
