@@ -28,28 +28,30 @@ const Dashboard = () => {
       >
          <p className="text-[0.9vw] font-medium opacity-50">Dashboard</p>
          <hr className="text-card border-2" />
-         <ul className="flex flex-col px-[1vw] gap-[0.8vw]">
+         <ul className="flex flex-col gap-[0.8vw]">
             {Object.keys(dashboardIconMap).map((key) => {
                const IconComponent = dashboardIconMap[key];
                return (
-                  <li key={key}>
+                  <li
+                     key={key}
+                     className={classNames(
+                        "px-[1vw] py-[0.15vw] rounded-[0.3vw] text-[0.9vw] hover:bg-card",
+                        {
+                           "bg-card":
+                              pathname === `/expenses/${key.toLowerCase()}` ||
+                              (pathname === "/expenses" && key === "Home"),
+                        },
+                     )}
+                  >
                      <Link
-                        className={classNames(
-                           "flex items-center gap-[0.5vw] text-[1vw] hover:bg-card",
-                           {
-                              "bg-card":
-                                 pathname ===
-                                    `/expenses/${key.toLowerCase()}` ||
-                                 (pathname === "/expenses" && key === "Home"),
-                           },
-                        )}
+                        className="flex items-center gap-[0.5vw]"
                         href={
                            key === "Home"
                               ? "/expenses"
                               : `/expenses/${key.toLowerCase()}`
                         }
                      >
-                        <IconComponent size={20} />
+                        <IconComponent size={18} />
                         {key}
                      </Link>
                   </li>
