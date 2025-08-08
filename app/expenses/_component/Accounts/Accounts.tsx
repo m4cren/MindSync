@@ -1,26 +1,25 @@
 "use client";
 
+import { useAccountState } from "@/lib/hooks/accounts/useAccountState";
+import { useNetworthState } from "@/lib/hooks/useNetworthState";
+import { AccountIconTypes, AccountTypes, NetWorthArgs } from "@/lib/types";
+import { sort } from "fast-sort";
 import {
    CreditCard,
+   Landmark,
    LucideIcon,
    PiggyBank,
-   Siren,
    Users,
    Wallet,
 } from "lucide-react";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import SkeletonCard from "./SkeletonCard";
-import { AccountNameTypes, AccountTypes, NetWorthArgs } from "@/lib/types";
-import { sort } from "fast-sort";
-import { useAccountState } from "@/lib/hooks/accounts/useAccountState";
-import { useNetworthState } from "@/lib/hooks/useNetworthState";
 
-export const accountIconMap: Record<AccountNameTypes, LucideIcon> = {
-   Wallet: Wallet,
-   GCash: CreditCard,
-   GoTyme: CreditCard,
-   "Emergency Funds": Siren,
-   "Investment Funds": PiggyBank,
+export const accountIconMapp: Record<AccountIconTypes, LucideIcon> = {
+   wallet: Wallet,
+   card: CreditCard,
+   bank: Landmark,
+   savings: PiggyBank,
 };
 
 const Accounts = () => {
@@ -55,7 +54,6 @@ const Accounts = () => {
 
       if (!sortedNetWorth[0]) return;
       if (formattedDate === sortedNetWorth[0].date_str) {
-         console.log("No record added");
       } else {
          const args: NetWorthArgs = {
             balance: totalNetWorthThisDay,
@@ -77,8 +75,10 @@ const Accounts = () => {
             <SkeletonCard />
          ) : (
             <ul className="flex flex-col gap-[0.6vw]">
-               {accounts.map(({ balance, name, id }) => {
-                  const IconComponent = accountIconMap[name];
+               {accounts.map(({ balance, name, id, icon }) => {
+                  const IconComponent =
+                     accountIconMapp[icon as AccountIconTypes];
+
                   return (
                      <li
                         key={id}

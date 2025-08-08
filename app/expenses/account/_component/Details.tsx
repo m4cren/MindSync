@@ -9,7 +9,7 @@ import {
    Scroll,
    Text,
 } from "lucide-react";
-import { accountIconMap } from "../../_component/Accounts/Accounts";
+import { accountIconMapp } from "../../_component/Accounts/Accounts";
 import TableSkeleton from "./TableSkeleton";
 
 const tableHeader: { label: string; icon: LucideIcon }[] = [
@@ -51,8 +51,15 @@ const Details = () => {
                </thead>
                <tbody>
                   {accounts.accounts.map(
-                     ({ balance, name, total_expense, total_income, id }) => {
-                        const IconComponent = accountIconMap[name];
+                     ({
+                        balance,
+                        name,
+                        total_expense,
+                        total_income,
+                        id,
+                        icon,
+                     }) => {
+                        const IconComponent = accountIconMapp[icon];
                         return (
                            <tr key={id} className="text-[0.9vw] ">
                               <td className="border-t-2 border-b-2 border-card py-[0.5vw] px-[1vw]">

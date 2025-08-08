@@ -4,6 +4,7 @@ import Header from "../_component/Header";
 import Dashboard from "../_component/Dashboard";
 import Accounts from "./_component/Accounts";
 import Details from "./_component/Details";
+import Chart from "./_component/Chart";
 
 const page = () => {
    return (
@@ -16,6 +17,7 @@ const page = () => {
          <div className="grid grid-cols-[22vw_1fr]">
             <div className="flex flex-col gap-[2vw]">
                <Dashboard />
+               <Chart />
             </div>
 
             <div className="flex flex-col gap-[2vw]">

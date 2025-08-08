@@ -31,9 +31,6 @@ const TransferHistory = () => {
                   Transfer History
                </h1>
             </div>
-            <button className="cursor-pointer">
-               <Funnel />
-            </button>
          </div>
          <hr className="text-card border-2" />
 

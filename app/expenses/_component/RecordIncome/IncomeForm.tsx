@@ -1,22 +1,13 @@
 "use client";
 
-import { useAccountState } from "@/lib/hooks/accounts/useAccountState";
 import { useOnlyAccount } from "@/lib/hooks/accounts/useOnlyAccount";
-import { useIncomeState } from "@/lib/hooks/income/useIncomeState";
 import { useRecordIncome } from "@/lib/hooks/income/useRecordIncome";
 import { usePopupState } from "@/lib/hooks/popup/usePopupState";
-import { AccountNameTypes, IncomeTypes } from "@/lib/types";
+import { IncomeTypes } from "@/lib/types";
 import { Calendar, Coins, Plus, UserCircle } from "lucide-react";
 import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 
-export const accountOptions: AccountNameTypes[] = [
-   "Wallet",
-   "GCash",
-   "GoTyme",
-   "Emergency Funds",
-   "Investment Funds",
-];
 const IncomeForm = () => {
    const { register, handleSubmit } = useForm<IncomeTypes>();
    const { untogglePopup } = usePopupState();
@@ -47,6 +38,9 @@ const IncomeForm = () => {
             ...data,
             date_str: data.created_at ? formFormattedDate : dateTodayFormatted,
             created_at: data.created_at ? dateObj : dateToday,
+            acc_icon:
+               accounts.find(({ name }) => name === selectedAccount)?.icon ||
+               "card",
          }),
       );
 
@@ -57,11 +51,10 @@ const IncomeForm = () => {
       setAmountInput(Number(e.target.value));
    };
 
-   const [selectedAccount, setSelectedAccount] =
-      useState<AccountNameTypes>("Wallet");
+   const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
 
    const handleChangeAccount = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const value = e.target.value as AccountNameTypes;
+      const value = e.target.value;
       setSelectedAccount(value);
    };
    const accBalance = accounts.find(
@@ -94,9 +87,9 @@ const IncomeForm = () => {
                id="account"
                className="border-1 w-[10vw] border-[#d4d4d430] rounded-[0.35vw] px-[1vw] text-[0.9vw] py-[0.25vw]"
             >
-               {accountOptions.map((item) => (
-                  <option key={item} value={item}>
-                     {item}
+               {accounts.map(({ name }) => (
+                  <option key={name} value={name}>
+                     {name}
                   </option>
                ))}
             </select>
@@ -139,7 +132,9 @@ const IncomeForm = () => {
                New Balance:
             </label>
             <p className="text-[0.85vw] opacity-50">
-               ₱ {accBalance! + amountInput}
+               {selectedAccount
+                  ? `₱ ${accBalance! + amountInput}`
+                  : "Select account"}
             </p>
          </div>
          <div className="flex items-center justify-between w-[22vw]">

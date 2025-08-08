@@ -3,6 +3,7 @@ import Header from "../_component/Header";
 import Dashboard from "../_component/Dashboard";
 import Chart from "./_component/Chart";
 import ExpenseHistory from "./_component/ExpenseHistory";
+import ExpenseCategory from "./_component/ExpenseCategory";
 
 const page = () => {
    return (
@@ -15,6 +16,7 @@ const page = () => {
          <div className="grid grid-cols-[22vw_1fr]">
             <div className="flex flex-col gap-[2vw]">
                <Dashboard />
+               <ExpenseCategory />
             </div>
 
             <div className="flex flex-col gap-[2vw]">

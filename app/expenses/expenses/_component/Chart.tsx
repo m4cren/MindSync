@@ -1,4 +1,5 @@
 "use client";
+import { CustomTooltip } from "@/app/component/CustomToolTip";
 import { useExpenseState } from "@/lib/hooks/expense/useExpenseState";
 
 import { LayoutList, ShoppingBag, UserIcon } from "lucide-react";
@@ -7,8 +8,8 @@ import {
    Bar,
    BarChart,
    CartesianGrid,
+   ResponsiveContainer,
    Tooltip,
-   TooltipContentProps,
    XAxis,
    YAxis,
 } from "recharts";
@@ -47,7 +48,7 @@ const Chart = () => {
    }, []);
 
    return (
-      <div className="relative flex flex-col gap-[1vw]  h-fit border-2 border-card rounded-[0.5vw] p-[1.25vw]">
+      <div className="relative flex flex-col gap-[1vw]  w-full h-[33vw] border-2 border-card rounded-[0.5vw] p-[1.25vw]">
          <div className="flex items-center justify-between">
             <div className="flex items-center gap-[0.6vw]">
                <ShoppingBag size={18} />
@@ -76,12 +77,10 @@ const Chart = () => {
 
          {isPending ? (
             <div className="bg-card animate-pulse  rounded-[0.5vw] h-[24.5vw]"></div>
-         ) : (
-            hasMounted && (
+         ) : hasMounted && sortedBy.length !== 0 ? (
+            <ResponsiveContainer width={"100%"} height={"100%"}>
                <BarChart
-                  // width={1080} for Desktop application
                   width={800}
-                  // height={540}
                   height={400}
                   data={sortedBy}
                   layout="horizontal"
@@ -116,28 +115,14 @@ const Chart = () => {
                      barSize={75}
                   />
                </BarChart>
-            )
+            </ResponsiveContainer>
+         ) : (
+            <p className="text-[1vw] font-medium opacity-50 text-center py-[1vw]">
+               You have no expense history
+            </p>
          )}
       </div>
    );
 };
 
 export default Chart;
-
-const CustomTooltip = ({
-   active,
-   label,
-   payload,
-}: TooltipContentProps<number, string>) => {
-   if (!active || !payload || payload.length === 0) return null;
-
-   const data = payload[0] as { value: number };
-   return (
-      <div className="flex flex-col gap-[0.2vw] bg-card p-[0.5vw] rounded-[0.5vw]">
-         <p className="text-[0.75vw] text-[#d4d4d440]">{label}</p>
-         <p className="text-[0.9vw] text-[#d4d4d4] font-normal">
-            ₱{data.value}
-         </p>
-      </div>
-   );
-};

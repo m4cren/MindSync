@@ -1,4 +1,10 @@
-import { ExpenseTypes } from "@/lib/types";
+import {
+   AccountIconTypes,
+   expenseCategoryIconMap,
+   ExpenseCategoryIconTypes,
+   ExpenseCategoryTypes,
+   ExpenseTypes,
+} from "@/lib/types";
 import {
    Calendar,
    Coins,
@@ -7,8 +13,8 @@ import {
    ShoppingBasket,
    Vault,
 } from "lucide-react";
-import { accountIconMap } from "../../_component/Accounts/Accounts";
-import { budgetIconMap } from "../../_component/MonthlyBudget/BudgetCard";
+
+import { accountIconMapp } from "../../_component/Accounts/Accounts";
 const expenseHistoryHeader: { label: string; icon: LucideIcon }[] = [
    { label: "Expense on", icon: ShoppingBasket },
    { label: "Amount", icon: Coins },
@@ -35,35 +41,49 @@ const Table = ({ items }: { items: ExpenseTypes[] }) => {
             </tr>
          </thead>
          <tbody>
-            {items.map(({ amount, date_str, account, category, label, id }) => {
-               const AccountIcon = accountIconMap[account];
-               const CategoryIcon = budgetIconMap[category];
-               return (
-                  <tr key={id} className="text-[0.9vw] ">
-                     <td className="border-t-2 border-b-2 border-card py-[0.5vw] px-[1vw]">
-                        {label}
-                     </td>
-                     <td className="border-2 py-[0.5vw] px-[1vw] border-card">
-                        ₱{amount}
-                     </td>
-                     <td className="border-2 py-[0.5vw] px-[1vw] border-card">
-                        <span className="flex items-center gap-[0.4vw]">
-                           <CategoryIcon size={16} />
-                           {category}
-                        </span>
-                     </td>
-                     <td className="border-2 py-[0.5vw] px-[1vw] border-card">
-                        <span className="flex items-center gap-[0.4vw]">
-                           <AccountIcon size={16} />
-                           {account}
-                        </span>
-                     </td>
-                     <td className="border-t-2  border-b-2 border-card py-[0.5vw] px-[1vw]">
-                        {date_str}
-                     </td>
-                  </tr>
-               );
-            })}
+            {items.map(
+               ({
+                  amount,
+                  date_str,
+                  account,
+                  category,
+                  label,
+                  id,
+                  acc_icon,
+               }) => {
+                  const AccountIcon =
+                     accountIconMapp[acc_icon as AccountIconTypes];
+                  const CategoryIcon =
+                     expenseCategoryIconMap[
+                        category as ExpenseCategoryIconTypes
+                     ];
+                  return (
+                     <tr key={id} className="text-[0.9vw] ">
+                        <td className="border-t-2 border-b-2 border-card py-[0.5vw] px-[1vw]">
+                           {label}
+                        </td>
+                        <td className="border-2 py-[0.5vw] px-[1vw] border-card">
+                           ₱{amount}
+                        </td>
+                        <td className="border-2 py-[0.5vw] px-[1vw] border-card">
+                           <span className="flex items-center gap-[0.4vw]">
+                              <CategoryIcon size={16} />
+                              {category}
+                           </span>
+                        </td>
+                        <td className="border-2 py-[0.5vw] px-[1vw] border-card">
+                           <span className="flex items-center gap-[0.4vw]">
+                              <AccountIcon size={16} />
+                              {account}
+                           </span>
+                        </td>
+                        <td className="border-t-2  border-b-2 border-card py-[0.5vw] px-[1vw]">
+                           {date_str}
+                        </td>
+                     </tr>
+                  );
+               },
+            )}
          </tbody>
       </table>
    );

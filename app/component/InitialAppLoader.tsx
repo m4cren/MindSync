@@ -5,16 +5,13 @@ const InitialAppLoader = ({ children }: PropsWithChildren) => {
    const [isLoading, setIsLoading] = useState<boolean>(true);
 
    useEffect(() => {
-      const timer = setTimeout(() => {
-         setIsLoading(false);
-      }, 3000);
-      return () => clearTimeout(timer);
+      setIsLoading(false);
    }, []);
 
    if (isLoading) {
       return (
-         <div className="w-full h-screen flex items-center justify-center">
-            MindSync Is Loading
+         <div className="flex items-center justify-center w-full h-screen">
+            <span className="loading loading-dots loading-xl" />
          </div>
       );
    } else {

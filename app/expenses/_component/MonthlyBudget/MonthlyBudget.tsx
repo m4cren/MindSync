@@ -1,6 +1,5 @@
 "use client";
 
-import { BudgetTypes } from "@/lib/types";
 import { HandCoins } from "lucide-react";
 import BudgetCard from "./BudgetCard";
 
@@ -8,12 +7,17 @@ import { useExpenseState } from "@/lib/hooks/expense/useExpenseState";
 import { memo } from "react";
 import CardSkeleton from "../CardSkeleton";
 import { getMonthYear } from "../NetWorth/Chart";
+import { useExpenseCategoryState } from "@/lib/hooks/expense/useExpenseCategoryState";
 
 const MonthlyBudget = () => {
    const {
       expense: { expense, isPending },
    } = useExpenseState();
-   console.log("monthly budget rendered");
+
+   const {
+      expenseCategory: { expenseCategory },
+   } = useExpenseCategoryState();
+
    const presentMonth = new Date().toLocaleDateString("en-US", {
       month: "short",
       day: "2-digit",
@@ -24,28 +28,54 @@ const MonthlyBudget = () => {
 
       return monthYear === getMonthYear(presentMonth);
    });
+   type CategorySummary = [totalSpent: number, allocatedAmount: number];
 
+   type BudgetAllocation = {
+      category: string;
+      categorySummary: CategorySummary;
+   };
+
+   const initialBudget: BudgetAllocation[] = expenseCategory.map(
+      ({ alloc_per_month, label }) => {
+         return {
+            category: label,
+            categorySummary: [0, Number(alloc_per_month)],
+         };
+      },
+   );
    const groupByCategory = dataThisMonth.reduce(
       (acc, curr) => {
-         if (!acc[curr.category]) {
-            acc[curr.category] = 0;
+         const checkIfExisting = expenseCategory.find(
+            ({ label }) => label === curr.category,
+         );
+
+         if (checkIfExisting && !acc[checkIfExisting?.label]) {
+            acc[checkIfExisting.label] = [
+               0,
+               Number(checkIfExisting.alloc_per_month),
+            ];
          }
 
-         acc[curr.category]! += curr.amount;
-
+         if (acc[curr.category]) {
+            acc[curr.category][0] += curr.amount;
+         }
          return acc;
       },
-      {} as Record<string, number>,
+      {} as Record<string, [number, number]>,
    );
-
-   const toArray: { category: BudgetTypes; amount: number }[] = Object.entries(
-      groupByCategory,
-   ).map(
-      ([category, amount]) =>
-         ({
+   const groupMap = new Map<string, CategorySummary>(
+      Object.entries(groupByCategory),
+   );
+   const mergedBudget: BudgetAllocation[] = initialBudget.map(
+      ({ category, categorySummary }) => {
+         const updated = groupMap.get(category);
+         return {
             category,
-            amount,
-         }) as { category: BudgetTypes; amount: number },
+            categorySummary: updated
+               ? [updated[0], categorySummary[1]] // use spent from actual data, allocation from initial
+               : categorySummary,
+         };
+      },
    );
 
    return (
@@ -60,10 +90,15 @@ const MonthlyBudget = () => {
          <hr className="text-card border-2" />
          {isPending ? (
             <CardSkeleton />
-         ) : toArray.length !== 0 ? (
+         ) : mergedBudget.length !== 0 ? (
             <ul className="grid grid-cols-3 gap-[1.2vw]">
-               {toArray.map(({ amount, category }, key) => (
-                  <BudgetCard key={key} category={category} amount={amount} />
+               {mergedBudget.map(({ category, categorySummary }, key) => (
+                  <BudgetCard
+                     key={key}
+                     category={category}
+                     amount={categorySummary[0]}
+                     allocation={categorySummary[1]}
+                  />
                ))}
             </ul>
          ) : (

@@ -1,5 +1,5 @@
 import { db } from "@/lib/firebase/client";
-import { AccountTypes, ExpenseTypes } from "@/lib/types";
+import { AccountTypes, ExpenseCategoryTypes, ExpenseTypes } from "@/lib/types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
    addDoc,
@@ -14,6 +14,28 @@ import {
 import { fetchAccounts } from "../accounts/asyncFunc";
 
 const expenseRef = collection(db, "expense");
+const expenseCategoryRef = collection(db, "expense_category");
+
+export const fetchExpenseCategory = createAsyncThunk<ExpenseCategoryTypes[]>(
+   "expenseCategory/fetchExpenseCategory",
+   async () => {
+      try {
+         const snapshot = await getDocs(expenseCategoryRef);
+         const expenseCategories: ExpenseCategoryTypes[] = snapshot.docs.map(
+            (doc) => {
+               const data = doc.data();
+
+               return { id: doc.id, ...data };
+            },
+         ) as ExpenseCategoryTypes[];
+
+         return expenseCategories;
+      } catch (error) {
+         console.log(error);
+         return [];
+      }
+   },
+);
 
 export const fetchExpense = createAsyncThunk<ExpenseTypes[]>(
    "expense/fetchExpense",

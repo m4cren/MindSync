@@ -1,6 +1,5 @@
 import { AccountStateTypes, AccountTypes } from "@/lib/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { number } from "zod";
 import { fetchAccounts } from "./asyncFunc";
 
 const initialState: AccountStateTypes = {

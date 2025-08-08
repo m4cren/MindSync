@@ -8,8 +8,9 @@ import {
    Scroll,
    Send,
 } from "lucide-react";
-import { accountIconMap } from "../../_component/Accounts/Accounts";
-import { TransferTypes } from "@/lib/types";
+
+import { AccountIconTypes, TransferTypes } from "@/lib/types";
+import { accountIconMapp } from "../../_component/Accounts/Accounts";
 const transferHistoryHeader: { label: string; icon: LucideIcon }[] = [
    { label: "From account", icon: Send },
    { label: "Amount", icon: Coins },
@@ -36,32 +37,44 @@ const Table = ({ sortedByDate }: { sortedByDate: TransferTypes[] }) => {
             </tr>
          </thead>
          <tbody>
-            {sortedByDate.map(({ amount, date_str, from_acc, to_acc, id }) => {
-               const FromAccountIcon = accountIconMap[from_acc];
-               const ToAccountIcon = accountIconMap[to_acc];
-               return (
-                  <tr key={id} className="text-[0.9vw] ">
-                     <td className="border-t-2 border-b-2 border-card py-[0.5vw] px-[1vw]">
-                        <span className="flex items-center gap-[0.4vw]">
-                           <FromAccountIcon size={16} />
-                           {from_acc}
-                        </span>
-                     </td>
-                     <td className="border-2 py-[0.5vw] px-[1vw] border-card">
-                        ₱{amount}
-                     </td>
-                     <td className="border-2 py-[0.5vw] px-[1vw] border-card">
-                        <span className="flex items-center gap-[0.4vw]">
-                           <ToAccountIcon size={16} />
-                           {to_acc}
-                        </span>
-                     </td>
-                     <td className="border-t-2  border-b-2 border-card py-[0.5vw] px-[1vw]">
-                        {date_str}
-                     </td>
-                  </tr>
-               );
-            })}
+            {sortedByDate.map(
+               ({
+                  amount,
+                  date_str,
+                  from_acc,
+                  to_acc,
+                  id,
+                  from_acc_icon,
+                  to_acc_icon,
+               }) => {
+                  const FromAccountIcon =
+                     accountIconMapp[from_acc_icon as AccountIconTypes];
+                  const ToAccountIcon =
+                     accountIconMapp[to_acc_icon as AccountIconTypes];
+                  return (
+                     <tr key={id} className="text-[0.9vw] ">
+                        <td className="border-t-2 border-b-2 border-card py-[0.5vw] px-[1vw]">
+                           <span className="flex items-center gap-[0.4vw]">
+                              <FromAccountIcon size={16} />
+                              {from_acc}
+                           </span>
+                        </td>
+                        <td className="border-2 py-[0.5vw] px-[1vw] border-card">
+                           ₱{amount}
+                        </td>
+                        <td className="border-2 py-[0.5vw] px-[1vw] border-card">
+                           <span className="flex items-center gap-[0.4vw]">
+                              <ToAccountIcon size={16} />
+                              {to_acc}
+                           </span>
+                        </td>
+                        <td className="border-t-2  border-b-2 border-card py-[0.5vw] px-[1vw]">
+                           {date_str}
+                        </td>
+                     </tr>
+                  );
+               },
+            )}
          </tbody>
       </table>
    );

@@ -8,6 +8,7 @@ import {
    CartesianGrid,
    Line,
    LineChart,
+   ResponsiveContainer,
    Tooltip,
    TooltipContentProps,
    XAxis,
@@ -15,6 +16,7 @@ import {
 } from "recharts";
 import DateFilter from "./DateFilter";
 import { useNetworthState } from "@/lib/hooks/useNetworthState";
+import { CustomTooltip } from "@/app/component/CustomToolTip";
 const monthMap: Record<string, string> = {
    Jan: "01",
    Feb: "02",
@@ -128,7 +130,7 @@ const Chart = () => {
    }, []);
 
    return (
-      <div className="relative flex flex-col gap-[1vw]  h-fit border-2 border-card rounded-[0.5vw] p-[1.25vw]">
+      <div className="relative flex flex-col gap-[1vw] w-full  h-[33vw] border-2 border-card rounded-[0.5vw] p-[1.25vw]">
          {isFilter && (
             <DateFilter
                filterChart={filterChart}
@@ -158,34 +160,32 @@ const Chart = () => {
             <div className="bg-card animate-pulse  rounded-[0.5vw] h-[24.5vw]"></div>
          ) : (
             hasMounted && (
-               <LineChart
-                  // width={1080} for Desktop application
-                  width={800}
-                  // height={540}
-                  height={400}
-                  data={sortedData}
-                  layout="horizontal"
-               >
-                  <CartesianGrid vertical={false} opacity={0.1} />
-                  <XAxis
-                     dataKey="date_str"
-                     tick={{
-                        fontFamily: "Inter",
-                        fontSize: 10,
-                        fill: "#d4d4d470",
-                     }}
-                  />
-                  <YAxis
-                     tick={{
-                        fontFamily: "Inter",
-                        fontSize: 10,
-                        fill: "#d4d4d490",
-                     }}
-                  />
-                  <Tooltip content={CustomTooltip} isAnimationActive={false} />
+               <ResponsiveContainer width={"100%"} height={"100%"}>
+                  <LineChart data={sortedData} layout="horizontal">
+                     <CartesianGrid vertical={false} opacity={0.1} />
+                     <XAxis
+                        dataKey="date_str"
+                        tick={{
+                           fontFamily: "Inter",
+                           fontSize: 10,
+                           fill: "#d4d4d470",
+                        }}
+                     />
+                     <YAxis
+                        tick={{
+                           fontFamily: "Inter",
+                           fontSize: 10,
+                           fill: "#d4d4d490",
+                        }}
+                     />
+                     <Tooltip
+                        content={CustomTooltip}
+                        isAnimationActive={false}
+                     />
 
-                  <Line type="monotone" dataKey="balance" stroke="#d4d4d4" />
-               </LineChart>
+                     <Line type="monotone" dataKey="balance" stroke="#d4d4d4" />
+                  </LineChart>
+               </ResponsiveContainer>
             )
          )}
       </div>
@@ -193,21 +193,3 @@ const Chart = () => {
 };
 
 export default Chart;
-
-const CustomTooltip = ({
-   active,
-   label,
-   payload,
-}: TooltipContentProps<number, string>) => {
-   if (!active || !payload || payload.length === 0) return null;
-
-   const data = payload[0] as { value: number };
-   return (
-      <div className="flex flex-col gap-[0.2vw] bg-card p-[0.5vw] rounded-[0.5vw]">
-         <p className="text-[0.75vw] text-[#d4d4d440]">{label}</p>
-         <p className="text-[0.9vw] text-[#d4d4d4] font-normal">
-            ₱{data.value}
-         </p>
-      </div>
-   );
-};

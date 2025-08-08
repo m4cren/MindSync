@@ -7,8 +7,9 @@ import {
    LucideIcon,
    Scroll,
 } from "lucide-react";
-import { accountIconMap } from "../../_component/Accounts/Accounts";
-import { IncomeTypes } from "@/lib/types";
+
+import { AccountIconTypes, IncomeTypes } from "@/lib/types";
+import { accountIconMapp } from "../../_component/Accounts/Accounts";
 
 const incomeHistoryHeader: { label: string; icon: LucideIcon }[] = [
    { label: "Income Stream", icon: Banknote },
@@ -37,8 +38,16 @@ const Table = ({ sortedByDate }: { sortedByDate: IncomeTypes[] }) => {
          </thead>
          <tbody>
             {sortedByDate.map(
-               ({ amount, date_str, income_stream, received_in, id }) => {
-                  const IconComponent = accountIconMap[received_in];
+               ({
+                  amount,
+                  date_str,
+                  income_stream,
+                  received_in,
+                  id,
+                  acc_icon,
+               }) => {
+                  const IconComponent =
+                     accountIconMapp[acc_icon as AccountIconTypes];
                   return (
                      <tr key={id} className="text-[0.9vw] ">
                         <td className="border-t-2 border-b-2 border-card py-[0.5vw] px-[1vw]">

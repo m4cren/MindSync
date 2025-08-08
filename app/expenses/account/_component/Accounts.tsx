@@ -1,10 +1,14 @@
 "use client";
 
 import { useOnlyAccount } from "@/lib/hooks/accounts/useOnlyAccount";
-import { Check, CheckCircle, Plus, Users, XCircleIcon } from "lucide-react";
-import { accountIconMap } from "../../_component/Accounts/Accounts";
-import CardSkeleton from "../../_component/CardSkeleton";
+import { CheckCircle, Plus, Users, XCircleIcon } from "lucide-react";
 import { useState } from "react";
+
+import { accountIconMapp } from "../../_component/Accounts/Accounts";
+import CardSkeleton from "../../_component/CardSkeleton";
+import { useForm } from "react-hook-form";
+import { AccountIconTypes, AccountTypes } from "@/lib/types";
+import NewAccountForm from "./NewAccountForm";
 
 const Accounts = () => {
    const { accounts } = useOnlyAccount();
@@ -24,8 +28,8 @@ const Accounts = () => {
             <CardSkeleton />
          ) : (
             <ul className="grid grid-cols-3 gap-[1.2vw]">
-               {accounts.accounts.map(({ balance, name, id }) => {
-                  const IconComponent = accountIconMap[name];
+               {accounts.accounts.map(({ balance, name, id, icon }) => {
+                  const IconComponent = accountIconMapp[icon];
 
                   return (
                      <li
@@ -41,41 +45,7 @@ const Accounts = () => {
                   );
                })}
                {isNewAccount ? (
-                  <li className="  border-card border-3 p-[0.8vw] rounded-[0.6vw] flex items-center justify-around gap-[0.6vw]">
-                     <div className="flex flex-col items-start gap-[0.5vw]">
-                        <input
-                           type="text"
-                           className="text-[1.1vw] font-medium outline-none w-[9vw] "
-                           placeholder="Account name"
-                        />
-
-                        <select
-                           defaultValue={"Icon"}
-                           className="border-2 border-card text-[0.8vw] max-w-[6vw] px-[0.5vw] py-[0.3vw] rounded-[0.4vw]"
-                           id="select-icon"
-                        >
-                           <option disabled>Icon</option>
-                           <option>Card</option>
-                           <option>Bank</option>
-                           <option>Wallet</option>
-                           <option>Others</option>
-                        </select>
-                     </div>
-                     <div className="flex flex-col gap-[0.5vw]">
-                        <button
-                           onClick={() => setIsNewAccount(false)}
-                           className="cursor-pointer text-green-500/70"
-                        >
-                           <CheckCircle size={20} />
-                        </button>
-                        <button
-                           onClick={() => setIsNewAccount(false)}
-                           className="cursor-pointer opacity-40"
-                        >
-                           <XCircleIcon size={20} />
-                        </button>
-                     </div>
-                  </li>
+                  <NewAccountForm setIsNewAccount={setIsNewAccount} />
                ) : (
                   <li
                      onClick={() => setIsNewAccount(true)}

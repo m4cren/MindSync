@@ -1,8 +1,7 @@
-import { AccountNameTypes, TransferTypes } from "@/lib/types";
+import { TransferTypes } from "@/lib/types";
 import { Calendar, Plus, Send, Wallet } from "lucide-react";
 import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
-import { accountOptions } from "../RecordIncome/IncomeForm";
 
 import { useOnlyAccount } from "@/lib/hooks/accounts/useOnlyAccount";
 import { usePopupState } from "@/lib/hooks/popup/usePopupState";
@@ -38,6 +37,12 @@ const TransferForm = () => {
             ...data,
             date_str: data.created_at ? formFormattedDate : dateTodayFormatted,
             created_at: data.created_at ? dateObj : dateToday,
+            from_acc_icon:
+               accounts.find(({ name }) => name === selectedAccount.from_acc)
+                  ?.icon || "wallet",
+            to_acc_icon:
+               accounts.find(({ name }) => name === selectedAccount.to_acc)
+                  ?.icon || "wallet",
          }),
       );
 
@@ -50,8 +55,8 @@ const TransferForm = () => {
    };
 
    const [selectedAccount, setSelectedAccount] = useState<{
-      from_acc: AccountNameTypes;
-      to_acc: AccountNameTypes;
+      from_acc: string | null;
+      to_acc: string | null;
    }>({ from_acc: "Wallet", to_acc: "Investment Funds" });
 
    const handleChangeAccount = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -95,13 +100,13 @@ const TransferForm = () => {
             <select
                {...register("from_acc")}
                onChange={handleChangeAccount}
-               value={selectedAccount.from_acc}
+               value={selectedAccount.from_acc ? selectedAccount.from_acc : ""}
                id="from_acc"
                className="border-1 w-[10vw] border-[#d4d4d430] rounded-[0.35vw] px-[1vw] text-[0.9vw] py-[0.25vw]"
             >
-               {accountOptions.map((item) => (
-                  <option key={item} value={item}>
-                     {item}
+               {accounts.map(({ name }) => (
+                  <option key={name} value={name}>
+                     {name}
                   </option>
                ))}
             </select>
@@ -125,7 +130,9 @@ const TransferForm = () => {
                New Balance:
             </label>
             <p className="text-[0.85vw] opacity-50">
-               ₱ {fromAccBalance! - amountInput}
+               {selectedAccount.from_acc
+                  ? `₱ ${fromAccBalance! - amountInput}`
+                  : "Select from account"}
             </p>
          </div>
          <div className="flex items-center justify-between w-[22vw]">
@@ -139,13 +146,13 @@ const TransferForm = () => {
             <select
                {...register("to_acc")}
                onChange={handleChangeAccount}
-               value={selectedAccount.to_acc}
+               value={selectedAccount.to_acc ? selectedAccount.to_acc : ""}
                id="to_acc"
                className="border-1 w-[10vw] border-[#d4d4d430] rounded-[0.35vw] px-[1vw] text-[0.9vw] py-[0.25vw]"
             >
-               {accountOptions.map((item) => (
-                  <option key={item} value={item}>
-                     {item}
+               {accounts.map(({ name }) => (
+                  <option key={name} value={name}>
+                     {name}
                   </option>
                ))}
             </select>
@@ -168,7 +175,9 @@ const TransferForm = () => {
                New Balance:
             </label>
             <p className="text-[0.85vw] opacity-50">
-               ₱ {toAccBalance! + amountInput}
+               {selectedAccount.to_acc
+                  ? `₱ ${toAccBalance! - amountInput}`
+                  : "Select to account"}
             </p>
          </div>
          <div className="flex items-center justify-between w-[22vw]">

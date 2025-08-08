@@ -1,40 +1,20 @@
-import { BudgetTypes } from "@/lib/types";
 import {
-   AlertCircle,
-   Dumbbell,
-   Fuel,
-   LucideIcon,
-   PartyPopper,
-   Podcast,
-   Utensils,
-   VenetianMask,
-} from "lucide-react";
-import React from "react";
-const AllotedBudgetMap = {
-   Food: 1000,
-   "Gas/Transportation": 2000,
-   Gym: 1500,
-   "Utilities & Subscription": 3000,
-   Leisures: 500,
-   Miscellaneous: 400,
-};
-export const budgetIconMap: Record<BudgetTypes, LucideIcon> = {
-   Food: Utensils,
-   "Gas/Transportation": Fuel,
-   Gym: Dumbbell,
-   "Utilities & Subscription": Podcast,
-   Leisures: PartyPopper,
-   Miscellaneous: VenetianMask,
-};
-interface Props {
-   category: BudgetTypes;
+   expenseCategoryIconMap,
+   ExpenseCategoryIconTypes,
+   ExpenseCategoryTypes,
+} from "@/lib/types";
+import { AlertCircle } from "lucide-react";
 
+interface Props {
+   category: string;
+   allocation: number;
    amount: number;
 }
-const BudgetCard = ({ category, amount }: Props) => {
-   const IconComponent = budgetIconMap[category];
+const BudgetCard = ({ category, amount, allocation }: Props) => {
+   const IconComponent =
+      expenseCategoryIconMap[category as ExpenseCategoryIconTypes];
 
-   const percentage = ((amount / AllotedBudgetMap[category]) * 100).toFixed(0);
+   const percentage = ((amount / allocation) * 100).toFixed(0);
    return (
       <li className="bg-card p-[1vw] rounded-[0.6vw] flex flex-col gap-[0.4vw]">
          <div className="flex items-center gap-[0.6vw]">
@@ -46,7 +26,7 @@ const BudgetCard = ({ category, amount }: Props) => {
                Alloted budget:
             </p>
             <h4 className="text-[0.9vw] font-light opacity-80">
-               ₱{AllotedBudgetMap[category]}
+               ₱{allocation}
             </h4>
          </div>
          {parseInt(percentage) > 100 ? (

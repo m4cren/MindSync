@@ -1,22 +1,14 @@
 "use client";
 
 import { useOnlyAccount } from "@/lib/hooks/accounts/useOnlyAccount";
+import { useExpenseCategoryState } from "@/lib/hooks/expense/useExpenseCategoryState";
 import { useRecordExpense } from "@/lib/hooks/expense/useRecordExpense";
 import { usePopupState } from "@/lib/hooks/popup/usePopupState";
-import { AccountNameTypes, BudgetTypes, ExpenseTypes } from "@/lib/types";
+import { ExpenseTypes } from "@/lib/types";
 import { Calendar, Coins, Logs, Plus, UserCircle } from "lucide-react";
 import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
-import { accountOptions } from "../RecordIncome/IncomeForm";
-
-const budgetCategories: BudgetTypes[] = [
-   "Food",
-   "Gas/Transportation",
-   "Gym",
-   "Leisures",
-   "Utilities & Subscription",
-   "Miscellaneous",
-];
+import { capitalFirstLetter } from "../../account/_component/NewAccountForm";
 
 const ExpenseForm = () => {
    const { untogglePopup } = usePopupState();
@@ -25,6 +17,7 @@ const ExpenseForm = () => {
       dispatch,
    } = useOnlyAccount();
    const { recordExpense } = useRecordExpense();
+   const { expenseCategory } = useExpenseCategoryState();
 
    const { register, handleSubmit } = useForm<ExpenseTypes>();
 
@@ -50,6 +43,9 @@ const ExpenseForm = () => {
             ...data,
             date_str: data.created_at ? formFormattedDate : dateTodayFormatted,
             created_at: data.created_at ? dateObj : dateToday,
+            acc_icon:
+               accounts.find(({ name }) => name === selectedAccount)?.icon ||
+               "wallet",
          }),
       );
 
@@ -59,11 +55,10 @@ const ExpenseForm = () => {
       setAmountInput(Number(e.target.value));
    };
 
-   const [selectedAccount, setSelectedAccount] =
-      useState<AccountNameTypes>("Wallet");
+   const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
 
    const handleChangeAccount = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const value = e.target.value as AccountNameTypes;
+      const value = e.target.value;
       setSelectedAccount(value);
    };
 
@@ -94,13 +89,16 @@ const ExpenseForm = () => {
             <select
                {...register("account")}
                id="account"
-               value={selectedAccount}
+               value={selectedAccount ? selectedAccount : ""}
                onChange={handleChangeAccount}
                className="border-1 w-[10vw] border-[#d4d4d430] rounded-[0.35vw] px-[1vw] text-[0.9vw] py-[0.25vw]"
             >
-               {accountOptions.map((item) => (
-                  <option key={item} value={item}>
-                     {item}
+               <option value="" disabled>
+                  Select an account
+               </option>
+               {accounts.map(({ name }) => (
+                  <option key={name} value={name}>
+                     {name}
                   </option>
                ))}
             </select>
@@ -118,9 +116,12 @@ const ExpenseForm = () => {
                id="category"
                className="border-1 w-[10vw] border-[#d4d4d430] rounded-[0.35vw] px-[1vw] text-[0.9vw] py-[0.25vw]"
             >
-               {budgetCategories.map((item) => (
-                  <option key={item} value={item}>
-                     {item}
+               <option value="" disabled>
+                  Select category
+               </option>
+               {expenseCategory.expenseCategory.map(({ label, id }) => (
+                  <option key={id} value={label}>
+                     {capitalFirstLetter(label)}
                   </option>
                ))}
             </select>
@@ -166,7 +167,9 @@ const ExpenseForm = () => {
                New Balance:
             </label>
             <p className="text-[0.85vw] opacity-50">
-               ₱ {accBalance! - amountInput}
+               {!selectedAccount
+                  ? "Select account"
+                  : `₱ ${accBalance! - amountInput}`}
             </p>
          </div>
          <div className="flex items-center justify-between w-[22vw]">
