@@ -38,18 +38,20 @@ const ExpenseForm = () => {
          year: "numeric",
       });
 
-      dispatch(
-         recordExpense({
-            ...data,
-            date_str: data.created_at ? formFormattedDate : dateTodayFormatted,
-            created_at: data.created_at ? dateObj : dateToday,
-            acc_icon:
-               accounts.find(({ name }) => name === selectedAccount)?.icon ||
-               "wallet",
-         }),
-      );
+      if (selectedAccount) {
+         dispatch(
+            recordExpense({
+               ...data,
+               date_str: data.date_str ? formFormattedDate : dateTodayFormatted,
+               created_at: data.date_str ? dateObj : dateToday,
+               acc_icon:
+                  accounts.find(({ name }) => name === selectedAccount)?.icon ||
+                  "wallet",
+            }),
+         );
 
-      dispatch(untogglePopup("recordExpense"));
+         dispatch(untogglePopup("recordExpense"));
+      }
    };
    const handleChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
       setAmountInput(Number(e.target.value));

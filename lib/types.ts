@@ -10,6 +10,7 @@ import {
    Home,
    LucideIcon,
    Palette,
+   PartyPopper,
    PawPrint,
    Pill,
    Plane,
@@ -101,7 +102,7 @@ export type ExpenseTypes = {
    acc_icon: AccountIconTypes;
    label: string;
    amount: number;
-   category: string;
+   category: ExpenseCategoryIconTypes;
    date_str: string;
    created_at: Date;
 };
@@ -156,7 +157,8 @@ export type ExpenseCategoryIconTypes =
    | "Loans"
    | "Miscellaneous"
    | "Gym"
-   | "Childcare";
+   | "Childcare"
+   | "Fun";
 
 export const expenseCategoryIconMap: Record<
    ExpenseCategoryIconTypes,
@@ -183,12 +185,13 @@ export const expenseCategoryIconMap: Record<
    Emergency: Siren,
    Loans: CreditCard,
    Miscellaneous: Puzzle,
+   Fun: PartyPopper,
 };
 
 export type ExpenseCategoryTypes = {
    id?: string;
    label: string;
-   icon: string;
+   icon: ExpenseCategoryIconTypes;
    alloc_per_month: ExpenseCategoryIconTypes;
 };
 export type ExpenseCategoryStateTypes = {

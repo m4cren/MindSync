@@ -1,18 +1,15 @@
-import {
-   expenseCategoryIconMap,
-   ExpenseCategoryIconTypes,
-   ExpenseCategoryTypes,
-} from "@/lib/types";
+import { expenseCategoryIconMap, ExpenseCategoryIconTypes } from "@/lib/types";
 import { AlertCircle } from "lucide-react";
 
 interface Props {
    category: string;
+   icon: ExpenseCategoryIconTypes;
    allocation: number;
    amount: number;
 }
-const BudgetCard = ({ category, amount, allocation }: Props) => {
+const BudgetCard = ({ category, amount, allocation, icon }: Props) => {
    const IconComponent =
-      expenseCategoryIconMap[category as ExpenseCategoryIconTypes];
+      expenseCategoryIconMap[icon as ExpenseCategoryIconTypes];
 
    const percentage = ((amount / allocation) * 100).toFixed(0);
    return (

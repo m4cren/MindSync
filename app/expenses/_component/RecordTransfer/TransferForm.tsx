@@ -35,8 +35,8 @@ const TransferForm = () => {
       dispatch(
          recordTransfer({
             ...data,
-            date_str: data.created_at ? formFormattedDate : dateTodayFormatted,
-            created_at: data.created_at ? dateObj : dateToday,
+            date_str: data.date_str ? formFormattedDate : dateTodayFormatted,
+            created_at: data.date_str ? dateObj : dateToday,
             from_acc_icon:
                accounts.find(({ name }) => name === selectedAccount.from_acc)
                   ?.icon || "wallet",

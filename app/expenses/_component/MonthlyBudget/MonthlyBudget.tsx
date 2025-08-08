@@ -8,6 +8,7 @@ import { memo } from "react";
 import CardSkeleton from "../CardSkeleton";
 import { getMonthYear } from "../NetWorth/Chart";
 import { useExpenseCategoryState } from "@/lib/hooks/expense/useExpenseCategoryState";
+import { ExpenseCategoryIconTypes } from "@/lib/types";
 
 const MonthlyBudget = () => {
    const {
@@ -32,13 +33,15 @@ const MonthlyBudget = () => {
 
    type BudgetAllocation = {
       category: string;
+      icon: ExpenseCategoryIconTypes;
       categorySummary: CategorySummary;
    };
 
    const initialBudget: BudgetAllocation[] = expenseCategory.map(
-      ({ alloc_per_month, label }) => {
+      ({ alloc_per_month, label, icon }) => {
          return {
             category: label,
+            icon: icon,
             categorySummary: [0, Number(alloc_per_month)],
          };
       },
@@ -67,10 +70,11 @@ const MonthlyBudget = () => {
       Object.entries(groupByCategory),
    );
    const mergedBudget: BudgetAllocation[] = initialBudget.map(
-      ({ category, categorySummary }) => {
+      ({ category, categorySummary, icon }) => {
          const updated = groupMap.get(category);
          return {
             category,
+            icon: icon,
             categorySummary: updated
                ? [updated[0], categorySummary[1]] // use spent from actual data, allocation from initial
                : categorySummary,
@@ -92,10 +96,11 @@ const MonthlyBudget = () => {
             <CardSkeleton />
          ) : mergedBudget.length !== 0 ? (
             <ul className="grid grid-cols-3 gap-[1.2vw]">
-               {mergedBudget.map(({ category, categorySummary }, key) => (
+               {mergedBudget.map(({ category, categorySummary, icon }, key) => (
                   <BudgetCard
                      key={key}
                      category={category}
+                     icon={icon}
                      amount={categorySummary[0]}
                      allocation={categorySummary[1]}
                   />
