@@ -1,6 +1,6 @@
 import { expenseCategoryIconMap, ExpenseCategoryIconTypes } from "@/lib/types";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 const categoryIconOptions: ExpenseCategoryIconTypes[] = [
    "Childcare",
    "Clothing",
@@ -33,13 +33,18 @@ interface Props {
       React.SetStateAction<ExpenseCategoryIconTypes | null>
    >;
    selectedIcon: ExpenseCategoryIconTypes | null;
+   existingLabels: { icon: string; label: string }[];
 }
 const IconSelection = ({
    selectedIcon,
    setIconSelection,
    setSelectedIcon,
    isIconSelection,
+   existingLabels,
 }: Props) => {
+   const uniqueIcons = categoryIconOptions.filter(
+      (icons) => !existingLabels.some(({ icon }) => icon === icons),
+   );
    return (
       <div>
          <button
@@ -52,7 +57,7 @@ const IconSelection = ({
          </button>
          {isIconSelection && (
             <ul className="absolute z-5 gap-[0.7vw] bg-[#2c2c2c] grid grid-cols-4 w-[16vw] h-fit rounded-[0.4vw] p-[1vw]">
-               {categoryIconOptions.map((icon, key) => {
+               {uniqueIcons.map((icon, key) => {
                   const IconComponent =
                      expenseCategoryIconMap[icon as ExpenseCategoryIconTypes];
                   return (

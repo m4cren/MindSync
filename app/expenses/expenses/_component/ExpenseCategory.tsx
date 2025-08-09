@@ -44,6 +44,7 @@ const ExpenseCategory = () => {
             )}
             {isAddNewCategory ? (
                <NewExpenseCategoryForm
+                  expenseCategory={expenseCategory}
                   isIconSelection={isIconSelection}
                   selectedIcon={selectedIcon}
                   setIconSelection={setIconSelection}
