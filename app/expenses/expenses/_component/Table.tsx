@@ -50,12 +50,13 @@ const Table = ({ items }: { items: ExpenseTypes[] }) => {
                   label,
                   id,
                   acc_icon,
+                  category_icon,
                }) => {
                   const AccountIcon =
                      accountIconMapp[acc_icon as AccountIconTypes];
                   const CategoryIcon =
                      expenseCategoryIconMap[
-                        category as ExpenseCategoryIconTypes
+                        category_icon as ExpenseCategoryIconTypes
                      ];
                   return (
                      <tr key={id} className="text-[0.9vw] ">

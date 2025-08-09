@@ -45,18 +45,23 @@ const IconSelection = ({
    const uniqueIcons = categoryIconOptions.filter(
       (icons) => !existingLabels.some(({ icon }) => icon === icons),
    );
+   const IconComponent = expenseCategoryIconMap[selectedIcon!];
    return (
       <div>
          <button
-            onClick={() => setIconSelection(true)}
+            onClick={() => setIconSelection(!isIconSelection)}
             type="button"
-            className="flex items-center gap-[0.5vw] cursor-pointer"
+            className="flex items-center gap-[0.5vw] cursor-pointer text-[0.9vw] font-medium"
          >
             {isIconSelection ? <ChevronRight /> : <ChevronDown />}
-            {selectedIcon ? selectedIcon : "Select an icon"}
+            {selectedIcon && IconComponent ? (
+               <IconComponent />
+            ) : (
+               "Select an icon"
+            )}
          </button>
          {isIconSelection && (
-            <ul className="absolute z-5 gap-[0.7vw] bg-[#2c2c2c] grid grid-cols-4 w-[16vw] h-fit rounded-[0.4vw] p-[1vw]">
+            <ul className="absolute z-5 gap-[0.7vw] bg-card grid grid-cols-4 w-[16vw] h-fit rounded-[0.4vw] p-[1vw]">
                {uniqueIcons.map((icon, key) => {
                   const IconComponent =
                      expenseCategoryIconMap[icon as ExpenseCategoryIconTypes];

@@ -102,7 +102,8 @@ export type ExpenseTypes = {
    acc_icon: AccountIconTypes;
    label: string;
    amount: number;
-   category: ExpenseCategoryIconTypes;
+   category: string;
+   category_icon: ExpenseCategoryIconTypes;
    date_str: string;
    created_at: Date;
 };

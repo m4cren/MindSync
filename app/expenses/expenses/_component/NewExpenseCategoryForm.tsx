@@ -5,6 +5,7 @@ import IconSelection from "./IconSelection";
 import { ExpenseCategoryIconTypes, ExpenseCategoryTypes } from "@/lib/types";
 import { useForm } from "react-hook-form";
 import { useAddNewExpenseCategory } from "@/lib/hooks/expense/useAddNewExpenseCategory";
+import ErrorMessage from "@/app/component/ErrorMessage";
 interface Props {
    setIconSelection: React.Dispatch<React.SetStateAction<boolean>>;
    isIconSelection: boolean;
@@ -74,7 +75,7 @@ const NewExpenseCategoryForm = ({
          onSubmit={handleSubmit(onSubmit)}
          className="relative  border-card border-3 p-[0.8vw] rounded-[0.6vw] flex items-center justify-around gap-[0.6vw]"
       >
-         <div className="flex flex-col items-start gap-[0.5vw]">
+         <div className="flex flex-col items-start gap-[0.85vw]">
             <input
                type="text"
                {...register("label")}
@@ -100,22 +101,18 @@ const NewExpenseCategoryForm = ({
                setIconSelection={setIconSelection}
                setSelectedIcon={setSelectedIcon}
             />
-            {errMsg && (
-               <p className="bg-red-600/30 px-[0.4vw] py-[0.1vw] text-center rounded-[0.2vw] text-[0.7vw]">
-                  {errMsg}
-               </p>
-            )}
+            {errMsg && <ErrorMessage errMsg={errMsg} />}
          </div>
-         <div className="flex flex-col gap-[0.5vw]">
+         <div className="flex flex-col gap-[0.85vw]">
             <button type="submit" className="cursor-pointer text-green-500/70">
-               <CheckCircle size={20} />
+               <CheckCircle size={25} />
             </button>
             <button
                type="button"
                onClick={() => setIsAddNewCategory(false)}
                className="cursor-pointer opacity-40"
             >
-               <XCircleIcon size={20} />
+               <XCircleIcon size={25} />
             </button>
          </div>
       </form>

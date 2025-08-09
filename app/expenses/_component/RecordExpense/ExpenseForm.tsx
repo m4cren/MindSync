@@ -4,11 +4,12 @@ import { useOnlyAccount } from "@/lib/hooks/accounts/useOnlyAccount";
 import { useExpenseCategoryState } from "@/lib/hooks/expense/useExpenseCategoryState";
 import { useRecordExpense } from "@/lib/hooks/expense/useRecordExpense";
 import { usePopupState } from "@/lib/hooks/popup/usePopupState";
-import { ExpenseTypes } from "@/lib/types";
+import { ExpenseCategoryIconTypes, ExpenseTypes } from "@/lib/types";
 import { Calendar, Coins, Logs, Plus, UserCircle } from "lucide-react";
 import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { capitalFirstLetter } from "../../account/_component/NewAccountForm";
+import ErrorMessage from "@/app/component/ErrorMessage";
 
 const ExpenseForm = () => {
    const { untogglePopup } = usePopupState();
@@ -18,10 +19,12 @@ const ExpenseForm = () => {
    } = useOnlyAccount();
    const { recordExpense } = useRecordExpense();
    const { expenseCategory } = useExpenseCategoryState();
-
+   const [errMsg, setErrMsg] = useState<string | null>(null);
    const { register, handleSubmit } = useForm<ExpenseTypes>();
 
    const [amountInput, setAmountInput] = useState<number>(0);
+   const [selectedCategoryIcon, setSelectedCategoryIcon] =
+      useState<ExpenseCategoryIconTypes | null>(null);
 
    const onSubmit = (data: ExpenseTypes) => {
       const dateObj = new Date(data.date_str);
@@ -38,7 +41,7 @@ const ExpenseForm = () => {
          year: "numeric",
       });
 
-      if (selectedAccount) {
+      if (selectedAccount && selectedCategoryIcon) {
          dispatch(
             recordExpense({
                ...data,
@@ -47,10 +50,16 @@ const ExpenseForm = () => {
                acc_icon:
                   accounts.find(({ name }) => name === selectedAccount)?.icon ||
                   "wallet",
+               category_icon: selectedCategoryIcon || "Miscellaneous",
             }),
          );
 
          dispatch(untogglePopup("recordExpense"));
+      } else {
+         setErrMsg("Please select an account/category");
+         setTimeout(() => {
+            setErrMsg(null);
+         }, 5000);
       }
    };
    const handleChangeAmount = (e: ChangeEvent<HTMLInputElement>) => {
@@ -115,19 +124,29 @@ const ExpenseForm = () => {
             </label>
             <select
                {...register("category")}
-               id="category"
+               defaultValue={""}
                className="border-1 w-[10vw] border-[#d4d4d430] rounded-[0.35vw] px-[1vw] text-[0.9vw] py-[0.25vw]"
             >
                <option value="" disabled>
                   Select category
                </option>
-               {expenseCategory.expenseCategory.map(({ label, id }) => (
-                  <option key={id} value={label}>
+               {expenseCategory.expenseCategory.map(({ label, id, icon }) => (
+                  <option
+                     key={id}
+                     value={label}
+                     id={icon}
+                     onClick={() => setSelectedCategoryIcon(icon)}
+                  >
                      {capitalFirstLetter(label)}
                   </option>
                ))}
             </select>
          </div>
+         {errMsg && (
+            <div className="w-[22vw]">
+               <ErrorMessage errMsg={errMsg} />
+            </div>
+         )}
          <div className="flex items-center justify-between w-[22vw] -mb-[0.8vw]">
             <label
                htmlFor="amount"
