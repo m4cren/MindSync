@@ -5,7 +5,6 @@ import {
    addDoc,
    collection,
    doc,
-   getDoc,
    getDocs,
    query,
    updateDoc,
@@ -70,6 +69,24 @@ export const recordExpense = createAsyncThunk(
          });
          dispatch(fetchAccounts());
          dispatch(fetchExpense());
+      } catch (error) {
+         console.log(error);
+      }
+   },
+);
+
+export const addNewExpenseCategory = createAsyncThunk(
+   "expense/addNewExpenseCategory",
+   async (data: ExpenseCategoryTypes, thunkAPI) => {
+      const { dispatch } = thunkAPI;
+
+      try {
+         await addDoc(expenseCategoryRef, {
+            ...data,
+            allo_per_month: Number(data.alloc_per_month),
+         });
+
+         dispatch(fetchExpenseCategory());
       } catch (error) {
          console.log(error);
       }

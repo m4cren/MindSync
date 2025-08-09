@@ -3,9 +3,7 @@ import {
    BanknoteArrowDown,
    Calendar,
    Coins,
-   Funnel,
    LucideIcon,
-   Scroll,
 } from "lucide-react";
 
 import { AccountIconTypes, IncomeTypes } from "@/lib/types";
