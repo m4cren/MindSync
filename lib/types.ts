@@ -191,7 +191,7 @@ export type ExpenseCategoryTypes = {
    id?: string;
    label: string;
    icon: ExpenseCategoryIconTypes;
-   alloc_per_month: ExpenseCategoryIconTypes;
+   alloc_per_month: number;
 };
 export type ExpenseCategoryStateTypes = {
    expenseCategory: ExpenseCategoryTypes[];

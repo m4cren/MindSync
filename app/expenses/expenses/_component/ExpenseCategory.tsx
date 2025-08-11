@@ -12,10 +12,10 @@ const ExpenseCategory = () => {
    } = useOnlyExpenseCategory();
 
    const [isAddNewCategory, setIsAddNewCategory] = useState<boolean>(false);
+   const [itemToEdit, setItemToEdit] = useState<string | null>(null);
 
    const [selectedIcon, setSelectedIcon] =
       useState<ExpenseCategoryIconTypes | null>(null);
-   const [isIconSelection, setIconSelection] = useState<boolean>(false);
 
    return (
       <div
@@ -31,23 +31,37 @@ const ExpenseCategory = () => {
                expenseCategory.map(({ alloc_per_month, icon, label, id }) => {
                   const IconComponent =
                      expenseCategoryIconMap[icon as ExpenseCategoryIconTypes];
-                  return (
-                     <Card
-                        key={id}
-                        alloc_per_month={Number(alloc_per_month)}
-                        label={label}
-                     >
-                        <IconComponent />
-                     </Card>
-                  );
+
+                  if (id && itemToEdit !== id) {
+                     return (
+                        <Card
+                           key={id}
+                           id={id!}
+                           setItemToEdit={setItemToEdit}
+                           alloc_per_month={Number(alloc_per_month)}
+                           label={label}
+                        >
+                           <IconComponent />
+                        </Card>
+                     );
+                  } else {
+                     return (
+                        <NewExpenseCategoryForm
+                           key={id}
+                           expenseCategory={expenseCategory}
+                           selectedIcon={selectedIcon}
+                           setItemToEdit={setItemToEdit}
+                           currentData={{ icon: icon, label: label }}
+                           setSelectedIcon={setSelectedIcon}
+                        />
+                     );
+                  }
                })
             )}
             {isAddNewCategory ? (
                <NewExpenseCategoryForm
                   expenseCategory={expenseCategory}
-                  isIconSelection={isIconSelection}
                   selectedIcon={selectedIcon}
-                  setIconSelection={setIconSelection}
                   setIsAddNewCategory={setIsAddNewCategory}
                   setSelectedIcon={setSelectedIcon}
                />

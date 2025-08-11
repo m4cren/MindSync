@@ -1,6 +1,6 @@
+import DropDownSelection from "@/app/component/DropDownSelection";
 import { expenseCategoryIconMap, ExpenseCategoryIconTypes } from "@/lib/types";
-import { ChevronDown, ChevronRight } from "lucide-react";
-import React from "react";
+import React, { ReactNode } from "react";
 const categoryIconOptions: ExpenseCategoryIconTypes[] = [
    "Childcare",
    "Clothing",
@@ -27,60 +27,52 @@ const categoryIconOptions: ExpenseCategoryIconTypes[] = [
 ];
 
 interface Props {
-   setIconSelection: React.Dispatch<React.SetStateAction<boolean>>;
-   isIconSelection: boolean;
    setSelectedIcon: React.Dispatch<
       React.SetStateAction<ExpenseCategoryIconTypes | null>
    >;
    selectedIcon: ExpenseCategoryIconTypes | null;
    existingLabels: { icon: string; label: string }[];
+   currentData?: { icon: string; label: string };
 }
 const IconSelection = ({
    selectedIcon,
-   setIconSelection,
+   currentData,
    setSelectedIcon,
-   isIconSelection,
+
    existingLabels,
 }: Props) => {
    const uniqueIcons = categoryIconOptions.filter(
       (icons) => !existingLabels.some(({ icon }) => icon === icons),
    );
-   const IconComponent = expenseCategoryIconMap[selectedIcon!];
+
+   if (currentData?.icon) {
+      uniqueIcons.push(currentData.icon as ExpenseCategoryIconTypes);
+   }
+   const IconComponent =
+      expenseCategoryIconMap[selectedIcon! as ExpenseCategoryIconTypes];
    return (
-      <div>
-         <button
-            onClick={() => setIconSelection(!isIconSelection)}
-            type="button"
-            className="flex items-center gap-[0.5vw] cursor-pointer text-[0.9vw] font-medium"
-         >
-            {isIconSelection ? <ChevronRight /> : <ChevronDown />}
-            {selectedIcon && IconComponent ? (
-               <IconComponent />
-            ) : (
-               "Select an icon"
-            )}
-         </button>
-         {isIconSelection && (
-            <ul className="absolute z-5 gap-[0.7vw] bg-card grid grid-cols-4 w-[16vw] h-fit rounded-[0.4vw] p-[1vw]">
-               {uniqueIcons.map((icon, key) => {
-                  const IconComponent =
-                     expenseCategoryIconMap[icon as ExpenseCategoryIconTypes];
-                  return (
-                     <li
-                        key={key}
-                        onClick={() => {
-                           setIconSelection(false);
-                           setSelectedIcon(icon);
-                        }}
-                        className="flex items-center justify-center cursor-pointer hover:scale-110 opacity-80 hover:opacity-100 transition duration-100"
-                     >
-                        <IconComponent />
-                     </li>
-                  );
-               })}
-            </ul>
-         )}
-      </div>
+      <DropDownSelection<ReactNode | null>
+         selectionLabel="Select icon"
+         icon={selectedIcon ? <IconComponent size={18} /> : null}
+      >
+         <ul className="grid grid-cols-3  gap-[0.1vw]">
+            {uniqueIcons.map((icon, id) => {
+               const IconExpense =
+                  expenseCategoryIconMap[icon as ExpenseCategoryIconTypes];
+               return (
+                  <li
+                     key={id}
+                     onClick={() => {
+                        setSelectedIcon(icon);
+                     }}
+                     className="flex opacity-80 hover:opacity-100 items-center justify-center gap-[0.3vw] hover:bg-[#d4d4d420] py-[0.4vw] rounded-[0.4vw] transition duration-200"
+                  >
+                     <IconExpense size={20} />
+                  </li>
+               );
+            })}
+         </ul>
+      </DropDownSelection>
    );
 };
 

@@ -3,14 +3,16 @@ import { ReactNode, useState } from "react";
 
 interface Props<TSelected> {
    selectionLabel: string;
-   selectedItem: TSelected;
+   selectedItem?: TSelected;
    children: ReactNode;
+   icon?: ReactNode;
 }
 
 export default function DropDownSelection<TSelected>({
    selectedItem,
    selectionLabel,
    children,
+   icon,
 }: Props<TSelected>) {
    const [isSelection, setIsSelection] = useState<boolean>(false);
    return (
@@ -22,7 +24,8 @@ export default function DropDownSelection<TSelected>({
             onClick={() => setIsSelection(!isSelection)}
             className="flex items-center  gap-[0.8vw] justify-between"
          >
-            {selectedItem ? String(selectedItem) : selectionLabel}
+            {icon ? icon : selectedItem ? String(selectedItem) : selectionLabel}
+
             {!isSelection ? <ChevronDown /> : <ChevronLeft />}
          </span>
          {isSelection && (

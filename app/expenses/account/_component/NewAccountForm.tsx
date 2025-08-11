@@ -1,8 +1,10 @@
+import DropDownSelection from "@/app/component/DropDownSelection";
 import { useCreateAccount } from "@/lib/hooks/accounts/useCreateAccount";
 import { AccountIconTypes, AccountTypes } from "@/lib/types";
 import { CheckCircle, XCircleIcon } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { accountIconMapp } from "../../_component/Accounts/Accounts";
 
 const iconOption: AccountIconTypes[] = ["bank", "card", "savings", "wallet"];
 
@@ -21,6 +23,9 @@ const NewAccountForm = ({ setIsNewAccount }: Props) => {
    } = useForm<AccountTypes>();
 
    const { createAccount, dispatch } = useCreateAccount();
+   const [selectedIcon, setSelectedIcon] = useState<AccountIconTypes | null>(
+      null,
+   );
 
    const onSubmit = (data: AccountTypes) => {
       if (data) {
@@ -30,6 +35,7 @@ const NewAccountForm = ({ setIsNewAccount }: Props) => {
                balance: 0,
                total_expense: 0,
                total_income: 0,
+               icon: selectedIcon,
             } as AccountTypes),
          );
          setIsNewAccount(false);
@@ -57,17 +63,33 @@ const NewAccountForm = ({ setIsNewAccount }: Props) => {
                   placeholder="Account name"
                />
 
-               <select
-                  {...register("icon")}
-                  className="border-2 cursor-pointer border-card text-[0.8vw] max-w-[6vw] px-[0.5vw] py-[0.3vw] rounded-[0.4vw]"
-                  id="select-icon"
+               <DropDownSelection<AccountIconTypes | null>
+                  selectionLabel="Select icon"
+                  selectedItem={
+                     selectedIcon
+                        ? (capitalFirstLetter(selectedIcon) as AccountIconTypes)
+                        : null
+                  }
                >
-                  {iconOption.map((item) => (
-                     <option value={item} key={item} className="cursor-pointer">
-                        {capitalFirstLetter(item)}
-                     </option>
-                  ))}
-               </select>
+                  <ul className="flex flex-col gap-[0.1vw]">
+                     {iconOption.map((icon, id) => {
+                        const AccountIcon =
+                           accountIconMapp[icon as AccountIconTypes];
+                        return (
+                           <li
+                              key={id}
+                              onClick={() => {
+                                 setSelectedIcon(icon);
+                              }}
+                              className="flex items-center gap-[0.3vw] hover:bg-[#d4d4d420] py-[0.4vw] pl-[0.4vw] rounded-[0.4vw] transition duration-200"
+                           >
+                              <AccountIcon />
+                              {capitalFirstLetter(icon)}
+                           </li>
+                        );
+                     })}
+                  </ul>
+               </DropDownSelection>
             </div>
             <div className="flex flex-col gap-[0.5vw]">
                <button

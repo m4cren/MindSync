@@ -36,7 +36,6 @@ const ExpenseHistory = () => {
             <>
                <Table items={paginatedExpense} />
                <div className="absolute top-[90%] left-1/2 -translate-y-1/2 -translate-x-1/2">
-                  {" "}
                   <Pagination
                      currentPage={currentPage}
                      items={expense.length}

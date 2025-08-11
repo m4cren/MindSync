@@ -1,25 +1,25 @@
 "use client";
+import ErrorMessage from "@/app/component/ErrorMessage";
+import { useAddNewExpenseCategory } from "@/lib/hooks/expense/useAddNewExpenseCategory";
+import { ExpenseCategoryIconTypes, ExpenseCategoryTypes } from "@/lib/types";
 import { CheckCircle, XCircleIcon } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import IconSelection from "./IconSelection";
-import { ExpenseCategoryIconTypes, ExpenseCategoryTypes } from "@/lib/types";
 import { useForm } from "react-hook-form";
-import { useAddNewExpenseCategory } from "@/lib/hooks/expense/useAddNewExpenseCategory";
-import ErrorMessage from "@/app/component/ErrorMessage";
+import IconSelection from "./IconSelection";
 interface Props {
-   setIconSelection: React.Dispatch<React.SetStateAction<boolean>>;
-   isIconSelection: boolean;
    setSelectedIcon: React.Dispatch<
       React.SetStateAction<ExpenseCategoryIconTypes | null>
    >;
+   currentData?: { icon: string; label: string };
    expenseCategory: ExpenseCategoryTypes[];
    selectedIcon: ExpenseCategoryIconTypes | null;
-   setIsAddNewCategory: React.Dispatch<React.SetStateAction<boolean>>;
+   setIsAddNewCategory?: React.Dispatch<React.SetStateAction<boolean>>;
+   setItemToEdit?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 const NewExpenseCategoryForm = ({
-   isIconSelection,
    selectedIcon,
-   setIconSelection,
+   currentData,
+   setItemToEdit,
    setSelectedIcon,
    setIsAddNewCategory,
    expenseCategory,
@@ -41,6 +41,7 @@ const NewExpenseCategoryForm = ({
                return { icon: icon, label: label };
             }),
          );
+
          hasScan.current = true;
       }
    }, []);
@@ -66,8 +67,17 @@ const NewExpenseCategoryForm = ({
          return;
       }
 
-      dispatch(addNewExpenseCategory({ ...data, icon: selectedIcon }));
-      setIsAddNewCategory(false);
+      dispatch(
+         addNewExpenseCategory({
+            ...data,
+            icon: selectedIcon,
+            alloc_per_month: Number(data.alloc_per_month),
+         }),
+      );
+      if (setIsAddNewCategory) {
+         setIsAddNewCategory(false);
+         setSelectedIcon(null);
+      }
    };
 
    return (
@@ -76,29 +86,31 @@ const NewExpenseCategoryForm = ({
          className="relative  border-card border-3 p-[0.8vw] rounded-[0.6vw] flex items-center justify-around gap-[0.6vw]"
       >
          <div className="flex flex-col items-start gap-[0.85vw]">
-            <input
-               type="text"
-               {...register("label")}
-               required
-               autoComplete="off"
-               className="text-[1.1vw] font-semibold outline-none w-[9vw] "
-               placeholder="Category label"
-            />
-            <input
-               type="number"
-               required
-               {...register("alloc_per_month")}
-               autoComplete="off"
-               min={10}
-               className="text-[0.8vw] font-normal outline-none w-[9vw] "
-               placeholder="Budget per month"
-            />
-
+            <div>
+               <input
+                  type="text"
+                  {...register("label")}
+                  required
+                  autoComplete="off"
+                  className="text-[1.1vw] font-semibold outline-none w-[9vw] "
+                  placeholder={
+                     setIsAddNewCategory ? "Category label" : "New label"
+                  }
+               />
+               <input
+                  type="number"
+                  required
+                  {...register("alloc_per_month")}
+                  autoComplete="off"
+                  min={10}
+                  className="text-[0.8vw] font-normal outline-none w-[9vw] "
+                  placeholder="Budget per month"
+               />
+            </div>
             <IconSelection
                existingLabels={existingLabels}
-               isIconSelection={isIconSelection}
+               currentData={currentData}
                selectedIcon={selectedIcon}
-               setIconSelection={setIconSelection}
                setSelectedIcon={setSelectedIcon}
             />
             {errMsg && <ErrorMessage errMsg={errMsg} />}
@@ -109,7 +121,13 @@ const NewExpenseCategoryForm = ({
             </button>
             <button
                type="button"
-               onClick={() => setIsAddNewCategory(false)}
+               onClick={() => {
+                  if (setIsAddNewCategory) {
+                     setIsAddNewCategory(false);
+                  } else if (setItemToEdit) {
+                     setItemToEdit(null);
+                  }
+               }}
                className="cursor-pointer opacity-40"
             >
                <XCircleIcon size={25} />
