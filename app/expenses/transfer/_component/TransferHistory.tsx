@@ -1,10 +1,10 @@
 "use client";
-import { Funnel, Scroll } from "lucide-react";
+import { Scroll } from "lucide-react";
 import TableSkeleton from "../../account/_component/TableSkeleton";
 
 import Pagination from "@/app/component/Pagination";
-import { usePagination } from "@/lib/hooks/usePagination";
 import { useTransferState } from "@/lib/hooks/transfer/useTransferState";
+import { usePagination } from "@/lib/hooks/usePagination";
 import { TransferTypes } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
 import Table from "./Table";

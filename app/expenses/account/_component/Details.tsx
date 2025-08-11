@@ -69,13 +69,13 @@ const Details = () => {
                                  </span>
                               </td>
                               <td className="border-2 py-[0.5vw] px-[1vw] border-card">
-                                 ₱{balance}
+                                 ₱{balance.toLocaleString()}
                               </td>
                               <td className="border-2 py-[0.5vw] px-[1vw] border-card">
-                                 ₱{total_income}
+                                 ₱{total_income.toLocaleString()}
                               </td>
                               <td className="border-t-2  border-b-2 border-card py-[0.5vw] px-[1vw]">
-                                 ₱{total_expense}
+                                 ₱{total_expense.toLocaleString()}
                               </td>
                            </tr>
                         );

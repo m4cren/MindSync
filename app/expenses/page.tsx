@@ -1,12 +1,12 @@
 import { Metadata } from "next";
 
+import { Suspense } from "react";
+import SkeletonPage from "./_component/SkeletonPage";
 import Header from "./_component/Header";
 import Dashboard from "./_component/Dashboard";
 import Accounts from "./_component/Accounts/Accounts";
 import MonthlyBudget from "./_component/MonthlyBudget/MonthlyBudget";
 import Chart from "./_component/NetWorth/Chart";
-import { Suspense } from "react";
-import SkeletonPage from "./_component/SkeletonPage";
 
 const page = () => {
    return (

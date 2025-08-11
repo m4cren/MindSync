@@ -23,13 +23,13 @@ const BudgetCard = ({ category, amount, allocation, icon }: Props) => {
                Alloted budget:
             </p>
             <h4 className="text-[0.9vw] font-light opacity-80">
-               ₱{allocation}
+               ₱{allocation.toLocaleString()}
             </h4>
          </div>
          {parseInt(percentage) > 100 ? (
-            <p className="flex items-center gap-[0.4vw] text-[0.8vw] w-fit px-[1.2vw] py-[0.25vw] rounded-[0.4vw] bg-red-500/20 text-center">
+            <p className="flex items-center gap-[0.4vw] text-[0.6vw] w-fit px-[0.8vw] py-[0.25vw] rounded-[0.4vw] bg-red-500/20 text-center">
                Total budget exceeded
-               <AlertCircle size={12} />
+               <AlertCircle size={15} />
             </p>
          ) : (
             <div className="flex items-center gap-[0.6vw]">
@@ -44,7 +44,7 @@ const BudgetCard = ({ category, amount, allocation, icon }: Props) => {
                </div>
             </div>
          )}
-         <h4 className="text-[0.9vw] font-bold">₱{amount}</h4>
+         <h4 className="text-[0.9vw] font-bold">₱{amount.toLocaleString()}</h4>
       </li>
    );
 };

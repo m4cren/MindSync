@@ -1,9 +1,9 @@
 "use client";
+import classNames from "classnames";
 import { XIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { taskCategoryBg } from "./Task";
-import { useRouter, useSearchParams } from "next/navigation";
-import classNames from "classnames";
 
 interface Props {
    setIsFilter: React.Dispatch<React.SetStateAction<boolean>>;

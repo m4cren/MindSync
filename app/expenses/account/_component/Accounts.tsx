@@ -1,13 +1,11 @@
 "use client";
 
 import { useOnlyAccount } from "@/lib/hooks/accounts/useOnlyAccount";
-import { CheckCircle, Plus, Users, XCircleIcon } from "lucide-react";
+import { Plus, Users } from "lucide-react";
 import { useState } from "react";
 
 import { accountIconMapp } from "../../_component/Accounts/Accounts";
 import CardSkeleton from "../../_component/CardSkeleton";
-import { useForm } from "react-hook-form";
-import { AccountIconTypes, AccountTypes } from "@/lib/types";
 import NewAccountForm from "./NewAccountForm";
 
 const Accounts = () => {
@@ -40,7 +38,9 @@ const Accounts = () => {
                            <IconComponent size={20} />
                            <h3 className="text-[1.1vw] font-bold">{name}</h3>
                         </div>
-                        <p className="text-[1vw] opacity-70">₱{balance}</p>
+                        <p className="text-[1vw] opacity-70">
+                           ₱{balance.toLocaleString()}
+                        </p>
                      </li>
                   );
                })}

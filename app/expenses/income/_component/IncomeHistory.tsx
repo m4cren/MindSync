@@ -4,7 +4,7 @@ import Pagination from "@/app/component/Pagination";
 import { useIncomeState } from "@/lib/hooks/income/useIncomeState";
 import { usePagination } from "@/lib/hooks/usePagination";
 import { IncomeTypes } from "@/lib/types";
-import { Funnel, Scroll } from "lucide-react";
+import { Scroll } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import TableSkeleton from "../../account/_component/TableSkeleton";
 import Table from "./Table";

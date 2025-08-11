@@ -1,6 +1,6 @@
-import { AppDispatch, RootState } from "@/store/store";
-import { useDispatch, useSelector } from "react-redux";
 import { createAccount } from "@/store/accounts/asyncFunc";
+import { AppDispatch } from "@/store/store";
+import { useDispatch } from "react-redux";
 
 export const useCreateAccount = () => {
    const dispatch = useDispatch<AppDispatch>();

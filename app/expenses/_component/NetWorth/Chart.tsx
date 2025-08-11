@@ -1,5 +1,7 @@
 "use client";
 
+import { CustomTooltip } from "@/app/component/CustomToolTip";
+import { useNetworthState } from "@/lib/hooks/useNetworthState";
 import { FiltererTypes, NetWorthTypes } from "@/lib/types";
 import { sort } from "fast-sort";
 import { Funnel, Landmark } from "lucide-react";
@@ -10,13 +12,10 @@ import {
    LineChart,
    ResponsiveContainer,
    Tooltip,
-   TooltipContentProps,
    XAxis,
    YAxis,
 } from "recharts";
 import DateFilter from "./DateFilter";
-import { useNetworthState } from "@/lib/hooks/useNetworthState";
-import { CustomTooltip } from "@/app/component/CustomToolTip";
 const monthMap: Record<string, string> = {
    Jan: "01",
    Feb: "02",

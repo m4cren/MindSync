@@ -1,15 +1,21 @@
 "use client";
 
+import DropDownSelection from "@/app/component/DropDownSelection";
+import ErrorMessage from "@/app/component/ErrorMessage";
 import { useOnlyAccount } from "@/lib/hooks/accounts/useOnlyAccount";
 import { useExpenseCategoryState } from "@/lib/hooks/expense/useExpenseCategoryState";
 import { useRecordExpense } from "@/lib/hooks/expense/useRecordExpense";
 import { usePopupState } from "@/lib/hooks/popup/usePopupState";
-import { ExpenseCategoryIconTypes, ExpenseTypes } from "@/lib/types";
+import {
+   AccountIconTypes,
+   expenseCategoryIconMap,
+   ExpenseCategoryIconTypes,
+   ExpenseTypes,
+} from "@/lib/types";
 import { Calendar, Coins, Logs, Plus, UserCircle } from "lucide-react";
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
-import { capitalFirstLetter } from "../../account/_component/NewAccountForm";
-import ErrorMessage from "@/app/component/ErrorMessage";
+import { accountIconMapp } from "../Accounts/Accounts";
 
 const ExpenseForm = () => {
    const { untogglePopup } = usePopupState();
@@ -17,14 +23,17 @@ const ExpenseForm = () => {
       accounts: { accounts },
       dispatch,
    } = useOnlyAccount();
+
    const { recordExpense } = useRecordExpense();
    const { expenseCategory } = useExpenseCategoryState();
    const [errMsg, setErrMsg] = useState<string | null>(null);
    const { register, handleSubmit } = useForm<ExpenseTypes>();
-
+   const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
    const [amountInput, setAmountInput] = useState<number>(0);
-   const [selectedCategoryIcon, setSelectedCategoryIcon] =
-      useState<ExpenseCategoryIconTypes | null>(null);
+   const [selectedCategory, setSelectedCategory] = useState<{
+      icon: ExpenseCategoryIconTypes;
+      label: string;
+   } | null>(null);
 
    const onSubmit = (data: ExpenseTypes) => {
       const dateObj = new Date(data.date_str);
@@ -41,7 +50,7 @@ const ExpenseForm = () => {
          year: "numeric",
       });
 
-      if (selectedAccount && selectedCategoryIcon) {
+      if (selectedAccount && selectedCategory?.icon && selectedCategory.label) {
          dispatch(
             recordExpense({
                ...data,
@@ -50,7 +59,9 @@ const ExpenseForm = () => {
                acc_icon:
                   accounts.find(({ name }) => name === selectedAccount)?.icon ||
                   "wallet",
-               category_icon: selectedCategoryIcon || "Miscellaneous",
+               category_icon: selectedCategory.icon || "Miscellaneous",
+               category: selectedCategory.label,
+               account: selectedAccount,
             }),
          );
 
@@ -66,19 +77,13 @@ const ExpenseForm = () => {
       setAmountInput(Number(e.target.value));
    };
 
-   const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
-
-   const handleChangeAccount = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const value = e.target.value;
-      setSelectedAccount(value);
-   };
-
    const accBalance = accounts.find(
       ({ name }) => name === selectedAccount,
    )?.balance;
+
    return (
       <form
-         className="flex flex-col gap-[1vw]"
+         className="flex flex-col gap-[1vw] w-[22vw]"
          onSubmit={handleSubmit(onSubmit)}
       >
          <input
@@ -87,9 +92,9 @@ const ExpenseForm = () => {
             {...register("label")}
             placeholder="Where did the money go?"
             required
-            className="text-[1.5vw] font-semibold outline-none"
+            className="text-[1.5vw] font-semibold outline-none w-full"
          />
-         <div className="flex items-center justify-between w-[22vw]">
+         <div className=" flex items-center justify-between ">
             <label
                htmlFor="account"
                className="text-[1vw] opacity-75 flex items-center gap-[0.4vw]"
@@ -97,24 +102,31 @@ const ExpenseForm = () => {
                <UserCircle size={20} />
                Account
             </label>
-            <select
-               {...register("account")}
-               id="account"
-               value={selectedAccount ? selectedAccount : ""}
-               onChange={handleChangeAccount}
-               className="border-1 w-[10vw] border-[#d4d4d430] rounded-[0.35vw] px-[1vw] text-[0.9vw] py-[0.25vw]"
+            <DropDownSelection<string | null>
+               selectionLabel="Select account"
+               selectedItem={selectedAccount}
             >
-               <option value="" disabled>
-                  Select an account
-               </option>
-               {accounts.map(({ name }) => (
-                  <option key={name} value={name}>
-                     {name}
-                  </option>
-               ))}
-            </select>
+               <ul className="flex flex-col gap-[0.1vw]">
+                  {accounts.map(({ icon, name, id }) => {
+                     const AccountIcon =
+                        accountIconMapp[icon as AccountIconTypes];
+                     return (
+                        <li
+                           key={id}
+                           onClick={() => {
+                              setSelectedAccount(name);
+                           }}
+                           className="flex items-center gap-[0.3vw] hover:bg-[#d4d4d420] py-[0.4vw] pl-[0.4vw] rounded-[0.4vw] transition duration-200"
+                        >
+                           <AccountIcon />
+                           {name}
+                        </li>
+                     );
+                  })}
+               </ul>
+            </DropDownSelection>
          </div>
-         <div className="flex items-center justify-between w-[22vw]">
+         <div className="flex items-center justify-between ">
             <label
                htmlFor="category"
                className="text-[1vw] opacity-75 flex items-center gap-[0.4vw]"
@@ -122,41 +134,50 @@ const ExpenseForm = () => {
                <Logs size={20} />
                Category
             </label>
-            <select
-               {...register("category")}
-               defaultValue={""}
-               className="border-1 w-[10vw] border-[#d4d4d430] rounded-[0.35vw] px-[1vw] text-[0.9vw] py-[0.25vw]"
+            <DropDownSelection<string | undefined>
+               selectionLabel="Select category"
+               selectedItem={selectedCategory?.label}
             >
-               <option value="" disabled>
-                  Select category
-               </option>
-               {expenseCategory.expenseCategory.map(({ label, id, icon }) => (
-                  <option
-                     key={id}
-                     value={label}
-                     id={icon}
-                     onClick={() => setSelectedCategoryIcon(icon)}
-                  >
-                     {capitalFirstLetter(label)}
-                  </option>
-               ))}
-            </select>
+               <ul className="flex flex-col gap-[0.1vw]">
+                  {expenseCategory.expenseCategory.map(
+                     ({ icon, label, id }) => {
+                        const AccountIcon =
+                           expenseCategoryIconMap[
+                              icon as ExpenseCategoryIconTypes
+                           ];
+                        return (
+                           <li
+                              key={id}
+                              onClick={() => {
+                                 setSelectedCategory({
+                                    label: label,
+                                    icon: icon,
+                                 });
+                              }}
+                              className="flex items-center gap-[0.3vw] hover:bg-[#d4d4d420] py-[0.4vw] pl-[0.4vw] rounded-[0.4vw] transition duration-200"
+                           >
+                              <AccountIcon />
+                              {label}
+                           </li>
+                        );
+                     },
+                  )}
+               </ul>
+            </DropDownSelection>
          </div>
-         {errMsg && (
-            <div className="w-[22vw]">
-               <ErrorMessage errMsg={errMsg} />
-            </div>
-         )}
-         <div className="flex items-center justify-between w-[22vw] -mb-[0.8vw]">
+         {errMsg && <ErrorMessage errMsg={errMsg} />}
+         <div className="flex items-center justify-between  -mb-[0.8vw]">
             <label
                htmlFor="amount"
                className="text-[0.85vw] opacity-50 flex items-center gap-[0.4vw]"
             >
                Current Balance:
             </label>
-            <p className="text-[0.85vw] opacity-50">₱{accBalance}</p>
+            <p className="text-[0.85vw] opacity-50">
+               ₱{accBalance?.toLocaleString()}
+            </p>
          </div>
-         <div className="flex items-center justify-between w-[22vw]">
+         <div className="flex items-center justify-between ">
             <label
                htmlFor="amount"
                className="text-[1vw] opacity-75 flex items-center gap-[0.4vw]"
@@ -179,8 +200,8 @@ const ExpenseForm = () => {
                className="outline-none text-end w-[6vw] text-[1vw] font-semibold appearance-none "
             />
          </div>
-         <hr className="w-[22vw] opacity-20 -mt-[0.6vw]" />
-         <div className="flex items-center justify-between w-[22vw] -mt-[0.8vw] ">
+         <hr className=" opacity-20 -mt-[0.6vw]" />
+         <div className="flex items-center justify-between  -mt-[0.8vw] ">
             <label
                htmlFor="amount"
                className="text-[0.85vw] opacity-50 flex items-center gap-[0.4vw]"
@@ -190,10 +211,10 @@ const ExpenseForm = () => {
             <p className="text-[0.85vw] opacity-50">
                {!selectedAccount
                   ? "Select account"
-                  : `₱ ${accBalance! - amountInput}`}
+                  : `₱ ${(accBalance! - amountInput).toLocaleString()}`}
             </p>
          </div>
-         <div className="flex items-center justify-between w-[22vw]">
+         <div className="flex items-center justify-between ">
             <label
                htmlFor="date"
                className="text-[1vw] opacity-75 flex items-center gap-[0.4vw]"
@@ -210,7 +231,7 @@ const ExpenseForm = () => {
          </div>
          <button
             type="submit"
-            className="cursor-pointer text-[0.9vw] py-[0.4vw] bg-[#2c2c2c] rounded-[0.6vw] flex flex-col items-center justify-center w-[22vw]"
+            className="cursor-pointer text-[0.9vw] py-[0.4vw] bg-[#2c2c2c] rounded-[0.6vw] flex flex-col items-center justify-center "
          >
             <Plus />
             Record

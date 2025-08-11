@@ -16,7 +16,7 @@ const Card = ({ alloc_per_month, label, children }: Props) => {
             </h3>
          </div>
          <p className="text-[0.8vw] opacity-75 font-medium">
-            Allocated Budget: ₱{alloc_per_month}
+            Allocated Budget: ₱{alloc_per_month.toLocaleString()}
          </p>
       </li>
    );

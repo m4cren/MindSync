@@ -2,7 +2,6 @@ import {
    AccountIconTypes,
    expenseCategoryIconMap,
    ExpenseCategoryIconTypes,
-   ExpenseCategoryTypes,
    ExpenseTypes,
 } from "@/lib/types";
 import {
@@ -64,7 +63,7 @@ const Table = ({ items }: { items: ExpenseTypes[] }) => {
                            {label}
                         </td>
                         <td className="border-2 py-[0.5vw] px-[1vw] border-card">
-                           ₱{amount}
+                           ₱{amount.toLocaleString()}
                         </td>
                         <td className="border-2 py-[0.5vw] px-[1vw] border-card">
                            <span className="flex items-center gap-[0.4vw]">

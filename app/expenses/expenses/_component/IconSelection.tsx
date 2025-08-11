@@ -1,6 +1,6 @@
 import { expenseCategoryIconMap, ExpenseCategoryIconTypes } from "@/lib/types";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 const categoryIconOptions: ExpenseCategoryIconTypes[] = [
    "Childcare",
    "Clothing",

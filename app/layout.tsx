@@ -25,17 +25,16 @@ export default function RootLayout({
 }>) {
    return (
       <html lang="en" data-theme="business">
-         <DeleteCookieOnLoad />
-         <ReduxProvider>
-            <body
-               className={`${inter.variable}  antialiased overflow-x-hidden `}
-            >
-               <InitialAppLoader>
+         <body className={`${inter.variable}  antialiased overflow-x-hidden `}>
+            <InitialAppLoader>
+               <ReduxProvider>
+                  <DeleteCookieOnLoad />
+
                   <Menu />
                   {children}
-               </InitialAppLoader>
-            </body>
-         </ReduxProvider>
+               </ReduxProvider>
+            </InitialAppLoader>
+         </body>
       </html>
    );
 }

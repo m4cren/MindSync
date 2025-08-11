@@ -62,7 +62,7 @@ const Accounts = () => {
          dispatch(updateNetWorth(args));
          hasUpdated.current = true;
       }
-   }, []);
+   }, [accounts, dispatch, formattedDate, netWorth, updateNetWorth]);
    return (
       <div className="flex flex-col gap-[1vw] w-[20vw] h-fit border-2 border-card rounded-[0.5vw] p-[1.25vw]">
          <div className="flex items-center gap-[0.6vw]">
@@ -75,7 +75,7 @@ const Accounts = () => {
             <SkeletonCard />
          ) : (
             <ul className="flex flex-col gap-[0.6vw]">
-               {accounts.map(({ balance, name, id, icon }) => {
+               {accounts.map(({ balance, icon, name, id }) => {
                   const IconComponent =
                      accountIconMapp[icon as AccountIconTypes];
 
@@ -89,7 +89,7 @@ const Accounts = () => {
                            <h4 className="text-[1vw] font-bold">{name}</h4>
                         </div>
                         <h3 className="text-[1vw] opacity-80 font-light">
-                           ₱{balance}
+                           ₱{balance.toLocaleString()}
                         </h3>
                      </li>
                   );

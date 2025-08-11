@@ -12,7 +12,7 @@ export const CustomTooltip = ({
       <div className="flex flex-col gap-[0.2vw] bg-card p-[0.5vw] rounded-[0.5vw]">
          <p className="text-[0.75vw] text-[#d4d4d440]">{label}</p>
          <p className="text-[0.9vw] text-[#d4d4d4] font-normal">
-            ₱{data.value}
+            ₱{data.value.toLocaleString()}
          </p>
       </div>
    );

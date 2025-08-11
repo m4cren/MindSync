@@ -1,6 +1,6 @@
 "use client";
 import deleteToken from "@/actions/deleteToken";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 const DeleteCookieOnLoad = () => {
    useEffect(() => {

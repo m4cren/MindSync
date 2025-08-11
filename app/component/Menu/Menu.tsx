@@ -73,6 +73,7 @@ const Menu = () => {
          window.removeEventListener("keydown", handleKeyDown);
       };
    }, [dispatch, untogglePopup, togglePopup]);
+
    useEffect(() => {
       if (popup.menu) {
          const changeMenu = (e: KeyboardEvent) => {
@@ -108,7 +109,7 @@ const Menu = () => {
             window.removeEventListener("keydown", enterMenu);
          };
       }
-   }, [popup, selectedMenu]);
+   }, [popup, selectedMenu, dispatch, router, untogglePopup]);
 
    if (popup.menu) {
       return (

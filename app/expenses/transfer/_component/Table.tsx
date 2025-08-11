@@ -1,13 +1,4 @@
-import React from "react";
-import {
-   Calendar,
-   Coins,
-   Funnel,
-   LucideIcon,
-   Mail,
-   Scroll,
-   Send,
-} from "lucide-react";
+import { Calendar, Coins, LucideIcon, Mail, Send } from "lucide-react";
 
 import { AccountIconTypes, TransferTypes } from "@/lib/types";
 import { accountIconMapp } from "../../_component/Accounts/Accounts";
@@ -60,7 +51,7 @@ const Table = ({ sortedByDate }: { sortedByDate: TransferTypes[] }) => {
                            </span>
                         </td>
                         <td className="border-2 py-[0.5vw] px-[1vw] border-card">
-                           ₱{amount}
+                           ₱{amount.toLocaleString()}
                         </td>
                         <td className="border-2 py-[0.5vw] px-[1vw] border-card">
                            <span className="flex items-center gap-[0.4vw]">

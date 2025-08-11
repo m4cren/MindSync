@@ -2,8 +2,7 @@
 import setCookie from "@/actions/setCookie";
 import verifyPin from "@/actions/verifyPin";
 
-import { Landmark, Lock } from "lucide-react";
-import Image from "next/image";
+import { Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { useEffect, useRef, useState } from "react";

@@ -48,3 +48,18 @@
       transform: translateX(0);
    }
 }
+
+.drop-down-open-animation {
+   animation: dropDownSelection 0.2s forwards;
+}
+
+@keyframes dropDownSelection {
+   from {
+      height: 0;
+      opacity: 0.3;
+   }
+   to {
+      height: fit-content;
+      opacity: 1;
+   }
+}
