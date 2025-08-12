@@ -7,6 +7,7 @@ import { useState } from "react";
 import { accountIconMapp } from "../../_component/Accounts/Accounts";
 import CardSkeleton from "../../_component/CardSkeleton";
 import NewAccountForm from "./NewAccountForm";
+import AccountCard from "./AccountCard";
 
 const Accounts = () => {
    const { accounts } = useOnlyAccount();
@@ -26,24 +27,26 @@ const Accounts = () => {
             <CardSkeleton />
          ) : (
             <ul className="grid grid-cols-3 gap-[1.2vw]">
-               {accounts.accounts.map(({ balance, name, id, icon }) => {
-                  const IconComponent = accountIconMapp[icon];
-
-                  return (
-                     <li
+               {accounts.accounts.map(
+                  ({
+                     balance,
+                     name,
+                     id,
+                     icon,
+                     total_expense,
+                     total_income,
+                  }) => (
+                     <AccountCard
+                        balance={balance}
+                        name={name}
+                        icon={icon}
+                        id={id!}
                         key={id}
-                        className="bg-card p-[1.3vw] rounded-[0.6vw] flex flex-col gap-[0.4vw]"
-                     >
-                        <div className="flex items-center gap-[0.6vw]">
-                           <IconComponent size={20} />
-                           <h3 className="text-[1.1vw] font-bold">{name}</h3>
-                        </div>
-                        <p className="text-[1vw] opacity-70">
-                           ₱{balance.toLocaleString()}
-                        </p>
-                     </li>
-                  );
-               })}
+                        total_expense={total_expense}
+                        total_income={total_income}
+                     />
+                  ),
+               )}
                {isNewAccount ? (
                   <NewAccountForm setIsNewAccount={setIsNewAccount} />
                ) : (

@@ -7,7 +7,12 @@ import { useForm } from "react-hook-form";
 import { accountIconMapp } from "../../_component/Accounts/Accounts";
 import ErrorMessage from "@/app/component/ErrorMessage";
 
-const iconOption: AccountIconTypes[] = ["bank", "card", "savings", "wallet"];
+export const iconOption: AccountIconTypes[] = [
+   "bank",
+   "card",
+   "savings",
+   "wallet",
+];
 
 export const capitalFirstLetter = (word: string) => {
    return word.charAt(0).toUpperCase() + word.slice(1);
