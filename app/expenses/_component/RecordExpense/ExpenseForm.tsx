@@ -139,28 +139,34 @@ const ExpenseForm = () => {
                selectedItem={selectedCategory?.label}
             >
                <ul className="flex flex-col gap-[0.1vw]">
-                  {expenseCategory.expenseCategory.map(
-                     ({ icon, label, id }) => {
-                        const AccountIcon =
-                           expenseCategoryIconMap[
-                              icon as ExpenseCategoryIconTypes
-                           ];
-                        return (
-                           <li
-                              key={id}
-                              onClick={() => {
-                                 setSelectedCategory({
-                                    label: label,
-                                    icon: icon,
-                                 });
-                              }}
-                              className="flex items-center gap-[0.3vw] hover:bg-[#d4d4d420] py-[0.4vw] pl-[0.4vw] rounded-[0.4vw] transition duration-200"
-                           >
-                              <AccountIcon />
-                              {label}
-                           </li>
-                        );
-                     },
+                  {expenseCategory.expenseCategory.length > 0 ? (
+                     expenseCategory.expenseCategory.map(
+                        ({ icon, label, id }) => {
+                           const AccountIcon =
+                              expenseCategoryIconMap[
+                                 icon as ExpenseCategoryIconTypes
+                              ];
+                           return (
+                              <li
+                                 key={id}
+                                 onClick={() => {
+                                    setSelectedCategory({
+                                       label: label,
+                                       icon: icon,
+                                    });
+                                 }}
+                                 className="flex items-center gap-[0.3vw] hover:bg-[#d4d4d420] py-[0.4vw] pl-[0.4vw] rounded-[0.4vw] transition duration-200"
+                              >
+                                 <AccountIcon />
+                                 {label}
+                              </li>
+                           );
+                        },
+                     )
+                  ) : (
+                     <li className=" text-[0.75vw]">
+                        Provide an expense category
+                     </li>
                   )}
                </ul>
             </DropDownSelection>

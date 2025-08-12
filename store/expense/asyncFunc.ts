@@ -83,7 +83,7 @@ export const addNewExpenseCategory = createAsyncThunk(
       try {
          await addDoc(expenseCategoryRef, {
             ...data,
-            allo_per_month: Number(data.alloc_per_month),
+            alloc_per_month: Number(data.alloc_per_month),
          });
 
          dispatch(fetchExpenseCategory());

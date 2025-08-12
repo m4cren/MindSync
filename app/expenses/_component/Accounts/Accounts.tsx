@@ -1,7 +1,7 @@
 "use client";
 
 import { useAccountState } from "@/lib/hooks/accounts/useAccountState";
-import { useNetworthState } from "@/lib/hooks/useNetworthState";
+import { useNetworthState } from "@/lib/hooks/netWorth/useNetworthState";
 import { AccountIconTypes, AccountTypes, NetWorthArgs } from "@/lib/types";
 import { sort } from "fast-sort";
 import {
@@ -73,7 +73,7 @@ const Accounts = () => {
          <hr className="text-card border-2" />
          {isPending ? (
             <SkeletonCard />
-         ) : (
+         ) : accounts.length !== 0 ? (
             <ul className="flex flex-col gap-[0.6vw]">
                {accounts.map(({ balance, icon, name, id }) => {
                   const IconComponent =
@@ -95,6 +95,10 @@ const Accounts = () => {
                   );
                })}
             </ul>
+         ) : (
+            <p className="text-[1vw] font-medium opacity-50 text-center py-[1vw]">
+               You have no account
+            </p>
          )}
       </div>
    );

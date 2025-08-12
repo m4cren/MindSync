@@ -1,7 +1,7 @@
 "use client";
 import { CustomTooltip } from "@/app/component/CustomToolTip";
 import { useOnlyAccount } from "@/lib/hooks/accounts/useOnlyAccount";
-import { User } from "lucide-react";
+import { BarChart2, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
    Bar,
@@ -28,9 +28,11 @@ const Chart = () => {
       <div className="relative flex flex-col gap-[1vw] w-[20vw] h-[22vw]  border-2 border-card rounded-[0.5vw] p-[1.25vw]">
          <div className="flex items-center justify-between">
             <div className="flex items-center gap-[0.6vw]">
-               <User size={18} />
+               <BarChart2 size={18} />
 
-               <h1 className="text-[0.9vw] font-medium opacity-50">Account</h1>
+               <h1 className="text-[0.9vw] font-medium opacity-50">
+                  Balance Distribution
+               </h1>
             </div>
          </div>
          <hr className="text-card border-2" />
@@ -45,10 +47,10 @@ const Chart = () => {
                      dataKey="name"
                      tick={{
                         fontFamily: "Inter",
-                        fontSize: 6,
+                        fontSize: 8,
                         fill: "#d4d4d470",
                      }}
-                     angle={45}
+                     angle={30}
                      tickMargin={5}
                   />
                   <YAxis
@@ -76,7 +78,7 @@ const Chart = () => {
             </ResponsiveContainer>
          ) : (
             <p className="text-[1vw] font-medium opacity-50 text-center py-[1vw]">
-               You have no expense history
+               Create an account now
             </p>
          )}
       </div>

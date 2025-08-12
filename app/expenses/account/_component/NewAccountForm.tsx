@@ -5,6 +5,7 @@ import { CheckCircle, XCircleIcon } from "lucide-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { accountIconMapp } from "../../_component/Accounts/Accounts";
+import ErrorMessage from "@/app/component/ErrorMessage";
 
 const iconOption: AccountIconTypes[] = ["bank", "card", "savings", "wallet"];
 
@@ -26,19 +27,32 @@ const NewAccountForm = ({ setIsNewAccount }: Props) => {
    const [selectedIcon, setSelectedIcon] = useState<AccountIconTypes | null>(
       null,
    );
+   const [errMsg, setErrMsg] = useState<string | null>(null);
 
    const onSubmit = (data: AccountTypes) => {
-      if (data) {
-         dispatch(
-            createAccount({
-               ...data,
-               balance: 0,
-               total_expense: 0,
-               total_income: 0,
-               icon: selectedIcon,
-            } as AccountTypes),
-         );
-         setIsNewAccount(false);
+      if (data.name) {
+         if (selectedIcon) {
+            dispatch(
+               createAccount({
+                  ...data,
+                  balance: 0,
+                  total_expense: 0,
+                  total_income: 0,
+                  icon: selectedIcon,
+               } as AccountTypes),
+            );
+            setIsNewAccount(false);
+         } else {
+            setErrMsg("Select an icon");
+            setTimeout(() => {
+               setErrMsg(null);
+            }, 4000);
+         }
+      } else {
+         setErrMsg("Provide a name");
+         setTimeout(() => {
+            setErrMsg(null);
+         }, 4000);
       }
    };
 
@@ -90,6 +104,7 @@ const NewAccountForm = ({ setIsNewAccount }: Props) => {
                      })}
                   </ul>
                </DropDownSelection>
+               {errMsg && <ErrorMessage errMsg={errMsg} />}
             </div>
             <div className="flex flex-col gap-[0.5vw]">
                <button

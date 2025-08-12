@@ -32,7 +32,7 @@ const Details = () => {
 
          {accounts.isPending ? (
             <TableSkeleton />
-         ) : (
+         ) : accounts.accounts.length !== 0 ? (
             <table>
                <thead>
                   <tr>
@@ -83,6 +83,10 @@ const Details = () => {
                   )}
                </tbody>
             </table>
+         ) : (
+            <p className="text-[1vw] font-medium opacity-50 text-center py-[1vw]">
+               No details available
+            </p>
          )}
       </div>
    );

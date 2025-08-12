@@ -1,7 +1,7 @@
 "use client";
 
 import { CustomTooltip } from "@/app/component/CustomToolTip";
-import { useNetworthState } from "@/lib/hooks/useNetworthState";
+import { useNetworthState } from "@/lib/hooks/netWorth/useNetworthState";
 import { FiltererTypes, NetWorthTypes } from "@/lib/types";
 import { sort } from "fast-sort";
 import { Funnel, Landmark } from "lucide-react";
