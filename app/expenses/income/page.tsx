@@ -1,8 +1,9 @@
-import React from "react";
 import Header from "../_component/Header";
 
 import Dashboard from "../_component/Dashboard";
 import IncomeHistory from "./_component/IncomeHistory";
+import IncomeTypes from "./_component/IncomeTypes";
+import PieChartComponent from "./_component/PieChart";
 
 const page = () => {
    return (
@@ -15,9 +16,12 @@ const page = () => {
          <div className="grid grid-cols-[22vw_1fr]">
             <div className="flex flex-col gap-[2vw]">
                <Dashboard />
+               <IncomeTypes />
             </div>
-
-            <IncomeHistory />
+            <div className="flex flex-col gap-[2vw]">
+               <IncomeHistory />
+               <PieChartComponent />
+            </div>
          </div>
       </>
    );

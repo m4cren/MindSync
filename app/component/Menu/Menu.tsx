@@ -39,7 +39,7 @@ const menus: MenuStateTypes[] = [
    {
       label: "Settings",
 
-      href: "/settings",
+      href: "/settings/profile",
    },
 ];
 

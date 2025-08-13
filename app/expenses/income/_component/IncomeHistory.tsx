@@ -25,7 +25,7 @@ const IncomeHistory = () => {
                <Scroll size={18} />
 
                <h1 className="text-[0.9vw] font-medium opacity-50">
-                  Income History
+                  Income History Table
                </h1>
             </div>
          </div>
@@ -46,7 +46,7 @@ const IncomeHistory = () => {
             </>
          ) : (
             <p className="text-[1vw] font-medium opacity-50 text-center py-[1vw]">
-               You have no expense history
+               No earnings tracked
             </p>
          )}
       </div>

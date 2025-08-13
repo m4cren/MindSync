@@ -42,7 +42,7 @@ export type PopupStateTypes = {
 };
 export type MenuStateTypes = {
    label: "Home" | "J.A.R.V.I.S" | "Daily Steps" | "Pocket Flow" | "Settings";
-   href: "/" | "/jarvis" | "/routines" | "/expenses" | "/settings";
+   href: "/" | "/jarvis" | "/routines" | "/expenses" | "/settings/profile";
 };
 export type AccountStateTypes = {
    accounts: AccountTypes[];
@@ -78,6 +78,15 @@ export type NetWorthArgs = {
 
 export type FiltererTypes = "Month" | "Year" | null;
 
+export type IncomeCategoryTypes =
+   | "Active"
+   | "Passive"
+   | "Portfolio"
+   | "Business"
+   | "Windfall"
+   | "Interest"
+   | "Others";
+
 export type IncomeTypes = {
    id?: string;
    income_stream: string;
@@ -86,6 +95,7 @@ export type IncomeTypes = {
    acc_icon: AccountIconTypes;
    date_str: string;
    created_at: Date;
+   income_type: IncomeCategoryTypes;
 };
 
 export type IncomeStateTypes = {

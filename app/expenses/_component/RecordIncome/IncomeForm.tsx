@@ -4,12 +4,26 @@ import DropDownSelection from "@/app/component/DropDownSelection";
 import { useOnlyAccount } from "@/lib/hooks/accounts/useOnlyAccount";
 import { useRecordIncome } from "@/lib/hooks/income/useRecordIncome";
 import { usePopupState } from "@/lib/hooks/popup/usePopupState";
-import { AccountIconTypes, IncomeTypes } from "@/lib/types";
-import { Calendar, Coins, Plus, UserCircle } from "lucide-react";
+import {
+   AccountIconTypes,
+   IncomeCategoryTypes,
+   IncomeTypes,
+} from "@/lib/types";
+import {
+   BanknoteArrowDown,
+   Calendar,
+   Coins,
+   Plus,
+   UserCircle,
+} from "lucide-react";
 import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { accountIconMapp } from "../Accounts/Accounts";
 import ErrorMessage from "@/app/component/ErrorMessage";
+import {
+   incomeColorTypeMap,
+   incomeTypes,
+} from "../../income/_component/IncomeTypes";
 
 const IncomeForm = () => {
    const { register, handleSubmit } = useForm<IncomeTypes>();
@@ -20,6 +34,8 @@ const IncomeForm = () => {
    } = useOnlyAccount();
    const { recordIncome } = useRecordIncome();
    const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
+   const [selectedIncomeType, setSelectedIncomeType] =
+      useState<IncomeCategoryTypes | null>(null);
    const [errMsg, setErrMsg] = useState<string | null>(null);
    const onSubmit = (data: IncomeTypes) => {
       const dateObj = new Date(data.date_str);
@@ -38,19 +54,28 @@ const IncomeForm = () => {
       });
 
       if (selectedAccount) {
-         dispatch(
-            recordIncome({
-               ...data,
-               date_str: data.date_str ? formFormattedDate : dateTodayFormatted,
-               created_at: data.date_str ? dateObj : dateToday,
-               acc_icon:
-                  accounts.find(({ name }) => name === selectedAccount)?.icon ||
-                  "card",
-               received_in: selectedAccount,
-            }),
-         );
-
-         dispatch(untogglePopup("recordIncome"));
+         if (selectedIncomeType) {
+            dispatch(
+               recordIncome({
+                  ...data,
+                  date_str: data.date_str
+                     ? formFormattedDate
+                     : dateTodayFormatted,
+                  created_at: data.date_str ? dateObj : dateToday,
+                  acc_icon:
+                     accounts.find(({ name }) => name === selectedAccount)
+                        ?.icon || "card",
+                  received_in: selectedAccount,
+                  income_type: selectedIncomeType,
+               }),
+            );
+            dispatch(untogglePopup("recordIncome"));
+         } else {
+            setErrMsg("Please select type of income");
+            setTimeout(() => {
+               setErrMsg(null);
+            }, 5000);
+         }
       } else {
          setErrMsg("Please select an account");
          setTimeout(() => {
@@ -77,7 +102,8 @@ const IncomeForm = () => {
             type="text"
             {...register("income_stream")}
             placeholder="Where is the money from?"
-            className="text-[1.5vw] font-semibold outline-none text-end "
+            className="text-[1.5vw] font-semibold outline-none text-end"
+            required
          />
          <div className="flex items-center justify-between">
             <label
@@ -112,6 +138,40 @@ const IncomeForm = () => {
                </ul>
             </DropDownSelection>
          </div>
+         <div className="flex items-center justify-between">
+            <label
+               htmlFor="account"
+               className="text-[1vw] opacity-75 flex items-center gap-[0.4vw]"
+            >
+               <BanknoteArrowDown size={20} />
+               Income Type
+            </label>
+            <DropDownSelection<IncomeCategoryTypes | null>
+               selectionLabel="Select type"
+               selectedItem={selectedIncomeType}
+               type="dropdown"
+            >
+               <ul className="flex flex-col gap-[0.1vw]">
+                  {incomeTypes.map(({ type }) => (
+                     <li
+                        key={type}
+                        onClick={() => {
+                           setSelectedIncomeType(type);
+                        }}
+                        className="flex items-center justify-between gap-[0.3vw] hover:bg-[#d4d4d420] py-[0.4vw] px-[1vw] rounded-[0.4vw] transition duration-200"
+                     >
+                        {type}
+                        <span
+                           style={{
+                              backgroundColor: `${incomeColorTypeMap[type]}`,
+                           }}
+                           className={`block w-[1.4vw] h-[0.6vw] rounded-full`}
+                        />
+                     </li>
+                  ))}
+               </ul>
+            </DropDownSelection>
+         </div>
          {errMsg && <ErrorMessage errMsg={errMsg} />}
          <div className="flex items-center justify-between  -mb-[0.8vw]">
             <label
@@ -137,7 +197,7 @@ const IncomeForm = () => {
                type="number"
                id="amount"
                {...register("amount")}
-               placeholder="$0"
+               placeholder="₱0"
                autoComplete="off"
                min={0}
                onChange={handleChangeAmount}

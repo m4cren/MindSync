@@ -13,6 +13,7 @@ body {
 @theme {
    --color-card: #202020;
    --color-flame: #fa8c01;
+   --color-flame-secondary: #a96222;
 }
 
 h1,

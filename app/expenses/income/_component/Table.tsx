@@ -3,16 +3,19 @@ import {
    BanknoteArrowDown,
    Calendar,
    Coins,
+   List,
    LucideIcon,
 } from "lucide-react";
 
 import { AccountIconTypes, IncomeTypes } from "@/lib/types";
 import { accountIconMapp } from "../../_component/Accounts/Accounts";
+import { incomeColorTypeMap } from "./IncomeTypes";
 
 const incomeHistoryHeader: { label: string; icon: LucideIcon }[] = [
    { label: "Income Stream", icon: Banknote },
    { label: "Amount", icon: Coins },
    { label: "Received In", icon: BanknoteArrowDown },
+   { label: "Type", icon: List },
    { label: "Date", icon: Calendar },
 ];
 
@@ -43,6 +46,7 @@ const Table = ({ sortedByDate }: { sortedByDate: IncomeTypes[] }) => {
                   received_in,
                   id,
                   acc_icon,
+                  income_type,
                }) => {
                   const IconComponent =
                      accountIconMapp[acc_icon as AccountIconTypes];
@@ -58,6 +62,17 @@ const Table = ({ sortedByDate }: { sortedByDate: IncomeTypes[] }) => {
                            <span className="flex items-center gap-[0.4vw]">
                               <IconComponent size={16} />
                               {received_in}
+                           </span>
+                        </td>
+                        <td className="border-t-2  border-b-2 border-card py-[0.5vw] px-[1vw]">
+                           <span
+                              style={{
+                                 backgroundColor: `${incomeColorTypeMap[income_type]}40`,
+                              }}
+                              className="px-[1vw] py-[0.2vw] rounded-[0.2vw] font-semibold"
+                           >
+                              {" "}
+                              {income_type}
                            </span>
                         </td>
                         <td className="border-t-2  border-b-2 border-card py-[0.5vw] px-[1vw]">
