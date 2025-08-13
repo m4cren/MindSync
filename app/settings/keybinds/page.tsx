@@ -1,7 +1,8 @@
 import React from "react";
+import Keybinds from "./Keybinds";
 
 const page = () => {
-   return <div></div>;
+   return <Keybinds />;
 };
 
 export default page;

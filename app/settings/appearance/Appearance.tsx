@@ -7,7 +7,7 @@ const Form = () => {
          <div className="flex flex-col gap-[0.5vw]">
             <h4 className="text-[1.5vw] font-bold">Theme</h4>
             <p className="text-[0.85vw] font-medium opacity-60">
-               Adjust the color of he interace for better visibility
+               Adjust the color of the interace for better visibility.
             </p>
             <ul className="flex items-center gap-[0.5vw]">
                <li className="cursor-pointer bg-[#d4d4d4] rounded-full w-[3vw] h-[3vw]"></li>
