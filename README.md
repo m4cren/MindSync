@@ -20,7 +20,7 @@ Track daily routines, log expenses, and visualize my progress through beautifull
 | ----------- | ----------------------------------------------------------------------------------------- |
 | Frontend    | [Next.js](https://nextjs.org/)                                                            |
 | UI & Motion | [Tailwind CSS](https://tailwindcss.com/), [Framer Motion](https://www.framer.com/motion/) |
-| Charts      | [Chart.js](https://www.chartjs.org/)                                                      |
+| Charts      | [Recharts](https://recharts.org)                                                      |
 | State Mgmt  | [Redux Toolkit](https://redux-toolkit.js.org/)                                            |
 | Backend     | [Firebase](https://firebase.google.com/)                                                  |
 | Deployment  | Vercel                                                                                    |
