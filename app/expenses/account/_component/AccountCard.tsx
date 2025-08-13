@@ -92,6 +92,7 @@ const AccountCard = ({
                />
                <DropDownSelection<AccountIconTypes | null>
                   selectionLabel="Select icon"
+                  type="dropdown"
                   selectedItem={
                      selectedIcon
                         ? (capitalFirstLetter(selectedIcon) as AccountIconTypes)

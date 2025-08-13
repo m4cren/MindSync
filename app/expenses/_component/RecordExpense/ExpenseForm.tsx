@@ -104,6 +104,7 @@ const ExpenseForm = () => {
             </label>
             <DropDownSelection<string | null>
                selectionLabel="Select account"
+               type="dropdown"
                selectedItem={selectedAccount}
             >
                <ul className="flex flex-col gap-[0.1vw]">
@@ -136,6 +137,7 @@ const ExpenseForm = () => {
             </label>
             <DropDownSelection<string | undefined>
                selectionLabel="Select category"
+               type="dropdown"
                selectedItem={selectedCategory?.label}
             >
                <ul className="flex flex-col gap-[0.1vw]">

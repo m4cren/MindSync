@@ -89,6 +89,7 @@ const NewAccountForm = ({ setIsNewAccount }: Props) => {
                         ? (capitalFirstLetter(selectedIcon) as AccountIconTypes)
                         : null
                   }
+                  type="dropdown"
                >
                   <ul className="flex flex-col gap-[0.1vw]">
                      {iconOption.map((icon, id) => {

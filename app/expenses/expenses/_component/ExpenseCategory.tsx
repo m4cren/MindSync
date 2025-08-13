@@ -51,8 +51,13 @@ const ExpenseCategory = () => {
                            expenseCategory={expenseCategory}
                            selectedIcon={selectedIcon}
                            setItemToEdit={setItemToEdit}
-                           currentData={{ icon: icon, label: label }}
+                           currentData={{
+                              icon: icon,
+                              label: label,
+                              alloc_per_month: alloc_per_month,
+                           }}
                            setSelectedIcon={setSelectedIcon}
+                           id={id}
                         />
                      );
                   }

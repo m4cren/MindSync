@@ -1,9 +1,46 @@
 import { db } from "@/lib/firebase/client";
 import { AccountTypes } from "@/lib/types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import {
+   addDoc,
+   collection,
+   deleteDoc,
+   doc,
+   getDocs,
+   updateDoc,
+} from "firebase/firestore";
 
 const accountRef = collection(db, "accounts");
+
+export const deleteAccount = createAsyncThunk(
+   "account/deleteAccount",
+   async (id: string, thunkAPI) => {
+      const { dispatch } = thunkAPI;
+      try {
+         const accToDelete = doc(accountRef, id);
+         await deleteDoc(accToDelete);
+
+         dispatch(fetchAccounts());
+      } catch (error) {
+         console.log(error);
+      }
+   },
+);
+
+export const editAccount = createAsyncThunk(
+   "account/editAccount",
+   async (data: AccountTypes, thunkAPI) => {
+      const { dispatch } = thunkAPI;
+      try {
+         const accToUpdate = doc(accountRef, data.id);
+
+         await updateDoc(accToUpdate, data);
+         dispatch(fetchAccounts());
+      } catch (error) {
+         console.log(error);
+      }
+   },
+);
 
 export const fetchAccounts = createAsyncThunk<AccountTypes[]>(
    "accounts/fetchAccounts",

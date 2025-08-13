@@ -4,7 +4,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
    addDoc,
    collection,
+   deleteDoc,
    doc,
+   getDoc,
    getDocs,
    query,
    updateDoc,
@@ -69,6 +71,38 @@ export const recordExpense = createAsyncThunk(
          });
          dispatch(fetchAccounts());
          dispatch(fetchExpense());
+      } catch (error) {
+         console.log(error);
+      }
+   },
+);
+
+export const editExpenseCategory = createAsyncThunk(
+   "expense/editExpenseCategory",
+   async (data: ExpenseCategoryTypes, thunkAPI) => {
+      const { dispatch } = thunkAPI;
+      try {
+         const docToUpdate = doc(expenseCategoryRef, data.id);
+         await updateDoc(docToUpdate, {
+            id: data.id,
+            label: data.label,
+            alloc_per_month: Number(data.alloc_per_month),
+         });
+         dispatch(fetchExpenseCategory());
+      } catch (error) {
+         console.log(error);
+      }
+   },
+);
+
+export const deleteExpenseCategory = createAsyncThunk(
+   "expense/deleteExpenseCategory",
+   async (id: string, thunkAPI) => {
+      const { dispatch } = thunkAPI;
+      try {
+         const docToDelete = doc(expenseCategoryRef, id);
+         await deleteDoc(docToDelete);
+         dispatch(fetchExpenseCategory());
       } catch (error) {
          console.log(error);
       }

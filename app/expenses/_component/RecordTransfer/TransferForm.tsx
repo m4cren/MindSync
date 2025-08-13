@@ -105,6 +105,7 @@ const TransferForm = () => {
             <DropDownSelection<string>
                selectionLabel="Select from account"
                selectedItem={selectedAccount?.from_acc}
+               type="dropdown"
             >
                <ul className="flex flex-col gap-[0.1vw]">
                   {accounts
@@ -167,6 +168,7 @@ const TransferForm = () => {
             </label>
             <DropDownSelection<string>
                selectionLabel="Select to account"
+               type="dropdown"
                selectedItem={selectedAccount?.to_acc}
             >
                <ul className="flex flex-col gap-[0.1vw]">

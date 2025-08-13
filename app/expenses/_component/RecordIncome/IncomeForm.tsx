@@ -90,6 +90,7 @@ const IncomeForm = () => {
             <DropDownSelection<string | null>
                selectionLabel="Select account"
                selectedItem={selectedAccount}
+               type="dropdown"
             >
                <ul className="flex flex-col gap-[0.1vw]">
                   {accounts.map(({ icon, name, id }) => {

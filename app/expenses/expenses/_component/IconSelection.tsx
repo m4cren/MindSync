@@ -53,6 +53,7 @@ const IconSelection = ({
    return (
       <DropDownSelection<ReactNode | null>
          selectionLabel="Select icon"
+         type="dropdown"
          icon={selectedIcon ? <IconComponent size={18} /> : null}
       >
          <ul className="grid grid-cols-3  gap-[0.1vw]">

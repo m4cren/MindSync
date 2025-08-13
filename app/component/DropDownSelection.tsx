@@ -1,4 +1,5 @@
-import { ChevronDown, ChevronLeft } from "lucide-react";
+import classNames from "classnames";
+import { ChevronDown, ChevronLeft, Funnel } from "lucide-react";
 import { ReactNode, useState } from "react";
 
 interface Props<TSelected> {
@@ -6,28 +7,41 @@ interface Props<TSelected> {
    selectedItem?: TSelected;
    children: ReactNode;
    icon?: ReactNode;
+   type: "icon" | "dropdown";
 }
 
 export default function DropDownSelection<TSelected>({
    selectedItem,
    selectionLabel,
    children,
+   type,
    icon,
 }: Props<TSelected>) {
    const [isSelection, setIsSelection] = useState<boolean>(false);
    return (
       <button
          type="button"
-         className="relative  cursor-pointer border-1 w-fit min-w-[10vw] border-[#d4d4d430] rounded-[0.35vw] px-[1vw] text-[0.9vw] py-[0.25vw]"
+         className={classNames("relative  cursor-pointer ", {
+            "border-1 w-fit min-w-[10vw] border-[#d4d4d430] rounded-[0.35vw] px-[1vw] text-[0.9vw] py-[0.25vw]":
+               type === "dropdown",
+         })}
       >
-         <span
-            onClick={() => setIsSelection(!isSelection)}
-            className="flex items-center  gap-[0.8vw] justify-between"
-         >
-            {icon ? icon : selectedItem ? String(selectedItem) : selectionLabel}
+         {type === "dropdown" ? (
+            <span
+               onClick={() => setIsSelection(!isSelection)}
+               className="flex items-center  gap-[0.8vw] justify-between"
+            >
+               {icon
+                  ? icon
+                  : selectedItem
+                    ? String(selectedItem)
+                    : selectionLabel}
 
-            {!isSelection ? <ChevronDown /> : <ChevronLeft />}
-         </span>
+               {!isSelection ? <ChevronDown /> : <ChevronLeft />}
+            </span>
+         ) : (
+            <Funnel onClick={() => setIsSelection(!isSelection)} />
+         )}
          {isSelection && (
             <div
                onClick={() => setIsSelection(false)}

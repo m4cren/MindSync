@@ -1,8 +1,14 @@
 "use client";
 import ErrorMessage from "@/app/component/ErrorMessage";
-import { useAddNewExpenseCategory } from "@/lib/hooks/expense/useAddNewExpenseCategory";
-import { ExpenseCategoryIconTypes, ExpenseCategoryTypes } from "@/lib/types";
-import { CheckCircle, XCircleIcon } from "lucide-react";
+
+import ConfirmationModal from "@/app/component/ConfirmationModal";
+import { useActionExpenseCategory } from "@/lib/hooks/expense/useActionExpenseCategory";
+import {
+   expenseCategoryIconMap,
+   ExpenseCategoryIconTypes,
+   ExpenseCategoryTypes,
+} from "@/lib/types";
+import { CheckCircle, Trash, XCircleIcon } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import IconSelection from "./IconSelection";
@@ -10,13 +16,15 @@ interface Props {
    setSelectedIcon: React.Dispatch<
       React.SetStateAction<ExpenseCategoryIconTypes | null>
    >;
-   currentData?: { icon: string; label: string };
+   currentData?: { icon: string; label: string; alloc_per_month: number };
    expenseCategory: ExpenseCategoryTypes[];
    selectedIcon: ExpenseCategoryIconTypes | null;
    setIsAddNewCategory?: React.Dispatch<React.SetStateAction<boolean>>;
    setItemToEdit?: React.Dispatch<React.SetStateAction<string | null>>;
+   id?: string;
 }
 const NewExpenseCategoryForm = ({
+   id,
    selectedIcon,
    currentData,
    setItemToEdit,
@@ -25,7 +33,12 @@ const NewExpenseCategoryForm = ({
    expenseCategory,
 }: Props) => {
    const { register, handleSubmit } = useForm<ExpenseCategoryTypes>();
-   const { addNewExpenseCategory, dispatch } = useAddNewExpenseCategory();
+   const {
+      addNewExpenseCategory,
+      dispatch,
+      editExpenseCategory,
+      deleteExpenseCategory,
+   } = useActionExpenseCategory();
 
    const [errMsg, setErrMsg] = useState<string | null>(null);
 
@@ -33,9 +46,13 @@ const NewExpenseCategoryForm = ({
       { icon: string; label: string }[]
    >([]);
    const hasScan = useRef<boolean>(false);
-
+   const CurrentIcon =
+      expenseCategoryIconMap[currentData?.icon as ExpenseCategoryIconTypes];
    useEffect(() => {
       if (!hasScan.current) {
+         if (currentData?.icon) {
+            setSelectedIcon(currentData.icon as ExpenseCategoryIconTypes);
+         }
          setExistingLabels(() =>
             expenseCategory.map(({ icon, label }) => {
                return { icon: icon, label: label };
@@ -59,7 +76,7 @@ const NewExpenseCategoryForm = ({
          ({ label }) => data.label.toLowerCase() === label.toLowerCase(),
       );
 
-      if (isDuplicate) {
+      if (isDuplicate && !currentData?.label) {
          setErrMsg("Label already existing");
          setTimeout(() => {
             setErrMsg(null);
@@ -67,17 +84,27 @@ const NewExpenseCategoryForm = ({
          return;
       }
 
-      dispatch(
-         addNewExpenseCategory({
-            ...data,
-            icon: selectedIcon,
-            alloc_per_month: Number(data.alloc_per_month),
-         }),
-      );
-      if (setIsAddNewCategory) {
+      if (!currentData?.icon && setIsAddNewCategory) {
+         dispatch(
+            addNewExpenseCategory({
+               ...data,
+               icon: selectedIcon,
+               alloc_per_month: Number(data.alloc_per_month),
+            }),
+         );
          setIsAddNewCategory(false);
-         setSelectedIcon(null);
+      } else if (setItemToEdit) {
+         dispatch(
+            editExpenseCategory({
+               ...data,
+               id: id,
+               alloc_per_month: Number(data.alloc_per_month),
+            }),
+         );
+         setItemToEdit(null);
       }
+
+      setSelectedIcon(null);
    };
 
    return (
@@ -92,9 +119,10 @@ const NewExpenseCategoryForm = ({
                   {...register("label")}
                   required
                   autoComplete="off"
+                  defaultValue={currentData?.label}
                   className="text-[1.1vw] font-semibold outline-none w-[9vw] "
                   placeholder={
-                     setIsAddNewCategory ? "Category label" : "New label"
+                     setIsAddNewCategory ? "Category label" : currentData?.label
                   }
                />
                <input
@@ -104,7 +132,11 @@ const NewExpenseCategoryForm = ({
                   autoComplete="off"
                   min={10}
                   className="text-[0.8vw] font-normal outline-none w-[9vw] "
-                  placeholder="Budget per month"
+                  placeholder={
+                     setIsAddNewCategory
+                        ? "Budget per month"
+                        : String(currentData?.alloc_per_month)
+                  }
                />
             </div>
             <IconSelection
@@ -115,7 +147,7 @@ const NewExpenseCategoryForm = ({
             />
             {errMsg && <ErrorMessage errMsg={errMsg} />}
          </div>
-         <div className="flex flex-col gap-[0.85vw]">
+         <div className="flex flex-col items-end gap-[0.5vw]">
             <button type="submit" className="cursor-pointer text-green-500/70">
                <CheckCircle size={25} />
             </button>
@@ -132,6 +164,20 @@ const NewExpenseCategoryForm = ({
             >
                <XCircleIcon size={25} />
             </button>
+            {currentData && (
+               <ConfirmationModal
+                  label="Confirm that you wish to delete this category."
+                  action={() => dispatch(deleteExpenseCategory(id!))}
+                  sub_label={
+                     <>
+                        <CurrentIcon size={14} />
+                        {currentData.label}
+                     </>
+                  }
+               >
+                  <Trash size={18} color="red" />
+               </ConfirmationModal>
+            )}
          </div>
       </form>
    );

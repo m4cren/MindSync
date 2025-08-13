@@ -1,7 +1,7 @@
 "use client";
 import { CustomTooltip } from "@/app/component/CustomToolTip";
 import { useOnlyAccount } from "@/lib/hooks/accounts/useOnlyAccount";
-import { BarChart2, User } from "lucide-react";
+import { BarChart2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
    Bar,
