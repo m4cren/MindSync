@@ -2,8 +2,7 @@
 import { useIncomeSummary } from "@/lib/hooks/useIncomeSummary";
 import { IncomeCategoryTypes } from "@/lib/types";
 import { BanknoteArrowDownIcon } from "lucide-react";
-import React, { useState } from "react";
-import { Label } from "recharts";
+import { useState } from "react";
 
 export const incomeTypes: { type: IncomeCategoryTypes; description: string }[] =
    [
@@ -50,8 +49,7 @@ export const incomeColorTypeMap: Record<IncomeCategoryTypes, string> = {
 };
 
 const IncomeTypes = () => {
-   const { incomeOverallDistribution, isPending, totalAmount } =
-      useIncomeSummary();
+   const { incomeOverallDistribution, totalAmount } = useIncomeSummary();
    const [hoveredType, setHoveredType] = useState<IncomeCategoryTypes | null>(
       null,
    );

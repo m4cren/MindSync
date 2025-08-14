@@ -1,9 +1,6 @@
-import { Funnel, XIcon } from "lucide-react";
-import { useState } from "react";
-import Filter from "./Filter";
+import classNames from "classnames";
 import { useRouter, useSearchParams } from "next/navigation";
 import DropDownSelection from "../DropDownSelection";
-import classNames from "classnames";
 import { taskCategoryBg } from "./Task";
 
 const Head = () => {

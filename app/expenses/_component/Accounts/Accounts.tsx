@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef } from "react";
 import SkeletonCard from "./SkeletonCard";
+import { useTodayNetWorth } from "@/lib/hooks/netWorth/useTodayNetWorth";
 
 export const accountIconMapp: Record<AccountIconTypes, LucideIcon> = {
    wallet: Wallet,
@@ -40,19 +41,16 @@ const Accounts = () => {
       year: "numeric",
    });
 
+   const totalNetWorthThisDay = useTodayNetWorth();
+
    useEffect(() => {
       if (hasUpdated.current) return;
-      const totalNetWorthThisDay: number = accounts.reduce(
-         (sum: number, acc: AccountTypes) => {
-            return sum + acc.balance;
-         },
-         0,
-      );
+
       const sortedNetWorth = sort(netWorth).desc((t) =>
          new Date(t.date_str).getTime(),
       );
 
-      if (!sortedNetWorth[0]) return;
+      if (!sortedNetWorth[0] && totalNetWorthThisDay === 0) return;
       if (formattedDate === sortedNetWorth[0].date_str) {
       } else {
          const args: NetWorthArgs = {

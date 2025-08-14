@@ -7,6 +7,7 @@ import incomeSliceReducer from "./income/incomeSlice";
 import expenseSliceReducer from "./expense/expenseSlice";
 import transferSliceReducer from "./transfer/transferSlice";
 import expenseCategoryReducer from "./expense/expCategorySlice";
+import totalNetWorthTodayReducer from "./netWorth/totalNetTodaySlice";
 
 export const store = configureStore({
    reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
       expense: expenseSliceReducer,
       transfer: transferSliceReducer,
       expenseCategory: expenseCategoryReducer,
+      totalNetWorthToday: totalNetWorthTodayReducer,
    },
    middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
