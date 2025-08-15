@@ -1,6 +1,6 @@
 "use client";
-import setCookie from "@/actions/setCookie";
-import verifyPin from "@/actions/verifyPin";
+import setCookie from "@/actions/security/setCookie";
+import verifyPin from "@/actions/security/verifyPin";
 
 import { Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -15,7 +15,7 @@ const Security = () => {
 
    const router = useRouter();
 
-   const validatePin = async (pin: number) => {
+   const validatePin = async (pin: string) => {
       setIsPending(true);
       try {
          const response = await verifyPin(pin);
@@ -42,7 +42,7 @@ const Security = () => {
          if (e.key === "Enter") {
             const pin = pinInputRef.current?.value;
 
-            const parsedPin = pin ? parseInt(pin) : 0;
+            const parsedPin = pin ? pin : "";
             if (pin) {
                validatePin(parsedPin);
             }
@@ -65,7 +65,6 @@ const Security = () => {
             {!isPending ? (
                <input
                   type="password"
-                  inputMode="numeric"
                   autoComplete="off"
                   ref={pinInputRef}
                   className="outline-none text-center tracking-wide ring-0 appearance-none bg-transparent border-[#d4d4d450] border-1 w-[15vw] py-[0.2vw] px-[1vw] rounded-[0.5vw]"

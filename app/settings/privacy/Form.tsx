@@ -1,60 +1,120 @@
 "use client";
-import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
 
-const Form = () => {
-   const [isPasswordShown, setIsPasswordShown] = useState<{
-      oldPass: boolean;
-      newPass: boolean;
-   }>({ oldPass: false, newPass: false });
+import ErrorMessage from "@/app/component/ErrorMessage";
+import axios from "axios";
+import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import InputPinContainer from "./InputPinContainer";
+
+interface Props {
+   action: "new" | "change";
+}
+export type PasswordFormType = {
+   oldPIN: string;
+   newPIN: string;
+   confirmPIN?: string;
+};
+export type PasswordInputType = {
+   oldPIN: boolean;
+   newPIN: boolean;
+   confirmPIN?: boolean;
+};
+const Form = ({ action }: Props) => {
+   const [isPasswordShown, setIsPasswordShown] = useState<PasswordInputType>({
+      oldPIN: false,
+      newPIN: false,
+      confirmPIN: false,
+   });
+   const [errMsg, setErrMsg] = useState<string | null>(null);
+   const [isPending, setIsPending] = useState<boolean>(false);
+   const { register, handleSubmit, reset } = useForm<PasswordFormType>();
+
+   const onSubmit = (data: PasswordFormType) => {
+      setIsPending(true);
+      if (data.newPIN === data.oldPIN || data.newPIN === data.confirmPIN) {
+         if (data.newPIN.length <= 5) {
+            setErrMsg("PIN should be more than 5 characters");
+            setIsPending(false);
+         } else {
+            const sendPin = async () => {
+               try {
+                  if (action === "new") {
+                     await axios.post("/api/create_pin", { pin: data.newPIN });
+                  } else {
+                     const res = await axios.post("/api/change_pin", {
+                        pin: data.oldPIN,
+                        newPin: data.confirmPIN,
+                     });
+                     if (!res.data.status) {
+                        setErrMsg(res.data.msg);
+                        setIsPending(false);
+                        return;
+                     }
+                  }
+                  reset();
+                  setIsPending(false);
+                  window.location.href = "/";
+               } catch (error) {
+                  console.log(error);
+               }
+            };
+            sendPin();
+         }
+      } else {
+         setErrMsg("PIN do not match");
+         setIsPending(false);
+      }
+      setTimeout(() => {
+         setErrMsg(null);
+      }, 4000);
+   };
+
    return (
-      <form className="flex flex-col gap-[1vw]">
-         <div className="flex flex-col gap-[0.4vw]">
-            <label htmlFor="" className=" font-semibold">
-               Finance tracker old PIN
-            </label>
-            <div className="relative  w-fit">
-               <input
-                  type={isPasswordShown.oldPass ? "text" : "password"}
-                  className="outline-none text-[1vw] font-semibold text-[#d4d4d490] border-2 py-[0.3vw] pl-[1vw] border-[#2c2c2c] rounded-[0.5vw] w-[18rem]"
-               />
-               <span
-                  onClick={() =>
-                     setIsPasswordShown({
-                        ...isPasswordShown,
-                        oldPass: !isPasswordShown.oldPass,
-                     })
-                  }
-                  className="cursor-pointer absolute top-1/2 right-1 scale-75 opacity-80 -translate-x-1/2 -translate-y-1/2"
-               >
-                  {!isPasswordShown.oldPass ? <Eye /> : <EyeOff />}
-               </span>
+      <form
+         onSubmit={handleSubmit(onSubmit)}
+         className="flex flex-col gap-[1vw]"
+      >
+         <InputPinContainer
+            action={action}
+            isPasswordShown={isPasswordShown}
+            label="oldPIN"
+            register={register}
+            setIsPasswordShown={setIsPasswordShown}
+         />
+         <InputPinContainer
+            isPasswordShown={isPasswordShown}
+            label="newPIN"
+            register={register}
+            action={action}
+            setIsPasswordShown={setIsPasswordShown}
+         />
+         {action === "change" && (
+            <InputPinContainer
+               isPasswordShown={isPasswordShown}
+               label="confirmPIN"
+               action={action}
+               register={register}
+               setIsPasswordShown={setIsPasswordShown}
+            />
+         )}
+         {errMsg && (
+            <div className="w-[20vw]">
+               <ErrorMessage errMsg={errMsg} />
             </div>
-         </div>
-         <div className="flex flex-col gap-[0.4vw]">
-            <label htmlFor="" className="font-semibold">
-               Finance tracker new PIN
-            </label>
-            <div className="relative  w-fit">
-               <input
-                  type={isPasswordShown.newPass ? "text" : "password"}
-                  className="outline-none text-[1vw] font-semibold text-[#d4d4d490] border-2 py-[0.3vw] pl-[1vw] border-[#2c2c2c] rounded-[0.5vw] w-[18rem]"
-               />
-               <span
-                  onClick={() =>
-                     setIsPasswordShown({
-                        ...isPasswordShown,
-                        newPass: !isPasswordShown.newPass,
-                     })
-                  }
-                  className="cursor-pointer absolute top-1/2 right-1 scale-75 opacity-80 -translate-x-1/2 -translate-y-1/2"
-               >
-                  {!isPasswordShown.newPass ? <Eye /> : <EyeOff />}
-               </span>
-            </div>
-         </div>
-         <button className="bg-flame-secondary cursor-pointer rounded-[0.4vw] px-[1vw] py-[0.3vw] w-[18%] text-[0.9vw] font-semibold mt-[1.5vw]">
-            Change PIN
+         )}
+         <button
+            type="submit"
+            className="bg-flame-secondary cursor-pointer rounded-[0.4vw] px-[1vw] py-[0.3vw] w-[18%] text-[0.9vw] font-semibold mt-[1.5vw]"
+         >
+            {isPending ? (
+               <span className="loading loading-infinity text-center" />
+            ) : action === "change" ? (
+               " Change PIN"
+            ) : (
+               "Confirm"
+            )}
          </button>
       </form>
    );
