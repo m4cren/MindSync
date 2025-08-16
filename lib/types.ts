@@ -214,7 +214,7 @@ type KeybindTypes = [ctrlKey: "ctrl" | "alt", key: string];
 export type SettingsConfigType = {
    profile: {
       system_name: string;
-      user_name: string;
+      username: string;
       banner_url: string;
    };
    appearance: {

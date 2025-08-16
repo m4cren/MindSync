@@ -5,8 +5,11 @@ import Image from "next/image";
 import React from "react";
 
 const Form = () => {
-   const { profileConfig, isPending } = useSettingsConfig();
-   console.log(profileConfig);
+   const {
+      settings: { profile },
+      isPending,
+   } = useSettingsConfig();
+   console.log(profile.username);
    return (
       <form action="" className="flex flex-col gap-[2vw]">
          {!isPending ? (
@@ -14,7 +17,7 @@ const Form = () => {
                <h5 className="font-semibold">Banner</h5>
                <Image
                   className=" rounded-[1vw] w-full h-[10rem] object-cover object-center"
-                  src={`/images/banner/${profileConfig.banner_url}`}
+                  src={`/images/banner/${profile.banner_url}`}
                   width={1920}
                   height={1080}
                   alt="banner"
@@ -39,9 +42,7 @@ const Form = () => {
                </label>
                <input
                   type="text"
-                  defaultValue={
-                     !isPending ? profileConfig.system_name : "Loading..."
-                  }
+                  defaultValue={!isPending ? profile.system_name : "Loading..."}
                   className="outline-none text-[1vw] font-semibold text-[#d4d4d490] border-2 py-[0.3vw] pl-[1vw] border-[#2c2c2c] rounded-[0.5vw] w-[40%]"
                />
             </div>
@@ -51,9 +52,7 @@ const Form = () => {
                </label>
                <input
                   type="text"
-                  defaultValue={
-                     !isPending ? profileConfig.user_name : "Loading..."
-                  }
+                  defaultValue={!isPending ? profile.username : "Loading..."}
                   className="outline-none text-[1vw] font-semibold text-[#d4d4d490] border-2 py-[0.3vw] pl-[1vw] border-[#2c2c2c] rounded-[0.5vw] w-[40%]"
                />
             </div>

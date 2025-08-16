@@ -1,7 +1,15 @@
+"use client";
+import { useSettingsConfig } from "@/lib/hooks/settings/useSettingsConfig";
+import classNames from "classnames";
 import { Check } from "lucide-react";
 import React from "react";
 
+const timeFormatOptions = [{ label: "12-hour" }, { label: "24-hour" }];
+
 const Form = () => {
+   const {
+      settings: { appearance },
+   } = useSettingsConfig();
    return (
       <div className="flex flex-col gap-[2vw]">
          <div className="flex flex-col gap-[0.5vw]">
@@ -23,14 +31,22 @@ const Form = () => {
             <h4 className="text-[1.5vw] font-bold">Time Format</h4>
 
             <ul className="flex flex-col gap-[0.75vw] text-[0.9vw] font-semibold ">
-               <li className="flex items-center gap-[0.6vw]">
-                  <button className="rounded-full h-[1.5vw] w-[1.5vw] border-6 border-flame bg-white"></button>
-                  12-hour
-               </li>
-               <li className="flex items-center gap-[0.6vw]">
-                  <button className="rounded-full h-[1.5vw] w-[1.5vw] border-3 border-[#d4d4d450] bg-transparent"></button>
-                  24-hour
-               </li>
+               {timeFormatOptions.map(({ label }, key) => (
+                  <li key={key} className="flex items-center gap-[0.6vw]">
+                     <button
+                        className={classNames(
+                           "rounded-full h-[1.5vw] w-[1.5vw] ",
+                           {
+                              "border-6 border-flame bg-white  ":
+                                 appearance.time_format === label,
+                              "border-3 border-[#d4d4d450] bg-transparent":
+                                 appearance.time_format !== label,
+                           },
+                        )}
+                     ></button>
+                     {label}
+                  </li>
+               ))}
             </ul>
          </div>
       </div>

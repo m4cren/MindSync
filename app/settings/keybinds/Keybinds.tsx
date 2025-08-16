@@ -1,37 +1,41 @@
+"use client";
+import { useSettingsConfig } from "@/lib/hooks/settings/useSettingsConfig";
 import React from "react";
 
-const keybindConfig = [
-   {
-      action: "Menu",
-      keys: ["ctrl", "alt"],
-   },
-   {
-      action: "Toggle close",
-      keys: ["ctrl", "."],
-   },
-   {
-      action: "Record Expense",
-      keys: ["ctrl", "1"],
-   },
-   {
-      action: "Record Income",
-      keys: ["ctrl", "2"],
-   },
-   {
-      action: "Record Transfer",
-      keys: ["ctrl", "3"],
-   },
-   {
-      action: "Record Habit",
-      keys: ["ctrl", "4"],
-   },
-   {
-      action: "Add Task",
-      keys: ["ctrl", "0"],
-   },
-];
-
 const Keybinds = () => {
+   const {
+      settings: { keybinds },
+   } = useSettingsConfig();
+   const keybindConfig = [
+      {
+         action: "Menu",
+         keys: keybinds.menu,
+      },
+      {
+         action: "Toggle close",
+         keys: keybinds.toggle_close,
+      },
+      {
+         action: "Record Expense",
+         keys: keybinds.record_expense,
+      },
+      {
+         action: "Record Income",
+         keys: keybinds.record_income,
+      },
+      {
+         action: "Record Transfer",
+         keys: keybinds.record_transfer,
+      },
+      {
+         action: "Record Habit",
+         keys: keybinds.record_habit,
+      },
+      {
+         action: "Add Task",
+         keys: keybinds.add_task,
+      },
+   ];
    return (
       <div className="flex flex-col gap-[2vw]">
          {keybindConfig.map(({ action, keys }, index) => {

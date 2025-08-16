@@ -1,8 +1,16 @@
 "use client";
 import DropDownSelection from "@/app/component/DropDownSelection";
+import { capitalFirstLetter } from "@/app/expenses/account/_component/NewAccountForm";
+import { useSettingsConfig } from "@/lib/hooks/settings/useSettingsConfig";
+import classNames from "classnames";
 import React, { useState } from "react";
 
+const animationOptions = ["on", "off"];
+
 const Accessibility = () => {
+   const {
+      settings: { accessibility },
+   } = useSettingsConfig();
    const [selectedFont, setSelectedFont] = useState<string | null>(null);
    return (
       <div className="flex flex-col gap-[2vw]">
@@ -29,14 +37,20 @@ const Accessibility = () => {
             <h4 className="text-[1.5vw] font-bold">Animations</h4>
 
             <ul className="flex gap-[1vw] text-[0.9vw] font-semibold ">
-               <li className="flex items-center gap-[0.6vw]">
-                  <button className="rounded-full h-[1.5vw] w-[1.5vw] border-6 border-flame bg-white"></button>
-                  On
-               </li>
-               <li className="flex items-center gap-[0.6vw]">
-                  <button className="rounded-full h-[1.5vw] w-[1.5vw] border-3 border-[#d4d4d450] bg-transparent"></button>
-                  Off
-               </li>
+               {animationOptions.map((item, key) => (
+                  <li key={key} className="flex items-center gap-[0.6vw]">
+                     <button
+                        className={classNames(
+                           "rounded-full h-[1.5vw] w-[1.5vw] border-3 border-[#d4d4d450] bg-transparent",
+                           {
+                              "border-6 border-flame bg-white!":
+                                 accessibility.animation === item,
+                           },
+                        )}
+                     ></button>
+                     {capitalFirstLetter(item)}
+                  </li>
+               ))}
             </ul>
          </div>
       </div>

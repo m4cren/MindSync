@@ -1,4 +1,5 @@
 "use client";
+import getPin from "@/actions/getPin";
 import setCookie from "@/actions/security/setCookie";
 import verifyPin from "@/actions/security/verifyPin";
 
@@ -12,14 +13,14 @@ const Security = () => {
 
    const [isPending, setIsPending] = useState<boolean>(false);
    const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
-
+   const [isSecured, setIsSecured] = useState<boolean>(true);
    const router = useRouter();
 
    const validatePin = async (pin: string) => {
       setIsPending(true);
       try {
          const response = await verifyPin(pin);
-         console.log(response);
+
          if (response) {
             setIsIncorrect(false);
             setCookie();
@@ -37,6 +38,14 @@ const Security = () => {
    };
 
    useEffect(() => {
+      const checkIfSecured = async () => {
+         if ((await getPin()) === "000000") {
+            setIsSecured(false);
+         } else {
+            setIsSecured(true);
+         }
+      };
+      checkIfSecured();
       pinInputRef.current?.focus();
       const enter = (e: KeyboardEvent) => {
          if (e.key === "Enter") {
@@ -60,6 +69,12 @@ const Security = () => {
          <div className="flex flex-col items-center justify-center gap-[0.4vw]">
             <Lock size={200} />
             <p className="text-[2vw] font-semibold">Cash Flow</p>
+            {!isSecured && (
+               <p className="text-center text-[0.95vw] opacity-75">
+                  You can use any PIN <br />
+                  Please set up a PIN in settings
+               </p>
+            )}
          </div>
          <ul className="flex flex-col items-center gap-[2vw]">
             {!isPending ? (

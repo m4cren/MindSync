@@ -55,6 +55,10 @@ const iconMap: Record<number, LucideIcon> = {
 const Menu = () => {
    const { dispatch, popup, togglePopup, untogglePopup } = usePopupState();
    const [selectedMenu, setSelectedMenu] = useState<number>(0);
+   const {
+      settings: { profile },
+      isPending,
+   } = useSettingsConfig();
 
    const router = useRouter();
 
@@ -74,7 +78,7 @@ const Menu = () => {
          window.removeEventListener("keydown", handleKeyDown);
       };
    }, [dispatch, untogglePopup, togglePopup]);
-   const { profileConfig, isPending } = useSettingsConfig();
+
    useEffect(() => {
       if (popup.menu) {
          const changeMenu = (e: KeyboardEvent) => {
@@ -144,7 +148,7 @@ const Menu = () => {
             </ul>
             <p className="text-[1vw] opacity-60 menuToggleAnimation">
                {!isPending ? (
-                  `Welcome ${profileConfig.user_name}`
+                  `Welcome ${profile.username}`
                ) : (
                   <span className="w-full h-[3rem] rounded-[0.5vw] bg-card animate-pulse" />
                )}

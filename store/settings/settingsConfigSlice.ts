@@ -5,17 +5,17 @@ import { initializeSettingsConfig } from "./asyncFunc";
 const initialState: SettingsConfigStateTypes = {
    config: {
       profile: {
-         banner_url: "",
-         system_name: "",
-         user_name: "",
+         banner_url: "banner.gif",
+         system_name: "MindSync",
+         username: "User",
       },
       appearance: {
-         theme: "",
+         theme: "dark",
          time_format: "12-hour",
       },
       accessibility: {
          animation: "on",
-         font: "",
+         font: "Inter",
       },
       keybinds: {
          add_task: ["ctrl", "0"],
