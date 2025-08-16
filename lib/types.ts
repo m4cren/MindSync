@@ -208,3 +208,36 @@ export type ExpenseCategoryStateTypes = {
    isPending: boolean;
    errMsg: string | null;
 };
+
+type KeybindTypes = [ctrlKey: "ctrl" | "alt", key: string];
+
+export type SettingsConfigType = {
+   profile: {
+      system_name: string;
+      user_name: string;
+      banner_url: string;
+   };
+   appearance: {
+      theme: string;
+      time_format: "12-hour" | "24-hour";
+   };
+   accessibility: {
+      font: string;
+      animation: "on" | "off";
+   };
+
+   keybinds: {
+      menu: KeybindTypes;
+      toggle_close: KeybindTypes;
+      record_expense: KeybindTypes;
+      record_income: KeybindTypes;
+      record_transfer: KeybindTypes;
+      add_task: KeybindTypes;
+      record_habit: KeybindTypes;
+   };
+};
+export type SettingsConfigStateTypes = {
+   config: SettingsConfigType;
+   isPending: boolean;
+   errMsg: string | null;
+};

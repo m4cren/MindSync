@@ -1,11 +1,12 @@
 "use client";
 import { usePathname } from "next/navigation";
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import { capitalFirstLetter } from "../expenses/account/_component/NewAccountForm";
 
 const Template = ({ children }: PropsWithChildren) => {
    const pathname = usePathname();
    const currentPath = pathname.slice(10, pathname.length);
+
    return (
       <div className="bg-card">
          <div className="flex flex-col gap-[2.25vw] justify-center h-screen w-[80%]  mx-auto">

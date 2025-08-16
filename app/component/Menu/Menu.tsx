@@ -1,6 +1,7 @@
 "use client";
 
 import { usePopupState } from "@/lib/hooks/popup/usePopupState";
+import { useSettingsConfig } from "@/lib/hooks/settings/useSettingsConfig";
 import { MenuStateTypes } from "@/lib/types";
 
 import classNames from "classnames";
@@ -73,7 +74,7 @@ const Menu = () => {
          window.removeEventListener("keydown", handleKeyDown);
       };
    }, [dispatch, untogglePopup, togglePopup]);
-
+   const { profileConfig, isPending } = useSettingsConfig();
    useEffect(() => {
       if (popup.menu) {
          const changeMenu = (e: KeyboardEvent) => {
@@ -142,7 +143,11 @@ const Menu = () => {
                })}
             </ul>
             <p className="text-[1vw] opacity-60 menuToggleAnimation">
-               Welcome Engineer, Rainier
+               {!isPending ? (
+                  `Welcome ${profileConfig.user_name}`
+               ) : (
+                  <span className="w-full h-[3rem] rounded-[0.5vw] bg-card animate-pulse" />
+               )}
             </p>
          </div>
       );

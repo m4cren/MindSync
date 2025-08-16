@@ -1,24 +1,36 @@
+"use client";
+import { useSettingsConfig } from "@/lib/hooks/settings/useSettingsConfig";
 import { Pencil } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
 const Form = () => {
+   const { profileConfig, isPending } = useSettingsConfig();
+   console.log(profileConfig);
    return (
       <form action="" className="flex flex-col gap-[2vw]">
-         <div className="relative flex flex-col gap-[0.7vw] ">
-            <h5 className="font-semibold">Banner</h5>
-            <Image
-               className=" rounded-[1vw] w-full h-[10rem] object-cover object-center"
-               src={"/images/banner/banner.gif"}
-               width={1920}
-               height={1080}
-               alt="banner"
-               unoptimized
-            />
-            <button className="absolute -bottom-[1vw] right-[5vw] bg-flame-secondary text-[0.7vw] rounded-[0.5vw] px-[0.6vw] py-[0.4vw] flex items-center justify-center gap-[0.3vw] font-semibold cursor-pointer">
-               <Pencil size={14} /> Change Banner
-            </button>
-         </div>
+         {!isPending ? (
+            <div className="relative flex flex-col gap-[0.7vw] ">
+               <h5 className="font-semibold">Banner</h5>
+               <Image
+                  className=" rounded-[1vw] w-full h-[10rem] object-cover object-center"
+                  src={`/images/banner/${profileConfig.banner_url}`}
+                  width={1920}
+                  height={1080}
+                  alt="banner"
+                  unoptimized
+               />
+               <button className="absolute -bottom-[1vw] right-[5vw] bg-flame-secondary text-[0.7vw] rounded-[0.5vw] px-[0.6vw] py-[0.4vw] flex items-center justify-center gap-[0.3vw] font-semibold cursor-pointer">
+                  <Pencil size={14} /> Change Banner
+               </button>
+            </div>
+         ) : (
+            <div className="relative flex flex-col gap-[0.7vw] ">
+               <h5 className="font-semibold">Banner</h5>
+
+               <div className=" rounded-[1vw] w-full h-[10rem] bg-[#2c2c2c] animate-pulse " />
+            </div>
+         )}
 
          <div className="flex flex-col gap-[1vw]">
             <div className="flex flex-col gap-[0.4vw]">
@@ -27,7 +39,9 @@ const Form = () => {
                </label>
                <input
                   type="text"
-                  defaultValue={"MindSync"}
+                  defaultValue={
+                     !isPending ? profileConfig.system_name : "Loading..."
+                  }
                   className="outline-none text-[1vw] font-semibold text-[#d4d4d490] border-2 py-[0.3vw] pl-[1vw] border-[#2c2c2c] rounded-[0.5vw] w-[40%]"
                />
             </div>
@@ -37,7 +51,9 @@ const Form = () => {
                </label>
                <input
                   type="text"
-                  defaultValue={"Engineer, Rainier"}
+                  defaultValue={
+                     !isPending ? profileConfig.user_name : "Loading..."
+                  }
                   className="outline-none text-[1vw] font-semibold text-[#d4d4d490] border-2 py-[0.3vw] pl-[1vw] border-[#2c2c2c] rounded-[0.5vw] w-[40%]"
                />
             </div>

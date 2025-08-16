@@ -22,7 +22,11 @@ const keybindConfig = [
       keys: ["ctrl", "3"],
    },
    {
-      action: "Add Habit",
+      action: "Record Habit",
+      keys: ["ctrl", "4"],
+   },
+   {
+      action: "Add Task",
       keys: ["ctrl", "0"],
    },
 ];

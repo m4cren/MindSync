@@ -33,7 +33,7 @@ const PieChartComponent = () => {
             <div className="bg-card animate-pulse  rounded-[0.5vw] h-[24.5vw]"></div>
          ) : hasMounted && income.length !== 0 ? (
             <ResponsiveContainer width={"100%"} height={"100%"}>
-               <PieChart width={400} height={400}>
+               <PieChart width={300} height={300}>
                   <Pie
                      data={incomeOverallDistribution}
                      cx="50%"

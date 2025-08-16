@@ -1,6 +1,7 @@
 "use client";
 import { useGetTodayNetWorth } from "@/lib/hooks/netWorth/useGetTodayNetWorth";
 import { useNetworthState } from "@/lib/hooks/netWorth/useNetworthState";
+import { useInitializeSettingsConfig } from "@/lib/hooks/settings/useInitializeSettingsConfig";
 import { PropsWithChildren, useEffect, useState } from "react";
 
 const InitialAppLoader = ({ children }: PropsWithChildren) => {
@@ -8,7 +9,7 @@ const InitialAppLoader = ({ children }: PropsWithChildren) => {
 
    useNetworthState();
    useGetTodayNetWorth();
-
+   useInitializeSettingsConfig();
    useEffect(() => {
       setIsLoading(false);
    }, []);
