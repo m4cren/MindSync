@@ -2,19 +2,23 @@
 
 import { useAccountState } from "@/lib/hooks/accounts/useAccountState";
 import { useNetworthState } from "@/lib/hooks/netWorth/useNetworthState";
-import { AccountIconTypes, AccountTypes, NetWorthArgs } from "@/lib/types";
+import { useTodayNetWorth } from "@/lib/hooks/netWorth/useTodayNetWorth";
+import { AccountIconTypes, NetWorthArgs } from "@/lib/types";
 import { sort } from "fast-sort";
 import {
    CreditCard,
+   Eye,
+   EyeClosed,
    Landmark,
    LucideIcon,
    PiggyBank,
    Users,
    Wallet,
 } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import SkeletonCard from "./SkeletonCard";
-import { useTodayNetWorth } from "@/lib/hooks/netWorth/useTodayNetWorth";
+import ShowAmountButton from "../ShowAmountButton";
+import { useShowAmountContext } from "@/lib/context/showAmountProvider";
 
 export const accountIconMapp: Record<AccountIconTypes, LucideIcon> = {
    wallet: Wallet,
@@ -32,7 +36,7 @@ const Accounts = () => {
       updateNetWorth,
       dispatch,
    } = useNetworthState();
-
+   const { isBalanceShown } = useShowAmountContext();
    const hasUpdated = useRef(false);
    const dateToday = new Date();
    const formattedDate = dateToday.toLocaleDateString("en-US", {
@@ -63,10 +67,13 @@ const Accounts = () => {
    }, [accounts, dispatch, formattedDate, netWorth, updateNetWorth]);
    return (
       <div className="flex flex-col gap-[1vw] w-[20vw] h-fit border-2 border-card rounded-[0.5vw] p-[1.25vw]">
-         <div className="flex items-center gap-[0.6vw]">
-            <Users size={18} />
+         <div className="flex items-center justify-between ">
+            <div className="flex items-center gap-[0.6vw]">
+               <Users size={18} />
 
-            <h1 className="text-[0.9vw] font-medium opacity-50">Accounts</h1>
+               <h1 className="text-[0.9vw] font-medium opacity-50">Accounts</h1>
+            </div>
+            <ShowAmountButton />
          </div>
          <hr className="text-card border-2" />
          {isPending ? (
@@ -87,7 +94,8 @@ const Accounts = () => {
                            <h4 className="text-[1vw] font-bold">{name}</h4>
                         </div>
                         <h3 className="text-[1vw] opacity-80 font-light">
-                           ₱{balance.toLocaleString()}
+                           ₱{" "}
+                           {isBalanceShown ? balance.toLocaleString() : "••••"}
                         </h3>
                      </li>
                   );

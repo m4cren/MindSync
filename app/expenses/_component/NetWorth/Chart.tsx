@@ -4,7 +4,7 @@ import { CustomTooltip } from "@/app/component/CustomToolTip";
 import { useNetworthState } from "@/lib/hooks/netWorth/useNetworthState";
 import { FiltererTypes, NetWorthTypes } from "@/lib/types";
 import { sort } from "fast-sort";
-import { Funnel, Landmark } from "lucide-react";
+import { Eye, EyeClosed, Funnel, Landmark } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
    CartesianGrid,
@@ -16,6 +16,7 @@ import {
    YAxis,
 } from "recharts";
 import DateFilter from "./DateFilter";
+import { useShowAmountContext } from "@/lib/context/showAmountProvider";
 const monthMap: Record<string, string> = {
    Jan: "01",
    Feb: "02",
@@ -123,7 +124,7 @@ const Chart = () => {
 
    const [isFilter, setIsFilter] = useState<boolean>(false);
    const [hasMounted, setHasMounted] = useState(false);
-
+   const { isBalanceShown } = useShowAmountContext();
    useEffect(() => {
       setHasMounted(true);
    }, []);
@@ -146,6 +147,7 @@ const Chart = () => {
                   Net Worth (Cash-based)
                </h1>
             </div>
+
             <button
                className="cursor-pointer"
                onClick={() => setIsFilter(true)}
@@ -173,14 +175,16 @@ const Chart = () => {
                      <YAxis
                         tick={{
                            fontFamily: "Inter",
-                           fontSize: 10,
+                           fontSize: isBalanceShown ? 10 : 1,
                            fill: "#d4d4d490",
                         }}
                      />
-                     <Tooltip
-                        content={CustomTooltip}
-                        isAnimationActive={false}
-                     />
+                     {isBalanceShown && (
+                        <Tooltip
+                           content={CustomTooltip}
+                           isAnimationActive={false}
+                        />
+                     )}
 
                      <Line type="monotone" dataKey="balance" stroke="#d4d4d4" />
                   </LineChart>

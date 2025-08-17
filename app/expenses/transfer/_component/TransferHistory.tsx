@@ -8,6 +8,7 @@ import { usePagination } from "@/lib/hooks/usePagination";
 import { TransferTypes } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
 import Table from "./Table";
+import ShowAmountButton from "../../_component/ShowAmountButton";
 
 const TransferHistory = () => {
    const {
@@ -31,6 +32,7 @@ const TransferHistory = () => {
                   Transfer History
                </h1>
             </div>
+            <ShowAmountButton />
          </div>
          <hr className="text-card border-2" />
 

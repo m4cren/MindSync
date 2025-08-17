@@ -4,6 +4,8 @@ import { useAccountState } from "@/lib/hooks/accounts/useAccountState";
 import {
    BanknoteArrowDown,
    BanknoteArrowUp,
+   Eye,
+   EyeClosed,
    LucideIcon,
    Scale,
    Scroll,
@@ -11,6 +13,8 @@ import {
 } from "lucide-react";
 import { accountIconMapp } from "../../_component/Accounts/Accounts";
 import TableSkeleton from "./TableSkeleton";
+import { useState } from "react";
+import { useShowAmountContext } from "@/lib/context/showAmountProvider";
 
 const tableHeader: { label: string; icon: LucideIcon }[] = [
    { label: "Account Name", icon: Text },
@@ -21,6 +25,7 @@ const tableHeader: { label: string; icon: LucideIcon }[] = [
 
 const Details = () => {
    const { accounts } = useAccountState();
+   const { isBalanceShown } = useShowAmountContext();
    return (
       <div className="flex flex-col gap-[1vw] w-full h-fit border-2 border-card rounded-[0.5vw] p-[1.25vw]">
          <div className="flex items-center gap-[0.6vw]">
@@ -69,13 +74,22 @@ const Details = () => {
                                  </span>
                               </td>
                               <td className="border-2 py-[0.5vw] px-[1vw] border-card">
-                                 ₱{balance.toLocaleString()}
+                                 ₱{" "}
+                                 {isBalanceShown
+                                    ? balance.toLocaleString()
+                                    : "••••"}
                               </td>
                               <td className="border-2 py-[0.5vw] px-[1vw] border-card">
-                                 ₱{total_income.toLocaleString()}
+                                 ₱{" "}
+                                 {isBalanceShown
+                                    ? total_income.toLocaleString()
+                                    : "••••"}
                               </td>
                               <td className="border-t-2  border-b-2 border-card py-[0.5vw] px-[1vw]">
-                                 ₱{total_expense.toLocaleString()}
+                                 ₱{" "}
+                                 {isBalanceShown
+                                    ? total_expense.toLocaleString()
+                                    : "••••"}
                               </td>
                            </tr>
                         );

@@ -9,14 +9,15 @@ import { useCreateAccount } from "@/lib/hooks/accounts/useCreateAccount";
 import ErrorMessage from "@/app/component/ErrorMessage";
 import ConfirmationModal from "@/app/component/ConfirmationModal";
 
+interface Props {
+   account: AccountTypes;
+   isBalanceShown: boolean;
+}
+
 const AccountCard = ({
-   balance,
-   icon,
-   name,
-   id,
-   total_expense,
-   total_income,
-}: AccountTypes) => {
+   account: { balance, icon, name, total_expense, total_income, id },
+   isBalanceShown,
+}: Props) => {
    const { editAccount, dispatch, deleteAccount } = useCreateAccount();
    const [isEditMode, setIsEditMode] = useState<string | null>(null);
    const [selectedIcon, setSelectedIcon] = useState<AccountIconTypes | null>(
@@ -64,7 +65,7 @@ const AccountCard = ({
                   <h3 className="text-[1.1vw] font-bold">{name}</h3>
                </div>
                <p className="text-[1vw] opacity-70">
-                  ₱{balance.toLocaleString()}
+                  ₱ {isBalanceShown ? balance.toLocaleString() : "••••"}
                </p>
             </div>
             <button

@@ -3,6 +3,7 @@ import { PropsWithChildren } from "react";
 import RecordExpense from "./_component/RecordExpense/RecordExpense";
 import RecordIncome from "./_component/RecordIncome/RecordIncome";
 import RecordTransfer from "./_component/RecordTransfer/RecordTransfer";
+import { ShowAmountProvider } from "@/lib/context/showAmountProvider";
 
 const layout = ({ children }: PropsWithChildren) => {
    return (
@@ -19,7 +20,7 @@ const layout = ({ children }: PropsWithChildren) => {
          <RecordIncome />
          <RecordTransfer />
          <section className="flex flex-col gap-[2vw] px-[8vw]">
-            {children}
+            <ShowAmountProvider>{children}</ShowAmountProvider>
          </section>
       </main>
    );

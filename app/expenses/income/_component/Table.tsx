@@ -1,3 +1,4 @@
+"use client";
 import {
    Banknote,
    BanknoteArrowDown,
@@ -10,6 +11,7 @@ import {
 import { AccountIconTypes, IncomeTypes } from "@/lib/types";
 import { accountIconMapp } from "../../_component/Accounts/Accounts";
 import { incomeColorTypeMap } from "./IncomeTypes";
+import { useShowAmountContext } from "@/lib/context/showAmountProvider";
 
 const incomeHistoryHeader: { label: string; icon: LucideIcon }[] = [
    { label: "Income Stream", icon: Banknote },
@@ -20,6 +22,7 @@ const incomeHistoryHeader: { label: string; icon: LucideIcon }[] = [
 ];
 
 const Table = ({ sortedByDate }: { sortedByDate: IncomeTypes[] }) => {
+   const { isBalanceShown } = useShowAmountContext();
    return (
       <table>
          <thead>
@@ -56,7 +59,7 @@ const Table = ({ sortedByDate }: { sortedByDate: IncomeTypes[] }) => {
                            {income_stream}
                         </td>
                         <td className="border-2 py-[0.5vw] px-[1vw] border-card">
-                           ₱{amount.toLocaleString()}
+                           ₱ {isBalanceShown ? amount.toLocaleString() : "••••"}
                         </td>
                         <td className="border-2 py-[0.5vw] px-[1vw] border-card">
                            <span className="flex items-center gap-[0.4vw]">

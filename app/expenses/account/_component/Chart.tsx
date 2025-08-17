@@ -1,5 +1,6 @@
 "use client";
 import { CustomTooltip } from "@/app/component/CustomToolTip";
+import { useShowAmountContext } from "@/lib/context/showAmountProvider";
 import { useOnlyAccount } from "@/lib/hooks/accounts/useOnlyAccount";
 import { BarChart2 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -19,7 +20,7 @@ const Chart = () => {
    } = useOnlyAccount();
 
    const [hasMounted, setHasMounted] = useState<boolean>(false);
-
+   const { isBalanceShown } = useShowAmountContext();
    useEffect(() => {
       setHasMounted(true);
    }, []);
@@ -58,15 +59,17 @@ const Chart = () => {
                      dataKey="balance"
                      tick={{
                         fontFamily: "Inter",
-                        fontSize: 6,
+                        fontSize: isBalanceShown ? 8 : 1,
                         fill: "#d4d4d490",
                      }}
                   />
-                  <Tooltip
-                     content={CustomTooltip}
-                     isAnimationActive={false}
-                     cursor={false}
-                  />
+                  {isBalanceShown && (
+                     <Tooltip
+                        content={CustomTooltip}
+                        isAnimationActive={false}
+                        cursor={false}
+                     />
+                  )}
 
                   <Bar
                      dataKey="balance"

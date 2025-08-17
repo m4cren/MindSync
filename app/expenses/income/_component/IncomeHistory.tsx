@@ -8,6 +8,7 @@ import { Scroll } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import TableSkeleton from "../../account/_component/TableSkeleton";
 import Table from "./Table";
+import ShowAmountButton from "../../_component/ShowAmountButton";
 
 const IncomeHistory = () => {
    const {
@@ -28,6 +29,7 @@ const IncomeHistory = () => {
                   Income History Table
                </h1>
             </div>
+            <ShowAmountButton />
          </div>
          <hr className="text-card border-2" />
 

@@ -6,12 +6,13 @@ import { PieChartIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { incomeColorTypeMap } from "./IncomeTypes";
+import { useShowAmountContext } from "@/lib/context/showAmountProvider";
 
 const PieChartComponent = () => {
    const { incomeOverallDistribution, isPending, income } = useIncomeSummary();
 
    const [hasMounted, setHasMounted] = useState(false);
-
+   const { isBalanceShown } = useShowAmountContext();
    useEffect(() => {
       setHasMounted(true);
    }, []);
@@ -58,7 +59,7 @@ const PieChartComponent = () => {
                         />
                      ))}
                   </Pie>
-                  <Tooltip content={CustomTooltip} />
+                  {isBalanceShown && <Tooltip content={CustomTooltip} />}
                </PieChart>
             </ResponsiveContainer>
          ) : (
