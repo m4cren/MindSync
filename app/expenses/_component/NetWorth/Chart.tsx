@@ -143,7 +143,7 @@ const Chart = () => {
                <Landmark size={18} />
 
                <h1 className="text-[0.9vw] font-medium opacity-50">
-                  Net Worth
+                  Net Worth (Cash-based)
                </h1>
             </div>
             <button
