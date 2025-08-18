@@ -15,8 +15,8 @@ import classNames from "classnames";
 const dashboardIconMap: Record<string, LucideIcon> = {
    Home: Home,
    Account: User,
-   Income: BanknoteArrowUp,
-   Expenses: BanknoteArrowDown,
+   Income: BanknoteArrowDown,
+   Expenses: BanknoteArrowUp,
    Transfer: Recycle,
 };
 const Dashboard = () => {

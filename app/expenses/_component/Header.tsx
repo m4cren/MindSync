@@ -16,8 +16,8 @@ interface Props {
 const pageIconMap: Record<string, LucideIcon> = {
    "Finance Tracker": Landmark,
    Accounts: User,
-   Income: BanknoteArrowUp,
-   Expenses: BanknoteArrowDown,
+   Income: BanknoteArrowDown,
+   Expenses: BanknoteArrowUp,
    Transfer: Recycle,
 };
 

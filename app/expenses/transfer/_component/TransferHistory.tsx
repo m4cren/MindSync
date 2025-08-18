@@ -51,7 +51,7 @@ const TransferHistory = () => {
             </>
          ) : (
             <p className="text-[1vw] font-medium opacity-50 text-center py-[1vw]">
-               You have no expense history
+               You have no transfer transactions
             </p>
          )}
       </div>
